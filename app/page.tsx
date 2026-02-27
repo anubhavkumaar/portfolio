@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Sun, Moon, Github, Linkedin, Mail, Terminal, Database, BrainCircuit, Code, Server, Cpu, ExternalLink, Cloud, Settings, Instagram, Gamepad2, Twitter, Youtube, Twitch, MessageSquare, Menu, X, Award } from 'lucide-react';
+import { Sun, Moon, Github, Linkedin, Mail, BrainCircuit, Instagram, Youtube, Twitch, Menu, X, Award } from 'lucide-react';
 
 // --- Custom Hooks ---
 
 // Typewriter Effect Hook
-const useTypewriter = (words, typingSpeed = 100, erasingSpeed = 50, delay = 1500) => {
+const useTypewriter = (words: string[], typingSpeed = 100, erasingSpeed = 50, delay = 1500) => {
   const [text, setText] = useState('');
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -62,7 +62,7 @@ const useScrollReveal = (threshold = 0.15) => {
 // --- Components ---
 
 // Universal Animation Wrapper
-const Reveal = ({ children, direction = 'up', delay = 0, className = '', threshold = 0.15 }) => {
+const Reveal = ({ children, direction = 'up', delay = 0, className = '', threshold = 0.15 }: { children: React.ReactNode; direction?: 'up' | 'down' | 'left' | 'right' | 'scale'; delay?: number; className?: string; threshold?: number }) => {
   const { ref, isVisible } = useScrollReveal(threshold);
   
   const getTransform = () => {
@@ -87,7 +87,7 @@ const Reveal = ({ children, direction = 'up', delay = 0, className = '', thresho
   );
 };
 
-const SectionHeading = ({ children }) => (
+const SectionHeading = ({ children }: { children: React.ReactNode }) => (
   <Reveal direction="down" className="w-full flex justify-center z-20">
     <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center font-orbitron bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600 drop-shadow-lg">
       {children}
@@ -96,8 +96,8 @@ const SectionHeading = ({ children }) => (
 );
 
 // Growing Tree Wrapper Component
-const GrowingTree = ({ children }) => {
-  const treeRef = useRef(null);
+const GrowingTree = ({ children }: { children: React.ReactNode }) => {
+  const treeRef = useRef<HTMLDivElement>(null);
   const [growHeight, setGrowHeight] = useState(0);
 
   useEffect(() => {
@@ -135,7 +135,7 @@ const GrowingTree = ({ children }) => {
   );
 };
 
-const TimelineItem = ({ year, title, company, description, isLeft, delay = 0 }) => {
+const TimelineItem = ({ year, title, company, description, isLeft, delay = 0 }: { year: string; title: string; company: string; description: string; isLeft: boolean; delay?: number }) => {
   const { ref, isVisible } = useScrollReveal();
   
   return (
@@ -183,7 +183,7 @@ const TimelineItem = ({ year, title, company, description, isLeft, delay = 0 }) 
   );
 };
 
-const SkillCard = ({ icon: Icon, imageSrc, title, description, delay }) => {
+const SkillCard = ({ icon: Icon, imageSrc, title, description, delay }: { icon?: React.ComponentType<{ className?: string; size?: number }>; imageSrc?: string; title: string; description: string; delay: number }) => {
   const { ref, isVisible } = useScrollReveal();
   return (
     <div ref={ref} className={`skill-card h-60 cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-90 translate-y-10'}`} style={{ transitionDelay: `${delay}ms` }}>
@@ -210,7 +210,7 @@ const SkillCard = ({ icon: Icon, imageSrc, title, description, delay }) => {
 };
 
 // Custom Icon handler for authentic brand SVGs
-const CustomIcon = ({ icon: Icon, customPath, size = 28, className }) => {
+const CustomIcon = ({ icon: Icon, customPath, size = 28, className }: { icon?: React.ComponentType<{ className?: string; size?: number }>; customPath?: string; size?: number; className?: string }) => {
   if (customPath) {
     return (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -218,11 +218,11 @@ const CustomIcon = ({ icon: Icon, customPath, size = 28, className }) => {
       </svg>
     );
   }
-  return <Icon size={size} className={className} />;
+  return Icon ? <Icon size={size} className={className} /> : null;
 };
 
 // Social Card Component for Bento Grid
-const SocialCard = ({ social, isDark, delay }) => {
+const SocialCard = ({ social, isDark, delay }: { social: { text: string; icon?: any; customPath?: string; href: string; tooltip: string; color: string; darkColor: string }; isDark: boolean; delay: number }) => {
   const { ref, isVisible } = useScrollReveal();
   const hoverColor = isDark ? social.darkColor : social.color;
   
@@ -233,7 +233,7 @@ const SocialCard = ({ social, isDark, delay }) => {
       target={social.href.startsWith('mailto:') ? '_self' : '_blank'} 
       rel="noreferrer"
       className={`group relative flex flex-col items-center justify-center p-8 rounded-2xl bg-[var(--bg-color)] border border-[var(--color-accent)]/30 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-3 hover:scale-[1.03] ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-95'}`}
-      style={{ '--hover-brand-color': hoverColor, transitionDelay: `${delay}ms` }}
+      style={{ transitionDelay: `${delay}ms` } as React.CSSProperties}
     >
       {/* Base shadow & hover brand shadow */}
       <div className="absolute inset-0 shadow-[0_4px_20px_rgba(0,0,0,0.05)] group-hover:shadow-[0_0_25px_var(--hover-brand-color)] transition-shadow duration-500 pointer-events-none"></div>
@@ -241,14 +241,14 @@ const SocialCard = ({ social, isDark, delay }) => {
       {/* Animated Background Gradient using brand color */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-[0.15] transition-opacity duration-500 pointer-events-none"
-        style={{ background: `radial-gradient(circle at center, var(--hover-brand-color) 0%, transparent 70%)` }}
+        style={{ background: `radial-gradient(circle at center, ${hoverColor} 0%, transparent 70%)` }}
       ></div>
       
       {/* Glare effect */}
       <div className="absolute top-0 left-[-100%] w-[150%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-45deg] group-hover:animate-[glare_0.8s_ease-out] pointer-events-none z-20"></div>
 
       {/* Icon styling - Toned down generic shadow */}
-      <div className="relative z-10 w-16 h-16 mb-4 rounded-full border-2 border-[var(--color-accent)]/50 group-hover:border-[color:var(--hover-brand-color)] flex items-center justify-center bg-[var(--bg-color)] transition-all duration-500 shadow-[0_4px_10px_rgba(var(--color-accent-rgb),0.1)] group-hover:shadow-[0_0_20px_var(--hover-brand-color)]">
+      <div className="relative z-10 w-16 h-16 mb-4 rounded-full border-2 border-[var(--color-accent)]/50 group-hover:border-[color:var(--hover-brand-color)] flex items-center justify-center bg-[var(--bg-color)] transition-all duration-500 shadow-[0_4px_10px_rgba(var(--color-accent-rgb),0.1)] group-hover:shadow-[0_0_20px_var(--hover-brand-color)]" style={{ borderColor: isVisible ? undefined : undefined }}>
         <CustomIcon
           icon={social.icon}
           customPath={social.customPath}
@@ -269,7 +269,7 @@ const SocialCard = ({ social, isDark, delay }) => {
 };
 
 // Certificate Card Component
-const CertificateCard = ({ title, issuer, date, delay }) => {
+const CertificateCard = ({ title, issuer, date, delay }: { title: string; issuer: string; date: string; delay: number }) => {
   const { ref, isVisible } = useScrollReveal();
   return (
     <div ref={ref} className={`group relative flex flex-col p-6 rounded-2xl bg-[var(--bg-color)] border border-[var(--color-accent)]/30 shadow-[0_4px_20px_rgba(0,0,0,0.05)] overflow-visible transition-all duration-700 ease-out hover:-translate-y-2 hover:border-[var(--color-accent)] hover:shadow-[0_0_30px_rgba(0,255,255,0.15)] ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}`} style={{ transitionDelay: `${delay}ms` }}>
@@ -320,7 +320,7 @@ export default function App() {
 
   // Dynamically set the Favicon
   useEffect(() => {
-    let link = document.querySelector("link[rel~='icon']");
+    let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
     if (!link) {
       link = document.createElement('link');
       link.rel = 'icon';
@@ -348,7 +348,7 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollTo = (id) => {
+  const scrollTo = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({
@@ -476,8 +476,10 @@ export default function App() {
                alt="Logo" 
                className="h-10 w-auto drop-shadow-[0_0_8px_var(--color-accent)] transition-transform duration-300 group-hover:scale-105"
                onError={(e) => {
-                 e.target.style.display = 'none';
-                 e.target.nextElementSibling.style.display = 'flex';
+                 const target = e.target as HTMLImageElement;
+                 target.style.display = 'none';
+                 const nextElement = target.nextElementSibling as HTMLElement;
+                 if (nextElement) nextElement.style.display = 'flex';
                }}
              />
              {/* Fallback AK Logo (Shows only if image fails to load) */}
