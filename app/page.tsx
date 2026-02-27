@@ -749,7 +749,7 @@ export default function App() {
                         <div className="relative z-10 flex flex-col items-center justify-center p-8">
                           <BrainCircuit size={56} className="text-[var(--color-accent)] mb-4 animate-[pulse-slow_3s_infinite] drop-shadow-[0_0_12px_var(--color-accent)]" />
                           <h3 className="font-orbitron font-bold text-3xl text-[var(--color-accent)] mb-2 tracking-widest drop-shadow-[0_0_8px_var(--color-accent)]">Let's Build</h3>
-                          <p className="text-sm font-semibold opacity-90 uppercase tracking-wider">The future of AI & Data together.</p>
+                          <p className="text-sm font-semibold opacity-90 uppercase tracking-wider"></p>
                         </div>
                       </div>
                     </div>
