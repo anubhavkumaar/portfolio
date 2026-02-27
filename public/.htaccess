@@ -1,0 +1,8 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 301 Redirects
+  Redirect 301 /discord https://discord.gg/qysMbEXq5R
+  Redirect 301 /insta https://www.instagram.com/theanubhavkumar/
+  Redirect 301 /youtube https://youtube.com/anubhavkumaar
+</IfModule>
