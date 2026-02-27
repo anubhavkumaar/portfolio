@@ -289,12 +289,12 @@ const SocialCard = ({ social, isDark, delay }: { social: { text: string; icon?: 
       <div className="absolute bottom-0 right-[-100%] w-full h-[2px] bg-gradient-to-l from-transparent via-[var(--color-accent)] to-transparent group-hover:animate-[pan_2s_linear_infinite_reverse]"></div>
 
       {/* Icon styling */}
-      <div className="relative z-10 w-16 h-16 mb-4 rounded-full border border-[var(--color-accent)]/40 group-hover:border-[color:var(--hover-brand-color)] flex items-center justify-center bg-[var(--bg-color)] transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_20px_var(--hover-brand-color)] group-hover:animate-[pulse-slow_2s_infinite]">
+      <div className="relative z-10 w-16 h-16 mb-4 rounded-full border border-[var(--color-accent)]/40 flex items-center justify-center bg-[var(--bg-color)] transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(0,0,0,0.3)] group-hover:animate-[pulse-slow_2s_infinite]">
         <CustomIcon
           icon={social.icon}
           customPath={social.customPath}
           size={28}
-          className="text-[var(--text-color)] opacity-80 group-hover:opacity-100 group-hover:text-[color:var(--hover-brand-color)] transition-colors duration-500 group-hover:drop-shadow-[0_0_10px_var(--hover-brand-color)]"
+          className="text-[var(--text-color)] opacity-80 group-hover:opacity-100 transition-colors duration-500 group-hover:drop-shadow-[0_0_10px_rgba(0,0,0,0.3)]"
         />
       </div>
       
@@ -341,6 +341,8 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const typeWriterText = useTypewriter(['an AI & Data Engineer', 'a Data Analyst', 'a GenAI Developer', 'a Full Stack Developer', 'a Gamer','a Streamer']);
 
+  const currentSectionRef = useRef('home');
+
   // Set CSS variables based on theme
   useEffect(() => {
     const root = document.documentElement;
@@ -368,7 +370,7 @@ export default function App() {
     link.href = 'https://i.vgy.me/i97cgL.png';
   }, []);
 
-  // Handle scroll spy for navigation
+  // Handle scroll spy for navigation and URL updating
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['home', 'about', 'skills', 'qualifications', 'socials', 'contact'];
@@ -377,12 +379,27 @@ export default function App() {
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element && scrollPosition >= element.offsetTop && scrollPosition < element.offsetTop + element.offsetHeight) {
-          setActiveSection(section);
+          if (currentSectionRef.current !== section) {
+            currentSectionRef.current = section;
+            setActiveSection(section);
+            // Replace history state to update URL hash without causing a page jump
+            window.history.replaceState(null, '', `#${section}`);
+          }
         }
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Set initial hash if loaded with one
+    if (window.location.hash) {
+      const initialSection = window.location.hash.substring(1);
+      if (['home', 'about', 'skills', 'qualifications', 'socials', 'contact'].includes(initialSection)) {
+        setActiveSection(initialSection);
+        currentSectionRef.current = initialSection;
+      }
+    }
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -393,6 +410,10 @@ export default function App() {
         behavior: 'smooth',
         block: 'start'
       });
+      // Push history state so the back button works
+      window.history.pushState(null, '', `#${id}`);
+      setActiveSection(id);
+      currentSectionRef.current = id;
       setIsMobileMenuOpen(false);
     }
   };
@@ -822,72 +843,84 @@ export default function App() {
                 imageSrc="https://img.icons8.com/fluency/96/artificial-intelligence.png" 
                 title="Generative AI" 
                 description="Built enterprise-grade GenAI platforms, focusing on scalable, performant AI solutions and workflow optimization."
+                icon={undefined}
               />
               <SkillCard 
                 delay={200}
                 imageSrc="https://img.icons8.com/fluency/96/chatgpt.png" 
                 title="LLMs & RAG" 
                 description="Developed intelligent RAG systems on AWS, significantly reducing manual policy lookup times for enterprise portals."
+                icon={undefined}
               />
               <SkillCard 
                 delay={300}
                 imageSrc="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" 
                 title="AWS Bedrock" 
                 description="Deployed and managed foundation models leveraging AWS infrastructure to build robust, cloud-native AI workflows."
+                icon={undefined}
               />
               <SkillCard 
                 delay={400}
                 imageSrc="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" 
                 title="Python & FastAPI" 
                 description="Designed and maintained scalable backend services, rapid data pipelines, and high-performance APIs."
+                icon={undefined}
               />
               <SkillCard 
                 delay={500}
                 imageSrc="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" 
                 title="React & Next.js" 
                 description="Created responsive, user-friendly frontend components and enterprise dashboards focusing on usability and accessibility."
+                icon={undefined}
               />
               <SkillCard 
                 delay={600}
                 imageSrc="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" 
                 title="PostgreSQL & SQL" 
                 description="Wrote complex queries for data validation, ETL pipelines, and business intelligence reporting to track automation outputs."
+                icon={undefined}
               />
               <SkillCard 
                 delay={700}
                 imageSrc="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" 
                 title="Machine Learning" 
                 description="Analyzed and optimized data pipelines for ML models, culminating in capstone project applications with IIT Roorkee."
+                icon={undefined}
               />
               <SkillCard 
                 delay={800}
                 imageSrc="https://cdn.simpleicons.org/uipath/FA4616" 
                 title="RPA & Automation" 
                 description="Supported quality assurance and tested enterprise automation workflows yielding significant operational time savings."
+                icon={undefined}
               />
               <SkillCard 
                 delay={900}
                 imageSrc="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/hadoop/hadoop-original.svg" 
                 title="Hadoop" 
                 description="Designed and maintained massive enterprise data lakes for robust big data storage and distributed processing."
+                icon={undefined}
               />
               <SkillCard 
                 delay={1000}
                 imageSrc="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" 
                 title="Oracle SQL" 
                 description="Engineered complex analytical queries for corporate BI reporting and structured database management."
+                icon={undefined}
               />
               <SkillCard 
                 delay={1100}
                 imageSrc="https://www.vectorlogo.zone/logos/apache_hive/apache_hive-icon.svg" 
                 title="Hive" 
                 description="Leveraged Hive infrastructure to efficiently structure, summarize, and query large-scale distributed datasets."
+                icon={undefined}
               />
               <SkillCard 
                 delay={1200}
                 imageSrc="https://cdn.simpleicons.org/swagger/85EA2D" 
                 title="Custom Integrations" 
                 description="Developed custom tailored solutions bridging modern frontends, robust backends, and various cross-platform APIs."
+                icon={undefined}
               />
             </div>
           </div>
