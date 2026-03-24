@@ -11,3 +11,12 @@
 body {
   font-family: 'Poppins', sans-serif;
 }
+
+/* SPA Router - Prevent navbar overlap when scrolling to sections */
+section {
+  scroll-margin-top: 4rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}

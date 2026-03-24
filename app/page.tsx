@@ -370,52 +370,41 @@ export default function App() {
     link.href = 'https://i.vgy.me/i97cgL.png';
   }, []);
 
-  // Handle scroll spy for navigation and URL updating
+  // Sync with SPA router for section updates
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'about', 'skills', 'qualifications', 'socials', 'contact'];
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element && scrollPosition >= element.offsetTop && scrollPosition < element.offsetTop + element.offsetHeight) {
-          if (currentSectionRef.current !== section) {
-            currentSectionRef.current = section;
-            setActiveSection(section);
-            // Replace history state to update URL hash without causing a page jump
-            window.history.replaceState(null, '', `#${section}`);
-          }
+    const updateActiveSection = () => {
+      if ((window as any).spaRouter) {
+        const current = (window as any).spaRouter.getCurrentSection();
+        if (current && current !== activeSection) {
+          setActiveSection(current);
+          currentSectionRef.current = current;
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    // Set initial hash if loaded with one
-    if (window.location.hash) {
-      const initialSection = window.location.hash.substring(1);
-      if (['home', 'about', 'skills', 'qualifications', 'socials', 'contact'].includes(initialSection)) {
-        setActiveSection(initialSection);
-        currentSectionRef.current = initialSection;
-      }
-    }
+    // Check on mount and periodically
+    updateActiveSection();
+    const interval = setInterval(updateActiveSection, 100);
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => clearInterval(interval);
+  }, [activeSection]);
 
   const scrollTo = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-      // Push history state so the back button works
-      window.history.pushState(null, '', `#${id}`);
-      setActiveSection(id);
-      currentSectionRef.current = id;
+    // Use SPA router if available, otherwise fall back to manual scroll
+    if ((window as any).spaRouter) {
+      (window as any).spaRouter.scrollTo(id);
       setIsMobileMenuOpen(false);
+    } else {
+      // Fallback for if router hasn't loaded yet
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
     }
+    setIsMobileMenuOpen(false);
   };
 
   return (
