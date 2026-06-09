@@ -15,7 +15,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {children}
-        <script src="/spa-router.js" defer></script>
       </body>
     </html>
   );
