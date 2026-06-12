@@ -43,7 +43,7 @@ function makeGradientTexture(_tint: string): THREE.CanvasTexture {
 }
 
 // Composite: screenshot + blue tint overlay + edge vignette → CanvasTexture
-function makeFrostedTexture(img: HTMLImageElement, tint: string): THREE.CanvasTexture {
+function makeFrostedTexture(img: HTMLImageElement, tint: string, bgRgb: string): THREE.CanvasTexture {
   const w = 720, h = Math.round(w * H / W);
   const canvas = document.createElement('canvas');
   canvas.width = w; canvas.height = h;
@@ -58,12 +58,12 @@ function makeFrostedTexture(img: HTMLImageElement, tint: string): THREE.CanvasTe
   ctx.fillStyle = tint;
   ctx.fillRect(0, 0, w, h);
 
-  // Edge vignette — fade to black at edges so panel blends into dark bg
+  // Edge vignette — fade to the page background color so panel blends in
   const vig = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, Math.max(w, h) * 0.58);
-  vig.addColorStop(0,    'rgba(0,0,0,0.00)');
-  vig.addColorStop(0.50, 'rgba(0,0,0,0.00)');
-  vig.addColorStop(0.80, 'rgba(0,0,0,0.45)');
-  vig.addColorStop(1.0,  'rgba(0,0,0,0.92)');
+  vig.addColorStop(0,    `rgba(${bgRgb},0.00)`);
+  vig.addColorStop(0.50, `rgba(${bgRgb},0.00)`);
+  vig.addColorStop(0.80, `rgba(${bgRgb},0.45)`);
+  vig.addColorStop(1.0,  `rgba(${bgRgb},0.92)`);
   ctx.fillStyle = vig;
   ctx.fillRect(0, 0, w, h);
 
@@ -77,11 +77,13 @@ function Panel({
   screenshotSrc,
   isActive,
   anyHovered,
+  bgRgb,
 }: {
   cfgIdx: number;
   screenshotSrc: string;
   isActive: boolean;
   anyHovered: boolean;
+  bgRgb: string;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const matRef  = useRef<THREE.MeshBasicMaterial>(null);
@@ -97,7 +99,7 @@ function Panel({
 
     const img = new Image();
     img.onload = () => {
-      const frosted = makeFrostedTexture(img, tint);
+      const frosted = makeFrostedTexture(img, tint, bgRgb);
       setTexture(frosted);
       if (matRef.current) {
         matRef.current.map = frosted;
@@ -106,7 +108,7 @@ function Panel({
     };
     img.onerror = () => {}; // keep gradient fallback
     img.src = screenshotSrc;
-  }, [screenshotSrc, tint]);
+  }, [screenshotSrc, tint, bgRgb]);
 
   useFrame(({ clock }) => {
     const mesh = meshRef.current;
@@ -150,10 +152,14 @@ function Panel({
 export default function WorksCanvas3D({
   hoveredIdx,
   previews,
+  theme,
 }: {
   hoveredIdx: number | null;
   previews: string[];
+  theme: 'dark' | 'light';
 }) {
+  const bgRgb = theme === 'light' ? '243, 245, 249' : '10, 10, 10';
+
   return (
     <Canvas
       className="absolute inset-0 w-full h-full"
@@ -168,6 +174,7 @@ export default function WorksCanvas3D({
           screenshotSrc={src}
           isActive={hoveredIdx === i}
           anyHovered={hoveredIdx !== null}
+          bgRgb={bgRgb}
         />
       ))}
     </Canvas>

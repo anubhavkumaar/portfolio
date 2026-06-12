@@ -38,14 +38,41 @@ import {
   Plug,
   Award,
   Trophy,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
-const ACCENT = '#5B9FFF';
+const ACCENT = 'var(--accent)';
 // Emil: expo ease-out for all reveals
 const EASE_EXPO: [number, number, number, number] = [0.23, 1, 0.32, 1];
 // Emil: spring config for mouse-tracking
 const SPRING_CFG = { stiffness: 180, damping: 28 };
+
+// ─── Theme ────────────────────────────────────────────────────────────────────
+type Theme = 'dark' | 'light';
+
+function useTheme() {
+  const [theme, setTheme] = useState<Theme>('dark');
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem('theme');
+    const initial: Theme = stored === 'light' ? 'light' : 'dark';
+    setTheme(initial);
+    document.documentElement.setAttribute('data-theme', initial);
+  }, []);
+
+  const toggle = () => {
+    setTheme((prev) => {
+      const next: Theme = prev === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      window.localStorage.setItem('theme', next);
+      return next;
+    });
+  };
+
+  return { theme, toggle };
+}
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 interface Project {
@@ -185,18 +212,18 @@ const CERTS = [
 const SKILL_CATEGORIES = ['All', 'AI & ML', 'Engineering', 'Data & Automation'] as const;
 
 const SKILLS = [
-  { name: 'Generative AI',       desc: 'Built enterprise-grade GenAI platforms focusing on scalable, performant AI solutions and workflow optimization.', icon: Sparkles, level: 95, category: 'AI & ML' },
-  { name: 'LLMs & RAG',          desc: 'Developed intelligent RAG systems on AWS, significantly reducing manual policy lookup times for enterprise portals.', icon: Bot, level: 92, category: 'AI & ML' },
-  { name: 'AWS Bedrock',         desc: 'Deployed and managed foundation models on AWS infrastructure to build robust, cloud-native AI workflows.', icon: Cloud, level: 88, category: 'AI & ML' },
-  { name: 'Machine Learning',    desc: 'Analyzed and optimized data pipelines for ML models, culminating in a capstone project with IIT Roorkee.', icon: Brain, level: 82, category: 'AI & ML' },
-  { name: 'Python & FastAPI',    desc: 'Designed scalable backend services, rapid data pipelines, and high-performance APIs for production environments.', icon: Code2, level: 95, category: 'Engineering' },
-  { name: 'React & Next.js',     desc: 'Created responsive frontend components and enterprise dashboards with strong focus on usability and accessibility.', icon: Component, level: 85, category: 'Engineering' },
-  { name: 'PostgreSQL & SQL',    desc: 'Wrote complex queries for data validation, ETL pipelines, and BI reporting to track automation outputs.', icon: Database, level: 88, category: 'Engineering' },
-  { name: 'Custom Integrations', desc: 'Developed tailored solutions bridging modern frontends, robust backends, and cross-platform APIs.', icon: Plug, level: 85, category: 'Engineering' },
-  { name: 'RPA & Automation',    desc: 'Supported QA and tested enterprise automation workflows, yielding significant operational time savings.', icon: Workflow, level: 85, category: 'Data & Automation' },
-  { name: 'Hadoop',              desc: 'Designed and maintained large enterprise data lakes for big data storage and distributed processing.', icon: Server, level: 78, category: 'Data & Automation' },
-  { name: 'Oracle SQL',          desc: 'Engineered complex analytical queries for corporate BI reporting and structured database management.', icon: Table2, level: 80, category: 'Data & Automation' },
-  { name: 'Hive',                desc: 'Leveraged Hive to efficiently structure, summarize, and query large-scale distributed datasets.', icon: Boxes, level: 75, category: 'Data & Automation' },
+  { name: 'Generative AI',       desc: 'Built enterprise-grade GenAI platforms focusing on scalable, performant AI solutions and workflow optimization.', icon: Sparkles, category: 'AI & ML' },
+  { name: 'LLMs & RAG',          desc: 'Developed intelligent RAG systems on AWS, significantly reducing manual policy lookup times for enterprise portals.', icon: Bot, category: 'AI & ML' },
+  { name: 'AWS Bedrock',         desc: 'Deployed and managed foundation models on AWS infrastructure to build robust, cloud-native AI workflows.', icon: Cloud, category: 'AI & ML' },
+  { name: 'Machine Learning',    desc: 'Analyzed and optimized data pipelines for ML models, culminating in a capstone project with IIT Roorkee.', icon: Brain, category: 'AI & ML' },
+  { name: 'Python & FastAPI',    desc: 'Designed scalable backend services, rapid data pipelines, and high-performance APIs for production environments.', icon: Code2, category: 'Engineering' },
+  { name: 'React & Next.js',     desc: 'Created responsive frontend components and enterprise dashboards with strong focus on usability and accessibility.', icon: Component, category: 'Engineering' },
+  { name: 'PostgreSQL & SQL',    desc: 'Wrote complex queries for data validation, ETL pipelines, and BI reporting to track automation outputs.', icon: Database, category: 'Engineering' },
+  { name: 'Custom Integrations', desc: 'Developed tailored solutions bridging modern frontends, robust backends, and cross-platform APIs.', icon: Plug, category: 'Engineering' },
+  { name: 'RPA & Automation',    desc: 'Supported QA and tested enterprise automation workflows, yielding significant operational time savings.', icon: Workflow, category: 'Data & Automation' },
+  { name: 'Hadoop',              desc: 'Designed and maintained large enterprise data lakes for big data storage and distributed processing.', icon: Server, category: 'Data & Automation' },
+  { name: 'Oracle SQL',          desc: 'Engineered complex analytical queries for corporate BI reporting and structured database management.', icon: Table2, category: 'Data & Automation' },
+  { name: 'Hive',                desc: 'Leveraged Hive to efficiently structure, summarize, and query large-scale distributed datasets.', icon: Boxes, category: 'Data & Automation' },
 ];
 
 // ─── Character mask reveal (lorisbukvic style) ────────────────────────────────
@@ -344,12 +371,12 @@ function OrbitRings({ children }: { children: React.ReactNode }) {
       {/* Static ring 1 */}
       <div
         className="absolute rounded-full pointer-events-none"
-        style={{ width: 390, height: 390, border: '1px solid rgba(255,255,255,0.055)' }}
+        style={{ width: 390, height: 390, border: '1px solid rgba(var(--ink-rgb),calc(0.055*var(--ink-boost)))' }}
       />
       {/* Static ring 2 */}
       <div
         className="absolute rounded-full pointer-events-none"
-        style={{ width: 470, height: 470, border: '1px solid rgba(91,159,255,0.045)' }}
+        style={{ width: 470, height: 470, border: '1px solid rgba(var(--accent-rgb),0.045)' }}
       />
       {/* Orbiting accent dot — ring 1 */}
       <motion.div
@@ -366,7 +393,7 @@ function OrbitRings({ children }: { children: React.ReactNode }) {
             transform: 'translate(-50%, -50%)',
             backgroundColor: ACCENT,
             opacity: 0.6,
-            boxShadow: `0 0 10px ${ACCENT}90`,
+            boxShadow: '0 0 10px rgba(var(--accent-rgb), 0.56)',
           }}
         />
       </motion.div>
@@ -383,8 +410,8 @@ function OrbitRings({ children }: { children: React.ReactNode }) {
             top: 0,
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            backgroundColor: 'rgba(255,255,255,0.45)',
-            boxShadow: '0 0 6px rgba(255,255,255,0.3)',
+            backgroundColor: 'rgba(var(--ink-rgb),calc(0.45*var(--ink-boost)))',
+            boxShadow: '0 0 6px rgba(var(--ink-rgb),calc(0.3*var(--ink-boost)))',
           }}
         />
       </motion.div>
@@ -441,19 +468,19 @@ function Tilt({ children, className = '' }: { children: React.ReactNode; classNa
 // ─── Project section (numbered list + cursor preview) ─────────────────────────
 // Taste: no scroll cues, no decorative dots, numbered list is earned (actual sequence)
 // Emil: spring cursor following, opacity+scale for preview, active feedback on links
-function ProjectsSection() {
+function ProjectsSection({ theme }: { theme: Theme }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const reduced = useReducedMotion();
 
   return (
     <section
       id="work"
-      className="relative min-h-[100dvh] overflow-hidden bg-[#0a0a0a]"
+      className="relative min-h-[100dvh] overflow-hidden bg-[var(--bg)]"
     >
       {/* Three.js 3D tilted-panel canvas — lorisbukvic.graphics/works style */}
       {!reduced && (
         <div className="absolute inset-0 z-0">
-          <WorksCanvas3D hoveredIdx={hoveredIdx} previews={PROJECTS.map(p => p.localPreview)} />
+          <WorksCanvas3D hoveredIdx={hoveredIdx} previews={PROJECTS.map(p => p.localPreview)} theme={theme} />
         </div>
       )}
 
@@ -461,7 +488,7 @@ function ProjectsSection() {
       <div
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, rgba(0,0,0,0.88) 100%)',
+          background: 'radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, rgba(var(--bg-rgb),0.88) 100%)',
         }}
       />
 
@@ -470,8 +497,8 @@ function ProjectsSection() {
         className="absolute inset-0 z-[3] pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 60% 70% at 70% 15%, rgba(91,159,255,0.09) 0%, transparent 65%),
-            radial-gradient(ellipse 40% 55% at 12% 65%, rgba(91,159,255,0.05) 0%, transparent 60%)
+            radial-gradient(ellipse 60% 70% at 70% 15%, rgba(var(--accent-rgb),0.09) 0%, transparent 65%),
+            radial-gradient(ellipse 40% 55% at 12% 65%, rgba(var(--accent-rgb),0.05) 0%, transparent 60%)
           `,
         }}
       />
@@ -479,21 +506,21 @@ function ProjectsSection() {
       {/* Bottom fade into next section */}
       <div
         className="absolute bottom-0 left-0 right-0 z-[4] pointer-events-none"
-        style={{ height: '20vh', background: 'linear-gradient(to bottom, transparent, #0a0a0a)' }}
+        style={{ height: '20vh', background: 'linear-gradient(to bottom, transparent, var(--bg))' }}
       />
 
       {/* Content layer */}
       <div className="relative z-[10] max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 py-28 md:py-36 flex flex-col justify-center min-h-[100dvh]">
         {/* Editorial header */}
         <Reveal className="mb-16 md:mb-24">
-          <div className="flex items-center justify-between border-b border-white/[0.08] pb-4 mb-5">
-            <span className="text-[10px] text-white/25 uppercase tracking-[0.2em] font-medium">Selected Work</span>
-            <span className="text-[10px] text-white/20 tabular-nums">0{PROJECTS.length}</span>
+          <div className="flex items-center justify-between border-b border-[rgba(var(--ink-rgb),calc(0.08*var(--ink-boost)))] pb-4 mb-5">
+            <span className="text-[10px] text-[rgba(var(--ink-rgb),calc(0.25*var(--ink-boost)))] uppercase tracking-[0.2em] font-medium">Selected Work</span>
+            <span className="text-[10px] text-[rgba(var(--ink-rgb),calc(0.20*var(--ink-boost)))] tabular-nums">0{PROJECTS.length}</span>
           </div>
           <MaskText
             text="Projects"
             tag="h2"
-            className="text-[clamp(3rem,7vw,5.5rem)] font-bold tracking-[-0.04em] text-white/92 leading-none"
+            className="text-[clamp(3rem,7vw,5.5rem)] font-bold tracking-[-0.04em] text-[rgba(var(--ink-rgb),calc(0.92*var(--ink-boost)))] leading-none"
             stagger={0.03}
           />
         </Reveal>
@@ -542,9 +569,9 @@ function ProjectRow({
       initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, ease: EASE_EXPO, delay: index * 0.07 }}
-      className="border-t border-white/[0.07] last:border-b last:border-white/[0.07] cursor-default"
+      className="border-t border-[rgba(var(--ink-rgb),calc(0.07*var(--ink-boost)))] last:border-b last:border-[rgba(var(--ink-rgb),calc(0.07*var(--ink-boost)))] cursor-default"
       style={{
-        backgroundColor: hovered ? 'rgba(255,255,255,0.018)' : 'transparent',
+        backgroundColor: hovered ? 'rgba(var(--ink-rgb),calc(0.018*var(--ink-boost)))' : 'transparent',
         transition: 'background-color 200ms ease, border-color 200ms ease',
       }}
       onMouseEnter={() => { setHovered(true); onHover(); }}
@@ -553,7 +580,7 @@ function ProjectRow({
       <div className="grid grid-cols-[1.75rem_1fr_auto] md:grid-cols-[2.5rem_1fr_auto] gap-4 md:gap-8 py-6 md:py-8">
         {/* Number */}
         <span className="text-[11px] tabular-nums select-none pt-[0.4rem] transition-colors duration-200"
-          style={{ color: hovered ? 'rgba(91,159,255,0.6)' : 'rgba(255,255,255,0.18)' }}>
+          style={{ color: hovered ? 'rgba(var(--accent-rgb),0.6)' : 'rgba(var(--ink-rgb),calc(0.18*var(--ink-boost)))' }}>
           {project.number}
         </span>
 
@@ -564,7 +591,7 @@ function ProjectRow({
               className="font-bold leading-tight transition-colors duration-200"
               style={{
                 fontSize: 'clamp(1.35rem, 2.8vw, 2rem)',
-                color: hovered ? '#fff' : 'rgba(255,255,255,0.85)',
+                color: hovered ? 'var(--ink)' : 'rgba(var(--ink-rgb),calc(0.85*var(--ink-boost)))',
                 fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
               }}
             >
@@ -574,15 +601,15 @@ function ProjectRow({
               <span
                 className="text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-[0.12em] shrink-0"
                 style={{
-                  color: hovered ? 'rgba(91,159,255,0.9)' : 'rgba(91,159,255,0.55)',
-                  border: `1px solid ${hovered ? 'rgba(91,159,255,0.35)' : 'rgba(91,159,255,0.18)'}`,
+                  color: hovered ? 'rgba(var(--accent-rgb),0.9)' : 'rgba(var(--accent-rgb),0.55)',
+                  border: `1px solid ${hovered ? 'rgba(var(--accent-rgb),0.35)' : 'rgba(var(--accent-rgb),0.18)'}`,
                   transition: 'color 200ms ease, border-color 200ms ease',
                 }}
               >
                 {project.badge}
               </span>
             )}
-            <span className="text-[11px] text-white/25 uppercase tracking-[0.13em] font-medium shrink-0">
+            <span className="text-[11px] text-[rgba(var(--ink-rgb),calc(0.25*var(--ink-boost)))] uppercase tracking-[0.13em] font-medium shrink-0">
               {project.stack}
             </span>
           </div>
@@ -591,7 +618,7 @@ function ProjectRow({
             className="text-sm leading-relaxed transition-opacity duration-200"
             style={{
               maxWidth: '60ch',
-              color: 'rgba(255,255,255,0.45)',
+              color: 'rgba(var(--ink-rgb),calc(0.45*var(--ink-boost)))',
               opacity: hovered ? 1 : 0,
             }}
           >
@@ -601,7 +628,7 @@ function ProjectRow({
 
         {/* Year + action links */}
         <div className="flex flex-col items-end gap-3 pt-[0.35rem]">
-          <span className="text-xs text-white/25 tabular-nums shrink-0">{project.year}</span>
+          <span className="text-xs text-[rgba(var(--ink-rgb),calc(0.25*var(--ink-boost)))] tabular-nums shrink-0">{project.year}</span>
           {(project.live || project.repo) && (
             <div
               className="flex gap-0.5 transition-opacity duration-200"
@@ -612,7 +639,7 @@ function ProjectRow({
                   href={project.live}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2 rounded text-white/45 hover:text-white transition-colors duration-150 active:scale-90 active:text-[#5B9FFF] active:transition-none"
+                  className="p-2 rounded text-[rgba(var(--ink-rgb),calc(0.45*var(--ink-boost)))] hover:text-[var(--ink)] transition-colors duration-150 active:scale-90 active:text-[var(--accent)] active:transition-none"
                   aria-label={`Open ${project.name} live site`}
                 >
                   <ExternalLink size={13} />
@@ -623,7 +650,7 @@ function ProjectRow({
                   href={project.repo}
                   target="_blank"
                   rel="noreferrer"
-                  className="p-2 rounded text-white/45 hover:text-white transition-colors duration-150 active:scale-90 active:text-[#5B9FFF] active:transition-none"
+                  className="p-2 rounded text-[rgba(var(--ink-rgb),calc(0.45*var(--ink-boost)))] hover:text-[var(--ink)] transition-colors duration-150 active:scale-90 active:text-[var(--accent)] active:transition-none"
                   aria-label={`Open ${project.name} repository`}
                 >
                   <Github size={13} />
@@ -672,167 +699,167 @@ function AnimatedCounter({ value, className, style }: {
   );
 }
 
-function SkillCard({ skill, index, featured = false }: {
+// One row of the interactive skills index — fills with accent on hover/active
+// and drives the SkillPreview panel beside it.
+function SkillRow({ skill, index, active, onActivate }: {
   skill: typeof SKILLS[0];
   index: number;
-  featured?: boolean;
+  active: boolean;
+  onActivate: () => void;
 }) {
-  const [hovered, setHovered] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: '-5% 0px' });
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-5% 0px' });
   const reduced = useReducedMotion();
-
-  // Subtle 3D tilt on featured cards — mouse-driven, spring-smoothed
-  const rotateX = useSpring(0, { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(0, { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!featured || reduced || !containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    rotateY.set(px * 6);
-    rotateX.set(-py * 6);
-  };
-  const handleMouseLeave = () => {
-    setHovered(false);
-    rotateX.set(0);
-    rotateY.set(0);
-  };
-
   const Icon = skill.icon;
 
   return (
     <motion.div
-      ref={containerRef}
+      ref={ref}
       layout
-      exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25, ease: EASE_EXPO } }}
-      className="relative"
-      style={featured && !reduced ? { rotateX, rotateY, transformPerspective: 800 } : undefined}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
+      initial={reduced ? { opacity: 0 } : { opacity: 0, x: -16 }}
+      animate={isInView ? { opacity: 1, x: 0 } : {}}
+      exit={{ opacity: 0, transition: { duration: 0.2, ease: EASE_EXPO } }}
+      transition={{ duration: 0.5, ease: EASE_EXPO, delay: index * 0.05 }}
+      onMouseEnter={onActivate}
+      onFocus={onActivate}
+      onClick={onActivate}
+      tabIndex={0}
+      role="button"
+      className="relative border-t border-[rgba(var(--ink-rgb),calc(0.07*var(--ink-boost)))] first:border-t-0 cursor-pointer overflow-hidden outline-none"
     >
-      {/* Ambient pulse ring — featured cards only */}
-      {featured && !reduced && (
-        <motion.div
-          className="absolute inset-0 rounded-2xl pointer-events-none"
-          animate={{
-            boxShadow: [
-              '0 0 0 1px rgba(91,159,255,0.07), 0 0 20px rgba(91,159,255,0.04)',
-              '0 0 0 1px rgba(91,159,255,0.22), 0 0 36px rgba(91,159,255,0.13)',
-              '0 0 0 1px rgba(91,159,255,0.07), 0 0 20px rgba(91,159,255,0.04)',
-            ],
-          }}
-          transition={{ duration: 3.5, ease: 'easeInOut', repeat: Infinity, delay: index * 0.55 }}
-        />
-      )}
-
-      <motion.div
-        initial={reduced ? { opacity: 0 } : { opacity: 0, y: 16, clipPath: 'inset(0 0 100% 0)' }}
-        animate={isInView ? { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)' } : {}}
-        transition={{ duration: 0.65, ease: EASE_EXPO, delay: (index % 3) * 0.07 }}
-        className="rounded-2xl cursor-default relative overflow-hidden"
+      {/* Accent fill wipe */}
+      <div
+        className="absolute inset-0 pointer-events-none"
         style={{
-          padding: featured ? '2rem' : '1.5rem',
-          background: hovered
-            ? 'radial-gradient(ellipse at 10% 10%, rgba(91,159,255,0.11) 0%, rgba(255,255,255,0.025) 50%, transparent 100%)'
-            : 'rgba(255,255,255,0.025)',
-          border: `1px solid ${hovered ? 'rgba(91,159,255,0.32)' : 'rgba(255,255,255,0.07)'}`,
-          boxShadow: hovered
-            ? 'inset 0 1px 0 rgba(255,255,255,0.09), inset 0 0 0 1px rgba(91,159,255,0.0), 0 -2px 0 0 rgba(91,159,255,0.55), 0 20px 60px rgba(91,159,255,0.13)'
-            : 'inset 0 1px 0 rgba(255,255,255,0.04)',
-          transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-          transition: 'background 220ms ease, border-color 220ms ease, box-shadow 220ms ease, transform 220ms cubic-bezier(0.23,1,0.32,1)',
+          background: 'linear-gradient(90deg, rgba(var(--accent-rgb),0.09), transparent)',
+          clipPath: active ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
+          transition: 'clip-path 450ms cubic-bezier(0.23,1,0.32,1)',
         }}
-      >
-        {/* Shimmer sweep — fires once per hover-enter */}
-        <div
-          className="absolute inset-0 pointer-events-none"
+      />
+      {/* Left accent bar */}
+      <div
+        className="absolute left-0 top-0 bottom-0 w-[2px] pointer-events-none"
+        style={{
+          background: ACCENT,
+          transform: active ? 'scaleY(1)' : 'scaleY(0)',
+          transformOrigin: 'center',
+          transition: 'transform 350ms cubic-bezier(0.23,1,0.32,1)',
+        }}
+      />
+
+      <div className="relative flex items-center gap-4 md:gap-6 py-5 md:py-6 pl-4 md:pl-6">
+        <span
+          className="text-xs tabular-nums font-semibold shrink-0"
           style={{
-            background: 'linear-gradient(108deg, transparent 38%, rgba(255,255,255,0.07) 50%, transparent 62%)',
-            transform: hovered ? 'translateX(200%)' : 'translateX(-200%)',
-            transition: hovered ? 'transform 680ms cubic-bezier(0.23,1,0.32,1)' : 'none',
-          }}
-        />
-
-        {/* Accent dot top-right */}
-        <div
-          className="absolute top-4 right-4 w-1 h-1 rounded-full"
-          style={{
-            backgroundColor: ACCENT,
-            opacity: hovered ? 0.7 : featured ? 0.25 : 0.12,
-            boxShadow: hovered ? `0 0 10px ${ACCENT}` : 'none',
-            transition: 'opacity 220ms ease, box-shadow 220ms ease',
-          }}
-        />
-
-        <div className="flex items-start justify-between mb-4">
-          <span
-            className="text-[10px] tabular-nums font-semibold"
-            style={{
-              color: hovered ? ACCENT : 'rgba(255,255,255,0.22)',
-              letterSpacing: '0.1em',
-              transition: 'color 220ms ease',
-            }}
-          >
-            {String(index + 1).padStart(2, '0')}
-          </span>
-
-          <motion.div
-            className="rounded-lg flex items-center justify-center shrink-0"
-            style={{
-              width: 32,
-              height: 32,
-              background: hovered ? 'rgba(91,159,255,0.14)' : 'rgba(255,255,255,0.04)',
-              border: `1px solid ${hovered ? 'rgba(91,159,255,0.3)' : 'rgba(255,255,255,0.06)'}`,
-              transition: 'background 220ms ease, border-color 220ms ease',
-            }}
-            animate={{ rotate: hovered ? -8 : 0, scale: hovered ? 1.06 : 1 }}
-            transition={{ duration: 0.3, ease: EASE_EXPO }}
-          >
-            <Icon
-              size={15}
-              strokeWidth={1.75}
-              style={{ color: hovered ? ACCENT : 'rgba(255,255,255,0.4)', transition: 'color 220ms ease' }}
-            />
-          </motion.div>
-        </div>
-
-        <h3
-          className="font-semibold leading-snug mb-3"
-          style={{
-            fontSize: featured ? '1.15rem' : '1.05rem',
-            color: hovered ? '#fff' : 'rgba(255,255,255,0.82)',
-            fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
-            transition: 'color 220ms ease',
+            color: active ? ACCENT : 'rgba(var(--ink-rgb),calc(0.22*var(--ink-boost)))',
+            letterSpacing: '0.1em',
+            transition: 'color 280ms ease',
+            width: '2ch',
           }}
         >
-          {skill.name}
-        </h3>
-        <p
-          className="text-sm leading-relaxed mb-5"
+          {String(index + 1).padStart(2, '0')}
+        </span>
+
+        <div
+          className="rounded-lg flex items-center justify-center shrink-0 md:hidden"
           style={{
-            color: hovered ? 'rgba(255,255,255,0.52)' : 'rgba(255,255,255,0.35)',
-            maxWidth: '34ch',
-            transition: 'color 220ms ease',
+            width: 30,
+            height: 30,
+            background: active ? 'rgba(var(--accent-rgb),0.14)' : 'rgba(var(--ink-rgb),calc(0.04*var(--ink-boost)))',
+            border: `1px solid ${active ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(var(--ink-rgb),calc(0.06*var(--ink-boost)))'}`,
+            transition: 'background 280ms ease, border-color 280ms ease',
           }}
         >
-          {skill.desc}
-        </p>
-
-        {/* Proficiency bar */}
-        <div className="h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-          <motion.div
-            className="h-full rounded-full"
-            style={{ background: `linear-gradient(90deg, ${ACCENT}, rgba(255,255,255,0.65))` }}
-            initial={{ width: 0 }}
-            animate={isInView ? { width: `${skill.level}%` } : {}}
-            transition={{ duration: 1.1, ease: EASE_EXPO, delay: 0.25 + (index % 3) * 0.08 }}
-          />
+          <Icon size={14} strokeWidth={1.75} style={{ color: active ? ACCENT : 'rgba(var(--ink-rgb),calc(0.4*var(--ink-boost)))', transition: 'color 280ms ease' }} />
         </div>
-      </motion.div>
+
+        <div className="flex-1 min-w-0">
+          <h3
+            className="font-semibold leading-snug truncate"
+            style={{
+              fontSize: 'clamp(1.15rem, 2.4vw, 1.75rem)',
+              color: active ? 'var(--ink)' : 'rgba(var(--ink-rgb),calc(0.6*var(--ink-boost)))',
+              fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
+              transform: active ? 'translateX(8px)' : 'translateX(0)',
+              transitionProperty: 'color, transform',
+              transitionDuration: '320ms',
+              transitionTimingFunction: 'cubic-bezier(0.23,1,0.32,1)',
+            }}
+          >
+            {skill.name}
+          </h3>
+          <p className="text-sm text-[rgba(var(--ink-rgb),calc(0.35*var(--ink-boost)))] leading-relaxed mt-1.5 md:hidden" style={{ maxWidth: '34ch' }}>
+            {skill.desc}
+          </p>
+        </div>
+
+        <span
+          className="text-[10px] uppercase tracking-[0.18em] shrink-0 hidden sm:block"
+          style={{ color: active ? ACCENT : 'rgba(var(--ink-rgb),calc(0.22*var(--ink-boost)))', transition: 'color 280ms ease', opacity: active ? 0.85 : 0.6 }}
+        >
+          {skill.category}
+        </span>
+
+        <ArrowUpRight
+          size={16}
+          strokeWidth={1.75}
+          className="shrink-0 hidden md:block"
+          style={{
+            color: active ? ACCENT : 'rgba(var(--ink-rgb),calc(0.15*var(--ink-boost)))',
+            transform: active ? 'rotate(45deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+            transition: 'color 280ms ease, transform 320ms cubic-bezier(0.23,1,0.32,1)',
+          }}
+        />
+      </div>
     </motion.div>
+  );
+}
+
+// Sticky detail panel — crossfades with a subtle blur when the active skill changes.
+function SkillPreview({ skill }: { skill: typeof SKILLS[0] }) {
+  const reduced = useReducedMotion();
+  const Icon = skill.icon;
+
+  return (
+    <div
+      className="rounded-2xl p-8 relative overflow-hidden"
+      style={{
+        background: 'rgba(var(--ink-rgb),calc(0.025*var(--ink-boost)))',
+        border: '1px solid rgba(var(--ink-rgb),calc(0.07*var(--ink-boost)))',
+        boxShadow: 'inset 0 1px 0 rgba(var(--ink-rgb),calc(0.04*var(--ink-boost)))',
+        minHeight: 280,
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={skill.name}
+          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={reduced ? { opacity: 0 } : { opacity: 0, y: -14, filter: 'blur(6px)' }}
+          transition={{ duration: 0.4, ease: EASE_EXPO }}
+        >
+          <div
+            className="rounded-xl flex items-center justify-center mb-8"
+            style={{ width: 52, height: 52, background: 'rgba(var(--accent-rgb),0.12)', border: '1px solid rgba(var(--accent-rgb),0.25)' }}
+          >
+            <Icon size={24} strokeWidth={1.5} style={{ color: ACCENT }} />
+          </div>
+
+          <p className="text-[10px] uppercase tracking-[0.2em] font-medium mb-2" style={{ color: ACCENT, opacity: 0.7 }}>
+            {skill.category}
+          </p>
+          <h3
+            className="text-2xl font-bold mb-4"
+            style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", color: 'rgba(var(--ink-rgb),calc(0.92*var(--ink-boost)))' }}
+          >
+            {skill.name}
+          </h3>
+          <p className="text-sm text-[rgba(var(--ink-rgb),calc(0.45*var(--ink-boost)))] leading-relaxed" style={{ maxWidth: '38ch' }}>
+            {skill.desc}
+          </p>
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -846,10 +873,16 @@ function SkillsSection() {
   const mouseY = useMotionValue(-9999);
   const springX = useSpring(mouseX, { stiffness: 80, damping: 22 });
   const springY = useSpring(mouseY, { stiffness: 80, damping: 22 });
-  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${springX}px ${springY}px, rgba(91,159,255,0.065), transparent 65%)`;
+  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${springX}px ${springY}px, rgba(var(--accent-rgb),0.065), transparent 65%)`;
 
   const filtered = activeCategory === 'All' ? SKILLS : SKILLS.filter((s) => s.category === activeCategory);
-  const featuredCount = activeCategory === 'All' ? 3 : filtered.length;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeSkill = filtered[activeIndex] ?? filtered[0];
+
+  const handleCategoryChange = (cat: typeof SKILL_CATEGORIES[number]) => {
+    setActiveCategory(cat);
+    setActiveIndex(0);
+  };
 
   return (
     <section
@@ -875,21 +908,21 @@ function SkillsSection() {
         className="absolute pointer-events-none"
         style={{
           top: '25%', left: '15%', width: 700, height: 500,
-          background: 'radial-gradient(ellipse, rgba(91,159,255,0.035), transparent 70%)',
+          background: 'radial-gradient(ellipse, rgba(var(--accent-rgb),0.035), transparent 70%)',
           filter: 'blur(48px)',
         }}
       />
 
       <div className="relative z-10">
         <Reveal className="mb-10 md:mb-12">
-          <div className="flex items-center justify-between border-b border-white/[0.08] pb-4 mb-5">
-            <span className="text-[10px] text-white/25 uppercase tracking-[0.2em] font-medium">Technical Arsenal</span>
-            <AnimatedCounter value={filtered.length} className="text-[10px] text-white/20 tabular-nums" />
+          <div className="flex items-center justify-between border-b border-[rgba(var(--ink-rgb),calc(0.08*var(--ink-boost)))] pb-4 mb-5">
+            <span className="text-[10px] text-[rgba(var(--ink-rgb),calc(0.25*var(--ink-boost)))] uppercase tracking-[0.2em] font-medium">Technical Arsenal</span>
+            <AnimatedCounter value={filtered.length} className="text-[10px] text-[rgba(var(--ink-rgb),calc(0.20*var(--ink-boost)))] tabular-nums" />
           </div>
           <MaskText
             text="Skills"
             tag="h2"
-            className="text-[clamp(3rem,7vw,5.5rem)] font-bold tracking-[-0.04em] text-white/92 leading-none"
+            className="text-[clamp(3rem,7vw,5.5rem)] font-bold tracking-[-0.04em] text-[rgba(var(--ink-rgb),calc(0.92*var(--ink-boost)))] leading-none"
             stagger={0.03}
           />
         </Reveal>
@@ -902,13 +935,13 @@ function SkillsSection() {
               return (
                 <button
                   key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => handleCategoryChange(cat)}
                   className="text-sm rounded-full px-4 py-2 cursor-pointer select-none active:scale-[0.97] active:transition-none"
                   style={{
-                    color: active ? '#fff' : 'rgba(255,255,255,0.45)',
-                    background: active ? 'rgba(91,159,255,0.14)' : 'rgba(255,255,255,0.03)',
-                    border: `1px solid ${active ? 'rgba(91,159,255,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                    boxShadow: active ? '0 0 18px rgba(91,159,255,0.12)' : 'none',
+                    color: active ? 'var(--ink)' : 'rgba(var(--ink-rgb),calc(0.45*var(--ink-boost)))',
+                    background: active ? 'rgba(var(--accent-rgb),0.14)' : 'rgba(var(--ink-rgb),calc(0.03*var(--ink-boost)))',
+                    border: `1px solid ${active ? 'rgba(var(--accent-rgb),0.4)' : 'rgba(var(--ink-rgb),calc(0.08*var(--ink-boost)))'}`,
+                    boxShadow: active ? '0 0 18px rgba(var(--accent-rgb),0.12)' : 'none',
                     transition: 'color 200ms ease, background 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 160ms ease',
                   }}
                 >
@@ -919,17 +952,26 @@ function SkillsSection() {
           </div>
         </Reveal>
 
-        {/* Skill grid */}
-        <motion.div
-          layout
-          className={`grid gap-3 ${activeCategory === 'All' ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}
-        >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((skill, i) => (
-              <SkillCard key={skill.name} skill={skill} index={i} featured={i < featuredCount} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Index list + sticky preview */}
+        <div className="grid md:grid-cols-[1fr_360px] gap-8 md:gap-16 items-start">
+          <motion.div layout>
+            <AnimatePresence mode="popLayout">
+              {filtered.map((skill, i) => (
+                <SkillRow
+                  key={skill.name}
+                  skill={skill}
+                  index={i}
+                  active={i === activeIndex}
+                  onActivate={() => setActiveIndex(i)}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          <div className="hidden md:block sticky top-28">
+            <SkillPreview skill={activeSkill} />
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -952,10 +994,10 @@ function StackChip({ label, index }: { label: string; index: number }) {
       onMouseLeave={() => setHovered(false)}
       className="text-xs rounded-full px-3 py-1 cursor-default select-none"
       style={{
-        color: hovered ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.6)',
-        border: `1px solid ${hovered ? 'rgba(91,159,255,0.35)' : 'rgba(255,255,255,0.09)'}`,
-        background: hovered ? 'rgba(91,159,255,0.08)' : 'transparent',
-        boxShadow: hovered ? '0 0 14px rgba(91,159,255,0.12)' : 'none',
+        color: hovered ? 'rgba(var(--ink-rgb),calc(0.9*var(--ink-boost)))' : 'rgba(var(--ink-rgb),calc(0.6*var(--ink-boost)))',
+        border: `1px solid ${hovered ? 'rgba(var(--accent-rgb),0.35)' : 'rgba(var(--ink-rgb),calc(0.09*var(--ink-boost)))'}`,
+        background: hovered ? 'rgba(var(--accent-rgb),0.08)' : 'transparent',
+        boxShadow: hovered ? '0 0 14px rgba(var(--accent-rgb),0.12)' : 'none',
         transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
         transition: 'color 200ms ease, border-color 200ms ease, background 200ms ease, box-shadow 200ms ease, transform 200ms cubic-bezier(0.23,1,0.32,1)',
       }}
@@ -980,25 +1022,25 @@ function CertRow({ cert, index }: { cert: typeof CERTS[0]; index: number }) {
       transition={{ duration: 0.5, ease: EASE_EXPO, delay: index * 0.08 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="flex items-center gap-4 border-t border-white/[0.06] py-4 px-3 -mx-3 first:border-t-0 first:pt-0 rounded-lg"
-      style={{ background: hovered ? 'rgba(91,159,255,0.05)' : 'transparent', transition: 'background 220ms ease' }}
+      className="flex items-center gap-4 border-t border-[rgba(var(--ink-rgb),calc(0.06*var(--ink-boost)))] py-4 px-3 -mx-3 first:border-t-0 first:pt-0 rounded-lg"
+      style={{ background: hovered ? 'rgba(var(--accent-rgb),0.05)' : 'transparent', transition: 'background 220ms ease' }}
     >
       <div
         className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
         style={{
-          background: hovered ? 'rgba(91,159,255,0.14)' : 'rgba(255,255,255,0.04)',
-          border: `1px solid ${hovered ? 'rgba(91,159,255,0.3)' : 'rgba(255,255,255,0.06)'}`,
+          background: hovered ? 'rgba(var(--accent-rgb),0.14)' : 'rgba(var(--ink-rgb),calc(0.04*var(--ink-boost)))',
+          border: `1px solid ${hovered ? 'rgba(var(--accent-rgb),0.3)' : 'rgba(var(--ink-rgb),calc(0.06*var(--ink-boost)))'}`,
           transition: 'background 220ms ease, border-color 220ms ease',
         }}
       >
-        <Icon size={14} strokeWidth={1.75} style={{ color: hovered ? ACCENT : 'rgba(255,255,255,0.4)', transition: 'color 220ms ease' }} />
+        <Icon size={14} strokeWidth={1.75} style={{ color: hovered ? ACCENT : 'rgba(var(--ink-rgb),calc(0.4*var(--ink-boost)))', transition: 'color 220ms ease' }} />
       </div>
       <div className="flex-1 flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-medium text-white/80">{cert.title}</p>
-          <p className="text-xs text-white/35 mt-0.5">{cert.issuer}</p>
+          <p className="text-sm font-medium text-[rgba(var(--ink-rgb),calc(0.80*var(--ink-boost)))]">{cert.title}</p>
+          <p className="text-xs text-[rgba(var(--ink-rgb),calc(0.35*var(--ink-boost)))] mt-0.5">{cert.issuer}</p>
         </div>
-        <span className="text-xs text-white/25 tabular-nums shrink-0 pt-0.5">{cert.year}</span>
+        <span className="text-xs text-[rgba(var(--ink-rgb),calc(0.25*var(--ink-boost)))] tabular-nums shrink-0 pt-0.5">{cert.year}</span>
       </div>
     </motion.div>
   );
@@ -1015,7 +1057,7 @@ function AboutSection() {
   const mouseY = useMotionValue(-9999);
   const springX = useSpring(mouseX, { stiffness: 80, damping: 22 });
   const springY = useSpring(mouseY, { stiffness: 80, damping: 22 });
-  const spotlight = useMotionTemplate`radial-gradient(560px circle at ${springX}px ${springY}px, rgba(91,159,255,0.06), transparent 65%)`;
+  const spotlight = useMotionTemplate`radial-gradient(560px circle at ${springX}px ${springY}px, rgba(var(--accent-rgb),0.06), transparent 65%)`;
 
   // Subtle 3D tilt on the photo card
   const rotateX = useSpring(0, { stiffness: 250, damping: 25 });
@@ -1059,7 +1101,7 @@ function AboutSection() {
         className="absolute pointer-events-none"
         style={{
           bottom: '8%', right: '6%', width: 620, height: 480,
-          background: 'radial-gradient(ellipse, rgba(91,159,255,0.04), transparent 70%)',
+          background: 'radial-gradient(ellipse, rgba(var(--accent-rgb),0.04), transparent 70%)',
           filter: 'blur(64px)',
         }}
       />
@@ -1073,7 +1115,7 @@ function AboutSection() {
                 className="absolute pointer-events-none"
                 style={{
                   inset: '-12%',
-                  background: 'radial-gradient(ellipse, rgba(91,159,255,0.14) 0%, transparent 70%)',
+                  background: 'radial-gradient(ellipse, rgba(var(--accent-rgb),0.14) 0%, transparent 70%)',
                   filter: 'blur(40px)',
                 }}
               />
@@ -1082,10 +1124,10 @@ function AboutSection() {
                 className="relative rounded-2xl overflow-hidden group"
                 style={{
                   aspectRatio: '1 / 1',
-                  border: '1px solid rgba(255,255,255,0.09)',
+                  border: '1px solid rgba(var(--ink-rgb),calc(0.09*var(--ink-boost)))',
                   boxShadow: photoHovered
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.07), 0 -2px 0 0 rgba(91,159,255,0.5), 0 24px 70px rgba(91,159,255,0.18)'
-                    : 'inset 0 1px 0 rgba(255,255,255,0.05), 0 20px 60px rgba(0,0,0,0.4)',
+                    ? 'inset 0 1px 0 rgba(var(--ink-rgb),calc(0.07*var(--ink-boost))), 0 -2px 0 0 rgba(var(--accent-rgb),0.5), 0 24px 70px rgba(var(--accent-rgb),0.18)'
+                    : 'inset 0 1px 0 rgba(var(--ink-rgb),calc(0.05*var(--ink-boost))), 0 20px 60px rgba(0,0,0,0.4)',
                   rotateX: reduced ? 0 : rotateX,
                   rotateY: reduced ? 0 : rotateY,
                   transformPerspective: 800,
@@ -1106,7 +1148,7 @@ function AboutSection() {
                 <div
                   className="absolute inset-0 pointer-events-none"
                   style={{
-                    background: 'linear-gradient(108deg, transparent 38%, rgba(255,255,255,0.10) 50%, transparent 62%)',
+                    background: 'linear-gradient(108deg, transparent 38%, rgba(var(--ink-rgb),calc(0.10*var(--ink-boost))) 50%, transparent 62%)',
                     transform: photoHovered ? 'translateX(200%)' : 'translateX(-200%)',
                     transition: photoHovered ? 'transform 900ms cubic-bezier(0.23,1,0.32,1)' : 'none',
                   }}
@@ -1117,8 +1159,8 @@ function AboutSection() {
                   className="absolute top-3 left-3 pointer-events-none"
                   style={{
                     width: 18, height: 18,
-                    borderTop: `1.5px solid ${photoHovered ? ACCENT : 'rgba(255,255,255,0.35)'}`,
-                    borderLeft: `1.5px solid ${photoHovered ? ACCENT : 'rgba(255,255,255,0.35)'}`,
+                    borderTop: `1.5px solid ${photoHovered ? ACCENT : 'rgba(var(--ink-rgb),calc(0.35*var(--ink-boost)))'}`,
+                    borderLeft: `1.5px solid ${photoHovered ? ACCENT : 'rgba(var(--ink-rgb),calc(0.35*var(--ink-boost)))'}`,
                     opacity: photoHovered ? 0.9 : 0.45,
                     transition: 'border-color 300ms ease, opacity 300ms ease',
                   }}
@@ -1127,8 +1169,8 @@ function AboutSection() {
                   className="absolute bottom-3 right-3 pointer-events-none"
                   style={{
                     width: 18, height: 18,
-                    borderBottom: `1.5px solid ${photoHovered ? ACCENT : 'rgba(255,255,255,0.35)'}`,
-                    borderRight: `1.5px solid ${photoHovered ? ACCENT : 'rgba(255,255,255,0.35)'}`,
+                    borderBottom: `1.5px solid ${photoHovered ? ACCENT : 'rgba(var(--ink-rgb),calc(0.35*var(--ink-boost)))'}`,
+                    borderRight: `1.5px solid ${photoHovered ? ACCENT : 'rgba(var(--ink-rgb),calc(0.35*var(--ink-boost)))'}`,
                     opacity: photoHovered ? 0.9 : 0.45,
                     transition: 'border-color 300ms ease, opacity 300ms ease',
                   }}
@@ -1143,17 +1185,17 @@ function AboutSection() {
               <MaskText
                 text="About"
                 tag="h2"
-                className="text-[clamp(2.25rem,5vw,3.75rem)] font-bold tracking-[-0.03em] text-white/90 mb-10"
+                className="text-[clamp(2.25rem,5vw,3.75rem)] font-bold tracking-[-0.03em] text-[rgba(var(--ink-rgb),calc(0.90*var(--ink-boost)))] mb-10"
                 stagger={0.045}
               />
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="text-[0.95rem] text-white/55 leading-[1.75]" style={{ maxWidth: '58ch' }}>
+              <p className="text-[0.95rem] text-[rgba(var(--ink-rgb),calc(0.55*var(--ink-boost)))] leading-[1.75]" style={{ maxWidth: '58ch' }}>
                 I design and ship production-grade GenAI platforms used across large-scale enterprise environments. My work spans frontend, backend, cloud infrastructure, and AI systems — with a strong focus on reliability, performance, and measurable business impact.
               </p>
             </Reveal>
             <Reveal delay={0.16} className="mt-6">
-              <p className="text-[11px] text-white/30 uppercase tracking-[0.16em] font-medium mb-4">Here's the kind of problems I solve</p>
+              <p className="text-[11px] text-[rgba(var(--ink-rgb),calc(0.30*var(--ink-boost)))] uppercase tracking-[0.16em] font-medium mb-4">Here's the kind of problems I solve</p>
               <ul className="space-y-3">
                 {[
                   'Turning complex policies and data into fast, usable AI-driven systems',
@@ -1161,7 +1203,7 @@ function AboutSection() {
                   'Creating scalable APIs and dashboards that teams actually enjoy using',
                   'Improving operational efficiency through automation and data-driven workflows',
                 ].map((item) => (
-                  <li key={item} className="flex gap-3 text-[0.9rem] text-white/50 leading-[1.65]" style={{ maxWidth: '54ch' }}>
+                  <li key={item} className="flex gap-3 text-[0.9rem] text-[rgba(var(--ink-rgb),calc(0.50*var(--ink-boost)))] leading-[1.65]" style={{ maxWidth: '54ch' }}>
                     <span style={{ color: ACCENT, opacity: 0.7, flexShrink: 0, marginTop: '0.35rem', fontSize: '0.45rem' }}>●</span>
                     {item}
                   </li>
@@ -1169,7 +1211,7 @@ function AboutSection() {
               </ul>
             </Reveal>
             <Reveal delay={0.28} className="mt-6">
-              <p className="text-[0.95rem] text-white/55 leading-[1.75]" style={{ maxWidth: '58ch' }}>
+              <p className="text-[0.95rem] text-[rgba(var(--ink-rgb),calc(0.55*var(--ink-boost)))] leading-[1.75]" style={{ maxWidth: '58ch' }}>
                 My background in engineering and data analysis shapes how I think: structured, curious, and impact-focused. I enjoy collaborating with cross-functional teams, mentoring peers, and building systems that hold up in production, not just demos.
               </p>
             </Reveal>
@@ -1180,7 +1222,7 @@ function AboutSection() {
         <div className="grid md:grid-cols-2 gap-16 md:gap-24">
           {/* Taste: eyebrow rationing — only two, here and below, not on every section */}
           <Reveal delay={0.12}>
-            <p className="text-[11px] text-white/25 uppercase tracking-[0.18em] mb-5 font-medium">Stack</p>
+            <p className="text-[11px] text-[rgba(var(--ink-rgb),calc(0.25*var(--ink-boost)))] uppercase tracking-[0.18em] mb-5 font-medium">Stack</p>
             <div className="flex flex-wrap gap-2">
               {STACK.map((item, i) => (
                 <StackChip key={item} label={item} index={i} />
@@ -1189,7 +1231,7 @@ function AboutSection() {
           </Reveal>
 
           <Reveal delay={0.24}>
-            <p className="text-[11px] text-white/25 uppercase tracking-[0.18em] mb-5 font-medium">Certifications</p>
+            <p className="text-[11px] text-[rgba(var(--ink-rgb),calc(0.25*var(--ink-boost)))] uppercase tracking-[0.18em] mb-5 font-medium">Certifications</p>
             <div>
               {CERTS.map((cert, i) => (
                 <CertRow key={cert.title} cert={cert} index={i} />
@@ -1209,7 +1251,7 @@ function MouseGlow() {
   const mouseY = useMotionValue(-9999);
   const springX = useSpring(mouseX, { stiffness: 55, damping: 18 });
   const springY = useSpring(mouseY, { stiffness: 55, damping: 18 });
-  const bg = useMotionTemplate`radial-gradient(380px circle at ${springX}px ${springY}px, rgba(91,159,255,0.045), transparent 65%)`;
+  const bg = useMotionTemplate`radial-gradient(380px circle at ${springX}px ${springY}px, rgba(var(--accent-rgb),0.045), transparent 65%)`;
 
   useEffect(() => {
     if (reduced) return;
@@ -1237,7 +1279,7 @@ function ScrollProgress() {
         height: 2,
         scaleX,
         transformOrigin: '0%',
-        background: `linear-gradient(90deg, ${ACCENT}, rgba(255,255,255,0.6))`,
+        background: `linear-gradient(90deg, ${ACCENT}, rgba(var(--ink-rgb),calc(0.6*var(--ink-boost))))`,
       }}
     />
   );
@@ -1246,7 +1288,35 @@ function ScrollProgress() {
 // ─── Navigation ───────────────────────────────────────────────────────────────
 // Taste: no custom cursor, no scroll cues, minimal link set
 // Emil: active feedback, ≤200ms transitions
-function Nav() {
+// Light/dark toggle — sun glows orange in light mode, moon stays cool blue-white in dark
+function ThemeToggle({ theme, onToggle }: { theme: Theme; onToggle: () => void }) {
+  return (
+    <button
+      onClick={onToggle}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      className="relative w-9 h-9 rounded-full flex items-center justify-center border transition-colors duration-200 active:scale-90 active:transition-none shrink-0"
+      style={{
+        borderColor: 'rgba(var(--ink-rgb),calc(0.12*var(--ink-boost)))',
+        color: theme === 'dark' ? 'rgba(var(--ink-rgb),calc(0.6*var(--ink-boost)))' : 'var(--accent-2)',
+      }}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={theme}
+          initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
+          animate={{ opacity: 1, rotate: 0, scale: 1 }}
+          exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
+          transition={{ duration: 0.3, ease: EASE_EXPO }}
+          className="flex items-center justify-center"
+        >
+          {theme === 'dark' ? <Moon size={15} strokeWidth={1.75} /> : <Sun size={15} strokeWidth={1.75} />}
+        </motion.span>
+      </AnimatePresence>
+    </button>
+  );
+}
+
+function Nav({ theme, toggleTheme }: { theme: Theme; toggleTheme: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -1297,9 +1367,9 @@ function Nav() {
         transition={{ duration: 0.5, ease: EASE_EXPO, delay: 0.15 }}
         className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
         style={{
-          backgroundColor: scrolled ? 'rgba(10,10,10,0.9)' : 'transparent',
+          backgroundColor: scrolled ? 'rgba(var(--bg-rgb),0.9)' : 'transparent',
           backdropFilter: scrolled ? 'blur(14px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent',
+          borderBottom: scrolled ? '1px solid rgba(var(--ink-rgb),calc(0.05*var(--ink-boost)))' : '1px solid transparent',
         }}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 h-16 flex items-center justify-between">
@@ -1309,7 +1379,7 @@ function Nav() {
             className="active:scale-95 active:transition-none transition-transform duration-150"
             aria-label="Back to top"
           >
-            <img src="/logo/white.png" alt="AK" className="h-7 w-auto" />
+            <img src={theme === 'dark' ? '/logo/white.png' : '/logo/black.png'} alt="AK" className="h-7 w-auto" />
           </button>
 
           {/* Desktop nav */}
@@ -1318,32 +1388,30 @@ function Nav() {
               <button
                 key={id}
                 onClick={() => scrollTo(id)}
-                className="text-sm transition-colors duration-150 active:text-[#5B9FFF] active:transition-none"
-                style={{ color: activeSection === id ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.45)' }}
+                className="text-sm transition-colors duration-150 active:text-[var(--accent)] active:transition-none"
+                style={{ color: activeSection === id ? 'rgba(var(--ink-rgb),calc(0.92*var(--ink-boost)))' : 'rgba(var(--ink-rgb),calc(0.45*var(--ink-boost)))' }}
               >
                 {label}
               </button>
             ))}
-            <a
-              href="mailto:work@anubhavkumaar.in"
-              className="text-sm px-4 py-1.5 border border-white/15 rounded-full text-white/60 hover:border-[#5B9FFF]/60 hover:text-white/90 transition-all duration-200 active:scale-[0.97] active:transition-none"
-            >
-              work@anubhavkumaar.in
-            </a>
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
           </div>
 
-          {/* Mobile: hamburger */}
-          <button
-            className="md:hidden p-2 text-white/60 hover:text-white transition-colors duration-150 active:text-[#5B9FFF] active:transition-none"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          >
-            {mobileOpen ? (
-              <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M18 6L6 18M6 6l12 12"/></svg>
-            ) : (
-              <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-            )}
-          </button>
+          {/* Mobile: hamburger + theme toggle */}
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+            <button
+              className="p-2 text-[rgba(var(--ink-rgb),calc(0.60*var(--ink-boost)))] hover:text-[var(--ink)] transition-colors duration-150 active:text-[var(--accent)] active:transition-none"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            >
+              {mobileOpen ? (
+                <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M18 6L6 18M6 6l12 12"/></svg>
+              ) : (
+                <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+              )}
+            </button>
+          </div>
         </div>
       </motion.nav>
 
@@ -1351,7 +1419,7 @@ function Nav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col items-center justify-center gap-10"
+            className="fixed inset-0 z-40 bg-[var(--bg)] flex flex-col items-center justify-center gap-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -1360,7 +1428,7 @@ function Nav() {
             {NAV_LINKS.map(({ label, id }, i) => (
               <motion.button
                 key={id}
-                className="text-3xl font-bold text-white/80 hover:text-[#5B9FFF] transition-colors duration-150 active:scale-95 active:transition-none"
+                className="text-3xl font-bold text-[rgba(var(--ink-rgb),calc(0.80*var(--ink-boost)))] hover:text-[var(--accent)] transition-colors duration-150 active:scale-95 active:transition-none"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, ease: EASE_EXPO, delay: i * 0.07 }}
@@ -1369,15 +1437,6 @@ function Nav() {
                 {label}
               </motion.button>
             ))}
-            <motion.a
-              href="mailto:work@anubhavkumaar.in"
-              className="text-base text-white/40 active:text-[#5B9FFF] active:transition-none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.28 }}
-            >
-              work@anubhavkumaar.in
-            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1387,6 +1446,8 @@ function Nav() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Page() {
+  const { theme, toggle: toggleTheme } = useTheme();
+
   // Scroll to the right section when landing on /work, /about, /connect
   useEffect(() => {
     const id = window.location.pathname.replace(/^\//, '').split('/')[0];
@@ -1398,7 +1459,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="bg-[#0a0a0a] text-white overflow-x-hidden" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>
+    <div className="bg-[var(--bg)] text-[var(--ink)] overflow-x-hidden" style={{ fontFamily: "'Manrope', system-ui, sans-serif" }}>
       {/* Global effects */}
       <MouseGlow />
       <ScrollProgress />
@@ -1407,7 +1468,7 @@ export default function Page() {
       <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
         <div style={{
           position: 'absolute', width: 700, height: 700, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(91,159,255,0.11) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(var(--accent-rgb),0.11) 0%, transparent 70%)',
           filter: 'blur(72px)', top: '-8%', right: '-5%',
           animation: 'blob-1 20s ease-in-out infinite',
         }} />
@@ -1419,7 +1480,7 @@ export default function Page() {
         }} />
         <div style={{
           position: 'absolute', width: 450, height: 450, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(91,159,255,0.06) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(var(--accent-rgb),0.06) 0%, transparent 70%)',
           filter: 'blur(100px)', top: '40%', left: '40%',
           animation: 'blob-3 34s ease-in-out infinite',
         }} />
@@ -1429,9 +1490,15 @@ export default function Page() {
           filter: 'blur(80px)', bottom: '5%', right: '20%',
           animation: 'blob-4 28s ease-in-out infinite',
         }} />
+        <div style={{
+          position: 'absolute', width: 480, height: 480, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(var(--accent-2-rgb),0.05) 0%, transparent 70%)',
+          filter: 'blur(90px)', top: '55%', right: '-6%',
+          animation: 'blob-2 30s ease-in-out infinite',
+        }} />
       </div>
 
-      <Nav />
+      <Nav theme={theme} toggleTheme={toggleTheme} />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section
@@ -1465,7 +1532,7 @@ export default function Page() {
           {/* Oversized hero — character mask reveal, lorisbukvic style */}
           {/* Impeccable: clamp max ≤ 6rem hero; tracking ≥ -0.04em */}
           <div
-            className="font-bold leading-[0.9] tracking-[-0.04em] text-white"
+            className="font-bold leading-[0.9] tracking-[-0.04em] text-[var(--ink)]"
             style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", fontSize: 'clamp(3.5rem,9.5vw,6rem)' }}
           >
             <MaskText text="Anubhav" tag="div" className="block" delay={0.4} stagger={0.028} />
@@ -1478,19 +1545,19 @@ export default function Page() {
           <Reveal delay={0.85} className="mt-7">
             <p
               className="text-[1.05rem] md:text-[1.2rem] font-medium leading-tight"
-              style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", color: 'rgba(255,255,255,0.65)' }}
+              style={{ fontFamily: "'Bricolage Grotesque', system-ui, sans-serif", color: 'rgba(var(--ink-rgb),calc(0.65*var(--ink-boost)))' }}
             >
               I am a{' '}
               <TypeWriter
                 phrases={['Full Stack Developer', 'GenAI Engineer', 'Data Engineer', 'Software Engineer', 'AI Systems Builder', 'Gamer']}
-                className="text-white"
+                className="text-[var(--ink)]"
               />
             </p>
           </Reveal>
           {/* Description */}
           <Reveal delay={1.0} className="mt-4">
             <p
-              className="text-sm md:text-base text-white/42 font-normal leading-relaxed"
+              className="text-sm md:text-base text-[rgba(var(--ink-rgb),calc(0.42*var(--ink-boost)))] font-normal leading-relaxed"
               style={{ maxWidth: '50ch' }}
             >
               Building production-grade GenAI platforms at Deloitte — LLMs, RAG, AWS Bedrock, from backend APIs to frontend dashboards.
@@ -1506,9 +1573,9 @@ export default function Page() {
                 e.preventDefault();
                 document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-[#0a0a0a] transition-colors duration-200 active:scale-[0.97] active:transition-none"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-[var(--bg)] transition-colors duration-200 active:scale-[0.97] active:transition-none"
               style={{ backgroundColor: ACCENT }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = '#fff')}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = 'var(--ink)')}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = ACCENT)}
             >
               View Work
@@ -1520,7 +1587,7 @@ export default function Page() {
                 e.preventDefault();
                 document.getElementById('connect')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-white/70 border border-white/15 hover:border-white/40 hover:text-white/90 transition-all duration-200 active:scale-[0.97] active:transition-none"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-[rgba(var(--ink-rgb),calc(0.70*var(--ink-boost)))] border border-[rgba(var(--ink-rgb),calc(0.15*var(--ink-boost)))] hover:border-[rgba(var(--ink-rgb),calc(0.40*var(--ink-boost)))] hover:text-[rgba(var(--ink-rgb),calc(0.90*var(--ink-boost)))] transition-all duration-200 active:scale-[0.97] active:transition-none"
             >
               Connect
             </a>
@@ -1533,14 +1600,14 @@ export default function Page() {
             <OrbitRings>
               <Tilt className="w-[260px] h-[260px] md:w-[340px] md:h-[340px]">
                 <div
-                  className="w-full h-full rounded-3xl border border-white/[0.08] flex items-center justify-center"
-                  style={{ background: 'radial-gradient(ellipse at 40% 40%, #151515 0%, #0a0a0a 100%)' }}
+                  className="w-full h-full rounded-3xl border border-[rgba(var(--ink-rgb),calc(0.08*var(--ink-boost)))] flex items-center justify-center"
+                  style={{ background: 'radial-gradient(ellipse at 40% 40%, var(--surface) 0%, var(--bg) 100%)' }}
                 >
                   <img
                     src="/logo/avatar.png"
                     alt="AK monogram"
                     className="w-[65%] h-[65%] object-contain select-none"
-                    style={{ filter: `drop-shadow(0 0 32px ${ACCENT}40)` }}
+                    style={{ filter: 'drop-shadow(0 0 32px rgba(var(--accent-rgb), 0.25))' }}
                     draggable={false}
                   />
                 </div>
@@ -1566,7 +1633,7 @@ export default function Page() {
           <MaskText
             text="Experience"
             tag="h2"
-            className="text-[clamp(2.25rem,5vw,3.75rem)] font-bold tracking-[-0.03em] text-white/90"
+            className="text-[clamp(2.25rem,5vw,3.75rem)] font-bold tracking-[-0.03em] text-[rgba(var(--ink-rgb),calc(0.90*var(--ink-boost)))]"
             stagger={0.025}
           />
         </Reveal>
@@ -1574,12 +1641,12 @@ export default function Page() {
         <div>
           {EXPERIENCE.map((item, i) => (
             <Reveal key={i} delay={i * 0.08}>
-              <div className="grid md:grid-cols-[220px_1fr] gap-3 md:gap-16 border-t border-white/[0.07] py-7 md:py-9 group hover:border-white/15 transition-colors duration-200">
-                <p className="text-xs text-white/30 tabular-nums leading-relaxed pt-0.5">{item.period}</p>
+              <div className="grid md:grid-cols-[220px_1fr] gap-3 md:gap-16 border-t border-[rgba(var(--ink-rgb),calc(0.07*var(--ink-boost)))] py-7 md:py-9 group hover:border-[rgba(var(--ink-rgb),calc(0.15*var(--ink-boost)))] transition-colors duration-200">
+                <p className="text-xs text-[rgba(var(--ink-rgb),calc(0.30*var(--ink-boost)))] tabular-nums leading-relaxed pt-0.5">{item.period}</p>
                 <div>
-                  <h3 className="text-base font-semibold text-white/85 leading-snug">{item.title}</h3>
+                  <h3 className="text-base font-semibold text-[rgba(var(--ink-rgb),calc(0.85*var(--ink-boost)))] leading-snug">{item.title}</h3>
                   <p className="text-sm mt-1 mb-3" style={{ color: ACCENT, opacity: 0.75 }}>{item.company}</p>
-                  <p className="text-sm text-white/40 leading-relaxed" style={{ maxWidth: '60ch' }}>{item.desc}</p>
+                  <p className="text-sm text-[rgba(var(--ink-rgb),calc(0.40*var(--ink-boost)))] leading-relaxed" style={{ maxWidth: '60ch' }}>{item.desc}</p>
                 </div>
               </div>
             </Reveal>
@@ -1588,7 +1655,7 @@ export default function Page() {
       </section>
 
       {/* ── WORK ──────────────────────────────────────────────────────────── */}
-      <ProjectsSection />
+      <ProjectsSection theme={theme} />
 
       {/* ── CONNECT ───────────────────────────────────────────────────────── */}
       {/* Taste: no decorative dots, no glassmorphism; Impeccable: large display CTA */}
@@ -1602,7 +1669,7 @@ export default function Page() {
           <MaskText
             text="Let's build"
             tag="h2"
-            className="font-bold tracking-[-0.04em] leading-[0.95] text-white/90 block"
+            className="font-bold tracking-[-0.04em] leading-[0.95] text-[rgba(var(--ink-rgb),calc(0.90*var(--ink-boost)))] block"
             style={{ fontSize: 'clamp(2.75rem,8vw,5.5rem)', fontFamily: "'Bricolage Grotesque', system-ui, sans-serif" } as React.CSSProperties}
             stagger={0.03}
           />
@@ -1618,7 +1685,7 @@ export default function Page() {
           <Reveal delay={0.5} className="mt-12">
             <a
               href="mailto:work@anubhavkumaar.in"
-              className="group inline-flex items-center gap-3 text-base md:text-lg text-white/55 hover:text-white/90 border-b border-white/15 hover:border-white/40 pb-2 transition-[color,border-color] duration-200 active:scale-[0.97] active:text-[#5B9FFF] active:transition-none"
+              className="group inline-flex items-center gap-3 text-base md:text-lg text-[rgba(var(--ink-rgb),calc(0.55*var(--ink-boost)))] hover:text-[rgba(var(--ink-rgb),calc(0.90*var(--ink-boost)))] border-b border-[rgba(var(--ink-rgb),calc(0.15*var(--ink-boost)))] hover:border-[rgba(var(--ink-rgb),calc(0.40*var(--ink-boost)))] pb-2 transition-[color,border-color] duration-200 active:scale-[0.97] active:text-[var(--accent)] active:transition-none"
             >
               work@anubhavkumaar.in
               <ArrowUpRight
@@ -1681,7 +1748,7 @@ export default function Page() {
                   href={s.href}
                   target={s.href.startsWith('mailto') ? '_self' : '_blank'}
                   rel="noreferrer"
-                  className="group inline-flex items-center gap-2 text-xs text-white/45 border border-white/[0.09] rounded-full px-3.5 py-2 hover:text-white/80 hover:border-white/25 transition-all duration-200 active:scale-[0.97] active:text-[#5B9FFF] active:transition-none"
+                  className="group inline-flex items-center gap-2 text-xs text-[rgba(var(--ink-rgb),calc(0.45*var(--ink-boost)))] border border-[rgba(var(--ink-rgb),calc(0.09*var(--ink-boost)))] rounded-full px-3.5 py-2 hover:text-[rgba(var(--ink-rgb),calc(0.80*var(--ink-boost)))] hover:border-[rgba(var(--ink-rgb),calc(0.25*var(--ink-boost)))] transition-all duration-200 active:scale-[0.97] active:text-[var(--accent)] active:transition-none"
                 >
                   {s.icon}
                   {s.label}
@@ -1693,9 +1760,9 @@ export default function Page() {
       </section>
 
       {/* ── FOOTER ────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-white/[0.05] px-6 md:px-16 lg:px-24 py-8 max-w-[1400px] mx-auto flex items-center justify-between">
+      <footer className="border-t border-[rgba(var(--ink-rgb),calc(0.05*var(--ink-boost)))] px-6 md:px-16 lg:px-24 py-8 max-w-[1400px] mx-auto flex items-center justify-between">
         <img src="/logo/white.png" alt="AK" className="h-5 w-auto opacity-30" />
-        <p className="text-xs text-white/20">
+        <p className="text-xs text-[rgba(var(--ink-rgb),calc(0.20*var(--ink-boost)))]">
           &copy; {new Date().getFullYear()} Anubhav Kumar
         </p>
       </footer>

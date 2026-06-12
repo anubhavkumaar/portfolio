@@ -16,11 +16,39 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Theme tokens ────────────────────────────────────────────────────────── */
+:root, [data-theme="dark"] {
+  --bg: #0a0a0a;
+  --bg-rgb: 10, 10, 10;
+  --surface: #151515;
+  --ink: #ffffff;
+  --ink-rgb: 255, 255, 255;
+  --ink-boost: 1;
+  --accent: #5B9FFF;
+  --accent-rgb: 91, 159, 255;
+  --accent-2: #FF8A4C;
+  --accent-2-rgb: 255, 138, 76;
+}
+
+[data-theme="light"] {
+  --bg: #f3f5f9;
+  --bg-rgb: 243, 245, 249;
+  --surface: #e7ebf2;
+  --ink: #0a0e16;
+  --ink-rgb: 10, 14, 22;
+  --ink-boost: 2.2;
+  --accent: #2F6FED;
+  --accent-rgb: 47, 111, 237;
+  --accent-2: #E0631E;
+  --accent-2-rgb: 224, 99, 30;
+}
+
 body {
   font-family: 'Manrope', system-ui, sans-serif;
-  background: #0a0a0a;
-  color: rgba(255,255,255,0.88);
+  background: var(--bg);
+  color: rgba(var(--ink-rgb), 0.88);
   line-height: 1.65;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 h1, h2, h3, h4, h5 {
@@ -29,7 +57,7 @@ h1, h2, h3, h4, h5 {
 }
 
 ::-webkit-scrollbar { width: 0; }
-::selection { background: rgba(91,159,255,0.2); color: #fff; }
+::selection { background: rgba(var(--accent-rgb), 0.2); color: var(--ink); }
 
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
