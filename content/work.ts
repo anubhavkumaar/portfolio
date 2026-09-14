@@ -99,7 +99,7 @@ export const work: CaseStudy[] = [
     slug: 'release-gate',
     word: 'RELEASE',
     tag: 'CI',
-    year: '2025',
+    year: '2026',
     title: 'Tests at the merge, releases on a cadence',
     lede:
       'A generative platform fails in ways unit tests do not see: a stream that drops a token, an answer that is right but worded differently, a response that quietly gets slower. I wrote the end-to-end framework that drives the real deployed app like a user would and checks for those on every merge request, and I carry what passes it into production.',
