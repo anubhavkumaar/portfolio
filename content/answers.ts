@@ -62,6 +62,14 @@ export const answers: Answer[] = [
     go: { id: 'about', label: 'More about me' },
   },
   {
+    id: 'summary',
+    general: true,
+    keys: ['what all', 'did', 'done', 'everything', 'all', 'summary', 'overview', 'highlights', 'accomplish', 'what has', 'worked on', 'project', 'contribution', 'tell me', 'about him', 'his work', 'proud'],
+    text:
+      'Since July 2023, all on one GenAI platform at Deloitte: built the retrieval stack twice (a from-scratch RAG first, then AWS Bedrock Knowledge Bases), built the Model Context Protocol servers and agents behind the product chatbot, wrote the end-to-end test framework that gates every merge request, cleared HIPAA and FIPS security review with zero critical findings, instrumented every model call with OpenTelemetry, Prometheus and Langfuse, refactored SSE streaming across 16 React components, and built 20+ internal APIs and tools that cut support tickets by roughly 40%. Before that, a year validating UiPath automations on a programme saving over 69,000 manual hours a year. The three case studies tell the big ones properly.',
+    go: { id: 'work', label: 'Open the work' },
+  },
+  {
     id: 'role',
     general: true,
     keys: ['role', 'position', 'title', 'job', 'designation', 'current', 'data engineer', 'work at', 'where do you work', 'company', 'employer', 'deloitte'],
@@ -280,7 +288,13 @@ export function resolve(question: string): Answer {
       bestScore = score;
     }
   }
-  return best ?? FALLBACK;
+  if (best) return best;
+  // Nothing specific matched, but the question is plainly about him: give the
+  // overview rather than a shrug.
+  if (/(^|[^a-z])(he|his|him|you|your|anubhav|yourself)([^a-z]|$)/.test(q)) {
+    return answers.find((a) => a.id === 'summary') ?? FALLBACK;
+  }
+  return FALLBACK;
 }
 
 export const answerText = (a: Answer) => (typeof a.text === 'function' ? a.text() : a.text);
