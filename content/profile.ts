@@ -7,11 +7,11 @@ export const profile = {
   role: 'Full Stack Developer and GenAI Engineer',
   location: 'Hyderabad, India',
   email: 'work@anubhavkumaar.in',
+  phone: '+91 7079397940',
 
   roleLine: 'I am a',
   lede:
     'Building production-grade GenAI platforms at Deloitte: LLMs, RAG, AWS Bedrock, from backend APIs to frontend dashboards.',
-  ledeMeta: 'Three years at Deloitte. Hyderabad, India.',
 
   links: [
     { label: 'GitHub', href: 'https://github.com/anubhavkumaar' },
@@ -38,10 +38,10 @@ export const about = {
 
 // Measured facts. Kept separate so they render as annotations, not prose.
 export const facts = [
-  { value: '5', label: 'portals running the platform' },
-  { value: '5,000+', label: 'users on it' },
+  { value: '0', label: 'critical findings at HIPAA and FIPS security review' },
   { value: '40%', label: 'drop in support tickets after the internal tooling' },
-  { value: '0', label: 'critical findings at HIPAA and FIPS review' },
+  { value: '20+', label: 'internal APIs and tools for issue reporting and health checks' },
+  { value: '69,000', label: 'manual hours a year saved by the automation programme I validated' },
 ] as const;
 
 export const education = {

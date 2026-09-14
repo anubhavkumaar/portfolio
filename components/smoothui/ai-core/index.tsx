@@ -60,7 +60,7 @@ export type AIStateMotion = {
    * calm surface; high values churn without the silhouette growing.
    */
   turbulence: number;
-  /** Revolutions per second of the noise field — the slow tumble. */
+  /** Revolutions per second of the noise field, the slow tumble. */
   tumble: number;
   /** How much external amplitude reaches the surface, 0 = ignore it. */
   reactivity: number;
@@ -76,7 +76,7 @@ export type AIStateMotion = {
  * Per-state presets.
  *
  * Deliberate choices worth keeping:
- * - `thinking` has `scale: 1` — internal churn only, so layout stays calm while
+ * - `thinking` has `scale: 1`, internal churn only, so layout stays calm while
  *   the model works. Growing the surface here makes pages feel unstable.
  * - `error` desaturates instead of growing, so it reads as a state change
  *   rather than an attention grab.
@@ -96,7 +96,7 @@ export const AI_STATE_MOTION: Record<AIState, AIStateMotion> = {
     saturation: 1,
     scale: 1.1,
     speed: 0.8,
-    // The field settles almost flat — stillness is what reads as "finished".
+    // The field settles almost flat, stillness is what reads as "finished".
     tumble: 0.02,
     turbulence: 0.08,
   },
@@ -176,7 +176,7 @@ export const AI_STATE_MOTION: Record<AIState, AIStateMotion> = {
   },
 };
 
-/** Semantic accents. Deliberately not tokens — orbs render outside a theme. */
+/** Semantic accents. Deliberately not tokens, orbs render outside a theme. */
 export const AI_ACCENT_COLORS: Record<"success" | "danger", string> = {
   danger: "oklch(63% 0.21 25)",
   success: "oklch(72% 0.17 150)",
@@ -265,7 +265,7 @@ const ATTACK_FACTOR = 0.35;
 /**
  * Reads microphone loudness as a 0–1 `MotionValue`.
  *
- * SSR-safe, permission-aware, and silent on failure — a denied prompt leaves
+ * SSR-safe, permission-aware, and silent on failure, a denied prompt leaves
  * the amplitude at 0 so the consuming component simply falls back to its
  * ambient animation.
  */
@@ -367,7 +367,7 @@ export const useAudioAmplitude = (
 };
 
 /**
- * Amplitude generator for demos, docs and previews — no microphone involved.
+ * Amplitude generator for demos, docs and previews, no microphone involved.
  *
  * Produces a plausible speech-like envelope whose energy follows the current
  * {@link AIState}, so every example can show the reactive behaviour without

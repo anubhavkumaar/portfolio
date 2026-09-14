@@ -53,7 +53,7 @@ export type AIPromptAttachment = {
 export type AIPromptInputProps = {
   /** Files already attached to the draft. */
   attachments?: AIPromptAttachment[];
-  /** Extra controls rendered on the left of the toolbar — model pickers etc. */
+  /** Extra controls rendered on the left of the toolbar, model pickers etc. */
   children?: ReactNode;
   className?: string;
   disabled?: boolean;
@@ -88,7 +88,7 @@ const formatSize = (bytes: number): string => {
  * The prompt composer.
  *
  * Growth is animated with a layout spring rather than a CSS height transition,
- * so a pasted paragraph settles instead of snapping — and because the height is
+ * so a pasted paragraph settles instead of snapping, and because the height is
  * measured from the textarea's own scroll height, the surrounding page never
  * reflows mid-keystroke.
  */
@@ -168,7 +168,7 @@ const AIPromptInput = ({
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    // Enter sends, Shift+Enter breaks the line — the convention every chat UI
+    // Enter sends, Shift+Enter breaks the line, the convention every chat UI
     // has trained users on.
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
@@ -365,7 +365,7 @@ const AIPromptSubmit = ({
   >
     {/* Real lucide glyphs, swapped rather than morphed.
         An earlier version interpolated one hand-authored `d` into another, which
-        bought a nice fold at the cost of not being a lucide icon at all — and a
+        bought a nice fold at the cost of not being a lucide icon at all, and a
         filled wedge reads as "play", not "send". A thin stroked arrow is the
         convention, and lucide's own geometry is what the rest of the library
         uses. The swap is scale-and-fade so it still reads as one control. */}

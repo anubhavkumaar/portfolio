@@ -7,7 +7,7 @@ import { Fragment, useEffect, useRef } from "react";
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 /**
  * Hoisted and frozen. Motion restarts an animation whenever the transition it is
- * given changes, and this component re-renders on every token — so the object
+ * given changes, and this component re-renders on every token, so the object
  * has to be the same reference every time.
  */
 const WORD_TRANSITION = { duration: 0.22, ease: EASE_OUT } as const;
@@ -16,7 +16,7 @@ const WORD_BLUR_PX = 4;
 const CITATION_MARKER = /^\[(\d+)\]$/;
 /**
  * Split on whitespace *and* on markers, so a marker is its own token even when
- * punctuation is glued to it — `compute [1],` has to yield `[1]` and `,`
+ * punctuation is glued to it, `compute [1],` has to yield `[1]` and `,`
  * separately or the pill never matches.
  */
 const TOKEN_SPLIT = /(\s+|\[\d+\])/;
@@ -72,7 +72,7 @@ const tokenize = (text: string, citations: AIResponseCitation[]): Token[] =>
 /**
  * Streaming assistant text.
  *
- * Words animate in as they *arrive*, not on a fixed timer — the component
+ * Words animate in as they *arrive*, not on a fixed timer, the component
  * remembers how many tokens it had last render and only animates the new ones.
  * A timer-driven typewriter drifts out of step with the real stream and starts
  * lying about how fast the model is answering.
@@ -143,7 +143,7 @@ const AIResponse = ({
             // No stagger delay, deliberately. The transition object has to stay
             // identical across renders: a delay derived from the render-time
             // index goes negative as the text grows, and the entrance then never
-            // resolves — words stay blurred forever. Token arrival is the stagger.
+            // resolves, words stay blurred forever. Token arrival is the stagger.
             transition={shouldReduceMotion ? { duration: 0 } : WORD_TRANSITION}
           >
             {token.value}
@@ -201,7 +201,7 @@ const AIResponseCitationPill = ({
       : { bounce: 0.1, duration: 0.25, type: "spring" as const },
   };
 
-  // An internal document has nowhere to go, so it is not dressed up as a link —
+  // An internal document has nowhere to go, so it is not dressed up as a link ,
   // no hover affordance, no pointer, nothing to click and be disappointed by.
   if (!citation.url) {
     return <motion.span {...shared}>{citation.index}</motion.span>;

@@ -89,7 +89,7 @@ const TaskBox = ({
           // Drawn with a CSS keyframe rather than a motion value.
           //
           // Neither motion's `pathLength` shorthand nor an explicit
-          // `strokeDashoffset` animation resolved on these paths — the dash
+          // `strokeDashoffset` animation resolved on these paths, the dash
           // stayed pinned at its initial value and the check rendered as a stub.
           // A keyframe on mount is deterministic, and `prefers-reduced-motion`
           // handles the accessible case in CSS with no JS branch at all.
@@ -187,7 +187,7 @@ const TaskRow = ({
  * A plan an agent works through.
  *
  * Header counts are derived from the tasks, so the summary can never disagree
- * with the rows — a "3/7" that has drifted from what is on screen destroys trust
+ * with the rows, a "3/7" that has drifted from what is on screen destroys trust
  * in the whole panel.
  */
 const AITaskList = ({ className, label = "Plan", tasks }: AITaskListProps) => {

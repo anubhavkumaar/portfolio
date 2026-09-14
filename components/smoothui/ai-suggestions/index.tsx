@@ -28,7 +28,7 @@ export type AISuggestionsProps = {
  * Distance from the middle of the row, so the stagger radiates outwards from the
  * centre instead of sweeping left to right.
  *
- * A left-to-right sweep implies reading order and priority — that the first chip
+ * A left-to-right sweep implies reading order and priority, that the first chip
  * matters most. These are alternatives of equal weight, and radiating from the
  * centre says so.
  */

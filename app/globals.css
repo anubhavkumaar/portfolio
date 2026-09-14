@@ -566,6 +566,11 @@ button {
   align-self: center;
 }
 
+/* The composer shows focus on its own border; the textarea inside carries no ring. */
+.hero__console textarea:focus-visible {
+  outline: none;
+}
+
 /* Reserves the console's footprint while its code loads. */
 .console-shell {
   min-height: 24rem;
@@ -856,6 +861,10 @@ button {
   display: block;
   margin-top: 0.25rem;
   max-width: 34ch;
+}
+
+.skills__also {
+  margin-top: 1.25rem;
 }
 
 .skill__items {

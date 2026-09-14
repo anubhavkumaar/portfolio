@@ -6,7 +6,7 @@
 // Changes for this site: unstyled (palette comes in via className), renders an <a>
 // when `href` is given so the hero CTAs stay real links, pull only on hover-capable
 // pointers, spring press via whileTap, and a static fallback under reduced motion.
-// The original's `range` check was dropped — mousemove only fires over the element,
+// The original's `range` check was dropped, mousemove only fires over the element,
 // so the pull is simply "while hovered".
 
 import React, { useEffect, useRef, useState } from 'react';

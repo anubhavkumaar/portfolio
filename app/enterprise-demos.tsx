@@ -37,12 +37,12 @@ function useDemoClock(
 const statusAt = (idx: number, step: number): AITaskStatus =>
   idx < step ? 'done' : idx === step ? 'running' : 'pending';
 
-// ─── 05 · DeepChat — policy Q&A with citations ────────────────────────────────
+// ─── 05 · DeepChat, policy Q&A with citations ────────────────────────────────
 const QUESTION = 'How many unused leave days carry over?';
 const ANSWER =
   "Up to 10 unused days carry over [1], provided they're used by 31 March. Anything beyond that lapses [2], and the updated balance shows in the leave portal within two working days.";
 const ANSWER_WORDS = ANSWER.split(' ');
-// Internal documents — no URL on purpose, so the pills render as plain markers.
+// Internal documents, no URL on purpose, so the pills render as plain markers.
 const CITATIONS = [
   { id: 'leave-4-1', index: 1, title: 'Leave policy, section 4.1, carry-over' },
   { id: 'hr-faq', index: 2, title: 'HR FAQ, leave balances' },
@@ -69,7 +69,7 @@ export function DeepChatDemo() {
   );
 }
 
-// ─── 06 · Agentic Assistant — a plan working itself through ───────────────────
+// ─── 06 · Agentic Assistant, a plan working itself through ───────────────────
 // Leaf order is the execution order; the parent step derives from its children.
 const LEAVES = ['parse', 'search', 'rank', 'draft', 'guard', 'cite'] as const;
 
@@ -106,7 +106,7 @@ export function AgentPlanDemo() {
   );
 }
 
-// ─── 07 · RAG Platform — the retrieval pipeline as tool calls ─────────────────
+// ─── 07 · RAG Platform, the retrieval pipeline as tool calls ─────────────────
 const TOOLS = [
   { name: 'ingest_documents', summary: '1,240 chunks' },
   { name: 'embed_chunks', summary: '1536-d' },

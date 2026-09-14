@@ -1,4 +1,4 @@
-import { skills, skillsNote } from '@/content/skills';
+import { skills, skillsAlso, skillsNote } from '@/content/skills';
 import { Reveal } from './Reveal';
 
 /**
@@ -35,6 +35,7 @@ export function Skills() {
             </div>
           ))}
         </dl>
+        <p className="t-small skills__also">{skillsAlso}</p>
       </div>
     </section>
   );

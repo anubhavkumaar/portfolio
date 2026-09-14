@@ -222,7 +222,7 @@ Two silhouettes. Structure is square: ruled registers, hairline grids, and the r
 A WebGL2 fullscreen-triangle shader behind the landing: two bands of ground-tinted blue and violet through domain-warped noise, a soft bloom that lags the pointer, a fade to ground at the bottom, dither against banding. DPR capped at 1.5 (1 on phones, with three noise octaves), paused when offscreen or hidden, one frame under reduced motion. It mounts after the page is interactive and reads its colours from the theme tokens, so a palette change reaches it.
 
 ### Console (signature)
-The scripted assistant on the landing: a `--lit` glass panel with an avatar, "ask anubhav", the honesty line "Scripted, runs locally" in small, a transcript that streams an answer word by word, four suggestion chips, and a prompt input. Answers are a fixed intent map and route to the section they describe; every answer states only what the page holds.
+The scripted assistant on the landing: a `--lit` glass panel with an avatar, "ask anubhav", a transcript that streams an answer word by word, five suggestion chips, and a prompt input. Answers come from a keyword-scored set in `content/answers.ts`, first person, facts from the profile sheet only, and each routes to the section it describes.
 
 ### Side-project preview (signature)
 Rows in the ruled register; on hover a 26vw screenshot follows the pointer beside the cursor on a 0.16 lerp, flips sides past 60% of the viewport, tilts up to 6 degrees with horizontal velocity, and crossfades between rows. Touch devices get the screenshot inline under the row.

@@ -1,6 +1,6 @@
-// Skills, grouped by what each one is for. Every item here appears somewhere
-// else on the site (a case study stack, the about copy, the console) or on the
-// resumes this site was built from. No logos, no proficiency bars, no counts.
+// Skills, grouped as the profile sheet groups them. Every item is on the
+// sheet. No logos, no proficiency bars, no counts. The "also worked with"
+// line holds the tools the sheet keeps out of the headline set.
 
 export type SkillGroup = {
   name: string;
@@ -14,37 +14,50 @@ export const skillsNote =
 
 export const skills: SkillGroup[] = [
   {
-    name: 'GenAI',
+    name: 'Languages and frameworks',
+    items: ['Python', 'FastAPI', 'Flask', 'Pydantic', 'SQL', 'TypeScript', 'JavaScript', 'React', 'Next.js', 'REST APIs', 'Server-sent events'],
+    where: 'The platform services and front end, and this site.',
+  },
+  {
+    name: 'AI',
     items: [
-      'LLM applications',
-      'Retrieval (RAG)',
-      'AWS Bedrock',
-      'Bedrock Knowledge Bases',
-      'LangChain',
-      'LangGraph',
+      'RAG',
+      'AWS Bedrock and Knowledge Bases',
       'Model Context Protocol',
-      'Embeddings and vector search',
+      'Agentic and multi-agent orchestration',
+      'Vector search and embeddings',
+      'Semantic caching',
+      'LLM evaluation harnesses',
+      'AI-native development with Claude Code and GitHub Copilot',
+      'Reviewing agent-generated code',
     ],
     where: 'The retrieval layer and the agent layer.',
   },
   {
-    name: 'Backend',
-    items: ['Python', 'FastAPI', 'Streaming APIs', 'PostgreSQL', 'psycopg3', 'Redis', 'OAuth', 'OpenTelemetry', 'Prometheus'],
-    where: 'Every service under the platform.',
+    name: 'Cloud and infrastructure',
+    items: ['AWS: Bedrock, S3, Lambda, EC2, IAM', 'Docker', 'Red Hat OpenShift (Kubernetes)', 'GitLab CI/CD', 'Azure DevOps', 'Git'],
+    where: 'Where the platform runs and how it ships.',
   },
   {
-    name: 'Frontend',
-    items: ['TypeScript', 'React', 'Next.js', 'Tailwind CSS', 'Accessibility'],
-    where: 'The platform front end, the four side projects, and this site.',
+    name: 'Data',
+    items: ['PostgreSQL', 'psycopg3', 'Redis', 'Amazon S3', 'ETL and ingestion pipelines', 'Data modelling', 'Data validation'],
+    where: 'The storage and ingestion paths under the platform.',
   },
   {
-    name: 'Cloud and data',
-    items: ['AWS Lambda', 'S3', 'Hadoop', 'Hive', 'Oracle SQL', 'SQL for validation and BI', 'UiPath'],
-    where: 'Data lake and automation work before the GenAI platform.',
+    name: 'Testing and observability',
+    items: ['pytest', 'Playwright', 'End-to-end and integration testing', 'CI-gated regression suites', 'OpenTelemetry', 'Prometheus', 'structlog', 'Langfuse'],
+    where: 'The end-to-end test framework, and every model call.',
   },
   {
-    name: 'Security and delivery',
-    items: ['HIPAA and FIPS controls', 'Static analysis', 'TLS and CA validation', 'Code review', 'Release management', 'Git'],
-    where: 'Every release on the platform.',
+    name: 'Security',
+    items: ['TLS and CA validation', 'OAuth', 'SAST', 'SonarQube', 'ClamAV', 'SHA-256 integrity checks', 'PHI redaction', 'FIPS and HIPAA compliance'],
+    where: 'The security review, cleared with zero critical findings.',
+  },
+  {
+    name: 'Practices',
+    items: ['Code review', 'Technical design documents', 'Mentoring', 'Agile', 'Scrum', 'JIRA', 'ServiceNow'],
+    where: 'Every sprint.',
   },
 ];
+
+export const skillsAlso = 'Also worked with: Hadoop, Hive, Oracle SQL Developer, UiPath, Power BI.';
