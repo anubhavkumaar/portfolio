@@ -67,13 +67,17 @@ void main(){
   float bloom = exp(-d * d * 3.2) * 0.55;
 
   float dark = 1.0 - u_light;
-  float gain = mix(0.55, 0.42, u_light);
 
+  // Dark: light is added to the ground. Light: adding light to a white ground
+  // goes nowhere, so the ground is stained toward the same two colours
+  // instead, at a strength that reads as the same clouds.
   vec3 col = u_bg;
-  col += u_a * (band1 * 0.34 + bloom * 0.5) * gain;
-  col += u_b * (band2 * 0.30) * gain;
-  // On light, the field tints rather than glows.
-  col = mix(col, mix(u_bg, (u_a + u_b) * 0.5, (band1 + band2) * 0.14 + bloom * 0.18), u_light);
+  col += u_a * (band1 * 0.34 + bloom * 0.5) * 0.55;
+  col += u_b * (band2 * 0.30) * 0.55;
+  vec3 lit = u_bg;
+  lit = mix(lit, u_a, clamp(band1 * 0.62 + bloom * 0.42, 0.0, 0.85));
+  lit = mix(lit, u_b, band2 * 0.5);
+  col = mix(col, lit, u_light);
 
   // Fade to the ground toward the bottom so the page takes over cleanly.
   float fade = smoothstep(0.0, 0.42, uv.y);
