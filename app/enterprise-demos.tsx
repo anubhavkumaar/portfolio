@@ -140,7 +140,7 @@ export function RagPipelineDemo() {
 const CONTROLS = ['redact', 'scan', 'hash', 'auth', 'tls', 'sast'] as const;
 
 // ─── 08 · Release gate, the merge-request check running its suites ──────────
-const GATE = ['auth', 'stream', 'match', 'verdict'] as const;
+const GATE = ['drive', 'stream', 'match', 'verdict'] as const;
 
 export function ReleaseGateDemo() {
   const ref = useRef<HTMLDivElement>(null);
@@ -148,17 +148,17 @@ export function ReleaseGateDemo() {
   const at = (id: (typeof GATE)[number]) => statusAt(GATE.indexOf(id), step);
 
   const tasks: AITask[] = [
-    { id: 'auth', label: 'Auth flow: sign in, session, refresh', status: at('auth') },
+    { id: 'drive', label: 'Sign in, open chat, ask', status: at('drive') },
     {
       id: 'stream',
-      label: 'SSE stream validation',
-      note: at('stream') === 'done' ? 'arrives whole' : undefined,
+      label: 'SSE stream, timed',
+      note: at('stream') === 'done' ? 'TTFE 340ms' : undefined,
       status: at('stream'),
     },
     {
       id: 'match',
-      label: 'Semantic response matching',
-      note: at('match') === 'done' ? 'meaning holds' : undefined,
+      label: 'Check the answer',
+      note: at('match') === 'done' ? 'semantic or keyword' : undefined,
       status: at('match'),
     },
     { id: 'verdict', label: 'Merge request check', note: at('verdict') === 'done' ? 'mergeable' : undefined, status: at('verdict') },

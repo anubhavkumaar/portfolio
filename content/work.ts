@@ -102,7 +102,7 @@ export const work: CaseStudy[] = [
     year: '2025',
     title: 'Tests at the merge, releases on a cadence',
     lede:
-      'A generative platform fails in ways unit tests do not see: a stream that drops a token, an answer that is right but worded differently. I wrote the end-to-end framework that checks for those on every merge request, and I carry what passes it into production.',
+      'A generative platform fails in ways unit tests do not see: a stream that drops a token, an answer that is right but worded differently, a response that quietly gets slower. I wrote the end-to-end framework that drives the real deployed app like a user would and checks for those on every merge request, and I carry what passes it into production.',
     beats: [
       {
         label: 'problem',
@@ -112,12 +112,12 @@ export const work: CaseStudy[] = [
       {
         label: 'constraint',
         body:
-          'The checks have to run on every merge request without becoming the reason merges are slow. They have to run against the real stack, auth and streaming and model included, or they prove nothing. And a generated answer cannot be compared to a fixed string, because two correct answers rarely share their words.',
+          'The checks have to run on every merge request without becoming the reason merges are slow. They have to run against the real stack, deployed and live, auth and streaming and model included, or they prove nothing. And a generated answer cannot be compared to a fixed string: two correct answers rarely share their words, and an answer built from live data changes with the data behind it, so meaning alone will not catch a wrong number.',
       },
       {
         label: 'decision',
         body:
-          'An end-to-end framework in pytest and Playwright that exercises the real thing: the auth flow from sign-in to session, SSE stream validation that reads every event and checks the stream arrives whole, and semantic response matching that scores an answer against its expected meaning rather than its exact words. It runs as a CI merge-request check in GitLab, so a change that breaks any of the three cannot merge. What passes moves from development to production on a sprint cadence, and I carry those releases, absorbing the defect and security fixes each one surfaces.',
+          'An end-to-end framework in pytest and Playwright that runs against the real deployed environment: it drives the UI the way a visitor would, signs in, opens the chat, asks it something, and reads the SSE stream back, checking the auth flow holds, the stream arrives whole, and timing it, time to first event and total response time, so a regression shows up as a number, not a feeling. The answer itself gets one of two checks depending on what it is: semantic matching scores an ordinary answer against its expected meaning rather than its exact words, and for an answer built from live, changing data, keyword checking looks for the facts that have to be there instead, since two correct answers over different data will never share their words either. It runs as a CI merge-request check in GitLab, so a change that breaks any of it cannot merge. What passes moves from development to production on a sprint cadence, and I carry those releases, absorbing the defect and security fixes each one surfaces.',
       },
       {
         label: 'cost',

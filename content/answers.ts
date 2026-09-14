@@ -138,9 +138,9 @@ export const answers: Answer[] = [
   },
   {
     id: 'testing',
-    keys: ['test', 'pytest', 'playwright', 'ci', 'regression', 'quality', 'e2e', 'end to end', 'end-to-end', 'merge request', 'pipeline'],
+    keys: ['test', 'pytest', 'playwright', 'ci', 'regression', 'quality', 'e2e', 'end to end', 'end-to-end', 'merge request', 'pipeline', 'ttfe', 'time to first', 'keyword check'],
     text:
-      'I wrote the end-to-end test framework for the platform: auth flow, SSE stream validation and semantic response matching, gated as a CI merge-request check. No production regressions since it went in. pytest and Playwright underneath. The third case study is that story.',
+      'I wrote the end-to-end test framework for the platform: it drives the real deployed app like a user would, signs in, opens the chat, and checks the SSE stream arrives whole while timing it (time to first event, total response time). Answers are checked by semantic matching, or by keyword checking when the answer carries live data. Gated as a CI merge-request check, pytest and Playwright underneath. No production regressions since it went in. The third case study is that story.',
     go: { id: 'work', label: 'Open the case study' },
   },
   {
