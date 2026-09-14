@@ -1010,12 +1010,19 @@ button {
 }
 
 .about__portrait {
-  position: sticky;
-  top: calc(var(--nav-h) + 1.5rem);
   border-radius: 22px;
   overflow: hidden;
   border: 1px solid var(--hair);
   aspect-ratio: 1;
+}
+
+/* Sticky only once the portrait has its own column; stacked above the
+   text on a phone it would pin to the top and cover what scrolls under it. */
+@media (min-width: 900px) {
+  .about__portrait {
+    position: sticky;
+    top: calc(var(--nav-h) + 1.5rem);
+  }
 }
 
 .about__portrait img {
