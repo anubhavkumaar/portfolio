@@ -139,6 +139,38 @@ export function RagPipelineDemo() {
 // ─── Security review: the controls at the boundary, each one passing ─────────
 const CONTROLS = ['redact', 'scan', 'hash', 'auth', 'tls', 'sast'] as const;
 
+// ─── 08 · Release gate, the merge-request check running its suites ──────────
+const GATE = ['auth', 'stream', 'match', 'verdict'] as const;
+
+export function ReleaseGateDemo() {
+  const ref = useRef<HTMLDivElement>(null);
+  const step = useDemoClock(ref, GATE.length, { tick: 950, hold: 3000 });
+  const at = (id: (typeof GATE)[number]) => statusAt(GATE.indexOf(id), step);
+
+  const tasks: AITask[] = [
+    { id: 'auth', label: 'Auth flow: sign in, session, refresh', status: at('auth') },
+    {
+      id: 'stream',
+      label: 'SSE stream validation',
+      note: at('stream') === 'done' ? 'arrives whole' : undefined,
+      status: at('stream'),
+    },
+    {
+      id: 'match',
+      label: 'Semantic response matching',
+      note: at('match') === 'done' ? 'meaning holds' : undefined,
+      status: at('match'),
+    },
+    { id: 'verdict', label: 'Merge request check', note: at('verdict') === 'done' ? 'mergeable' : undefined, status: at('verdict') },
+  ];
+
+  return (
+    <div ref={ref} className="w-full">
+      <AITaskList label="Pipeline" tasks={tasks} className="text-[13px]" />
+    </div>
+  );
+}
+
 export function SecurityChecksDemo() {
   const ref = useRef<HTMLDivElement>(null);
   const step = useDemoClock(ref, CONTROLS.length, { tick: 700, hold: 3000 });

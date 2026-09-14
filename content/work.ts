@@ -51,7 +51,7 @@ export const work: CaseStudy[] = [
       {
         label: 'decision',
         body:
-          'I built the whole pipeline by hand first: chunking, embeddings, vector search, ranking. Not because it was the right long term choice, but because I wanted to watch it fail against my own instrumentation before handing the problem to a managed service. Then I moved it onto AWS Bedrock Knowledge Bases with S3 document ingestion, query routing and citation extraction.',
+          'I built the whole pipeline by hand first: chunking, embeddings, vector search, ranking. Not because it was the right long term choice, but because I wanted to watch it fail against my own instrumentation before handing the problem to a managed service. Then I moved it onto AWS Bedrock Knowledge Bases with S3 document ingestion, query routing and citation extraction, and built the section of the portal that manages the corpus: the S3 documents and their ingest jobs, the list of what is indexed, and deleting from it.',
       },
       {
         label: 'cost',
@@ -96,36 +96,36 @@ export const work: CaseStudy[] = [
   },
 
   {
-    slug: 'backend',
-    word: 'PLATFORM',
-    tag: 'FastAPI',
+    slug: 'release-gate',
+    word: 'RELEASE',
+    tag: 'CI',
     year: '2025',
-    title: 'One backend, several tenants',
+    title: 'Tests at the merge, releases on a cadence',
     lede:
-      'One codebase serves several customers, each with their own extensions on top. The backend is built so that seam is real instead of implied.',
+      'A generative platform fails in ways unit tests do not see: a stream that drops a token, an answer that is right but worded differently. I wrote the end-to-end framework that checks for those on every merge request, and I carry what passes it into production.',
     beats: [
       {
         label: 'problem',
         body:
-          'Every customer runs the same codebase with their own extensions on top. Without a clean seam for that, customer specific behaviour lands in places that belong to everyone, and each new customer makes the shared paths harder to change.',
+          'The platform streams answers over server-sent events, and the answers are generated. A unit test can prove a function returns. It cannot prove that a session survives the auth flow, that a stream arrives whole, or that an answer still means what it meant last week. Those are the failures that matter, and nothing at the merge was checking for them.',
       },
       {
         label: 'constraint',
         body:
-          'The portals are live services, so there is no window where the platform can simply stop. One customer\'s extensions must not become visible to another. And streaming responses mean the request path cannot be quietly rebuilt underneath the part users actually watch.',
+          'The checks have to run on every merge request without becoming the reason merges are slow. They have to run against the real stack, auth and streaming and model included, or they prove nothing. And a generated answer cannot be compared to a fixed string, because two correct answers rarely share their words.',
       },
       {
         label: 'decision',
         body:
-          'I built the services around a defined extension seam: streaming FastAPI over server sent events, a PostgreSQL schema written with psycopg3 rather than an ORM so the queries stay legible, and Redis semantic caching in front of model calls. Every model call carries OpenTelemetry, Prometheus and Langfuse instrumentation, so latency, token cost and retrieval quality are per request facts rather than guesses.',
+          'An end-to-end framework in pytest and Playwright that exercises the real thing: the auth flow from sign-in to session, SSE stream validation that reads every event and checks the stream arrives whole, and semantic response matching that scores an answer against its expected meaning rather than its exact words. It runs as a CI merge-request check in GitLab, so a change that breaks any of the three cannot merge. What passes moves from development to production on a sprint cadence, and I carry those releases, absorbing the defect and security fixes each one surfaces.',
       },
       {
         label: 'cost',
         body:
-          'A stricter contract for anyone adding customer specific behaviour, and instrumentation that has to be kept honest as the services change. What it buys is onboarding a customer without editing shared paths, and being able to answer why a request was slow instead of speculating.',
+          'Merges take as long as a real end-to-end run, and the suite needs tending, because a flaky check is worse than no check. What it bought is the only number that matters here: no production regressions since it went in.',
       },
     ],
-    stack: ['FastAPI', 'PostgreSQL', 'psycopg3', 'Redis', 'OpenTelemetry', 'Prometheus'],
+    stack: ['pytest', 'Playwright', 'GitLab CI/CD', 'Server-sent events', 'Docker', 'Red Hat OpenShift'],
   },
 
   {

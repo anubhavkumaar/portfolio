@@ -70,6 +70,14 @@ export const answers: Answer[] = [
     go: { id: 'work', label: 'Open the work' },
   },
   {
+    id: 'work',
+    general: true,
+    keys: ['work', 'case stud', 'show me', 'what have you built', 'what did you build', 'examples'],
+    text:
+      'Three case studies from the Deloitte platform: retrieval built twice, the multi-agent system over four backends, and the test framework that gates every merge. Plus four public builds on the side: PitStop, HEAT, SAPR and Valo Tourney.',
+    go: { id: 'work', label: 'Open the work' },
+  },
+  {
     id: 'role',
     general: true,
     keys: ['role', 'position', 'title', 'job', 'designation', 'current', 'data engineer', 'work at', 'where do you work', 'company', 'employer', 'deloitte'],
@@ -102,9 +110,9 @@ export const answers: Answer[] = [
   },
   {
     id: 'rag',
-    keys: ['rag', 'retrieval', 'bedrock', 'knowledge base', 'embedding', 'vector', 'citation', 'ingest', 'search', 'document'],
+    keys: ['rag', 'retrieval', 'bedrock', 'knowledge base', 'embedding', 'vector', 'citation', 'ingest', 'search', 'document', 'corpus', 's3'],
     text:
-      'I built the retrieval stack twice: a from-scratch RAG implementation first, to learn the failure modes, then a migration onto AWS Bedrock Knowledge Bases with S3 document ingestion, query routing and citation extraction. The first case study is that story.',
+      'I built the retrieval stack twice: a from-scratch RAG implementation first, to learn the failure modes, then a migration onto AWS Bedrock Knowledge Bases with S3 document ingestion, query routing and citation extraction, plus the portal section that manages the corpus: the S3 documents, their ingest jobs, the list of what is indexed, and deleting from it. The first case study is that story.',
     go: { id: 'work', label: 'Open the case study' },
   },
   {
@@ -132,8 +140,8 @@ export const answers: Answer[] = [
     id: 'testing',
     keys: ['test', 'pytest', 'playwright', 'ci', 'regression', 'quality', 'e2e', 'end to end', 'end-to-end', 'merge request', 'pipeline'],
     text:
-      'I wrote the end-to-end test framework for the platform: auth flow, SSE stream validation and semantic response matching, gated as a CI merge-request check. No production regressions since it went in. pytest and Playwright underneath.',
-    go: { id: 'skills', label: 'What I work with' },
+      'I wrote the end-to-end test framework for the platform: auth flow, SSE stream validation and semantic response matching, gated as a CI merge-request check. No production regressions since it went in. pytest and Playwright underneath. The third case study is that story.',
+    go: { id: 'work', label: 'Open the case study' },
   },
   {
     id: 'security',

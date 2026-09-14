@@ -11,7 +11,7 @@ import { Reveal } from './Reveal';
 // their code arrives when a spread is opened rather than in the first bundle.
 const RagPipelineDemo = dynamic(() => import('@/app/enterprise-demos').then((m) => m.RagPipelineDemo), { ssr: false });
 const AgentPlanDemo = dynamic(() => import('@/app/enterprise-demos').then((m) => m.AgentPlanDemo), { ssr: false });
-const DeepChatDemo = dynamic(() => import('@/app/enterprise-demos').then((m) => m.DeepChatDemo), { ssr: false });
+const ReleaseGateDemo = dynamic(() => import('@/app/enterprise-demos').then((m) => m.ReleaseGateDemo), { ssr: false });
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -20,7 +20,7 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const DEMOS: Record<string, ComponentType> = {
   'retrieval-layer': RagPipelineDemo,
   'agent-layer': AgentPlanDemo,
-  backend: DeepChatDemo,
+  'release-gate': ReleaseGateDemo,
 };
 
 const LISTED = work.filter((w) => w.listed !== false);
