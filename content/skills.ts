@@ -24,6 +24,7 @@ export const skills: SkillGroup[] = [
       'RAG',
       'AWS Bedrock and Knowledge Bases',
       'Model Context Protocol',
+      'FastMCP',
       'Agentic and multi-agent orchestration',
       'Vector search and embeddings',
       'Semantic caching',

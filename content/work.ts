@@ -84,7 +84,7 @@ export const work: CaseStudy[] = [
       {
         label: 'decision',
         body:
-          'A multi-agent system rather than one agent with every tool: a RAG agent for document questions, portal tools agents for actions inside the product, a ticket agent, a log agent, and a pod agent for the runtime on OpenShift, with an orchestrator routing each request to the agent that owns it. Underneath, each backend is exposed through a Model Context Protocol server with a deliberately narrow tool surface. Each tool takes typed arguments, does its own auth, and redacts at the boundary before anything returns. An agent gets a menu, not a network.',
+          'A multi-agent system rather than one agent with every tool: a RAG agent for document questions, portal tools agents for actions inside the product, a ticket agent, a log agent, and a pod agent for the runtime on OpenShift, with an orchestrator routing each request to the agent that owns it. Underneath, each backend is exposed through a Model Context Protocol server, built with FastMCP, with a deliberately narrow tool surface. Each tool takes typed arguments, does its own auth, and redacts at the boundary before anything returns. An agent gets a menu, not a network. Every agent step and tool call is traced in Langfuse, so a wrong answer can be walked back to the step that produced it.',
       },
       {
         label: 'cost',
@@ -92,7 +92,7 @@ export const work: CaseStudy[] = [
           'More moving parts: several agents and a tool layer to maintain, and a narrow surface means some requests fail that a wider one would have served. In exchange each agent can reach only what it was given, and the model cannot reach anything I have not explicitly exposed. That property is most of the reason the security review went the way it did.',
       },
     ],
-    stack: ['Multi-agent orchestration', 'Model Context Protocol', 'Python', 'FastAPI', 'AWS Bedrock'],
+    stack: ['Multi-agent orchestration', 'Model Context Protocol', 'FastMCP', 'Langfuse', 'Python', 'AWS Bedrock'],
   },
 
   {

@@ -109,9 +109,9 @@ export const answers: Answer[] = [
   },
   {
     id: 'agents',
-    keys: ['agent', 'mcp', 'model context protocol', 'chatbot', 'tool', 'orchestrat', 'multi-agent', 'multi agent', 'assistant', 'rag agent', 'ticket agent', 'log agent', 'pod', 'router'],
+    keys: ['agent', 'mcp', 'model context protocol', 'chatbot', 'tool', 'orchestrat', 'multi-agent', 'multi agent', 'assistant', 'rag agent', 'ticket agent', 'log agent', 'pod', 'router', 'fastmcp'],
     text:
-      'A multi-agent system behind the product chatbot: a RAG agent for document questions, portal tools agents for actions inside the product, a ticket agent, a log agent, and a pod agent for the runtime, with an orchestrator routing each request to the agent that owns it. Underneath, Model Context Protocol servers expose four enterprise backend systems as narrow, typed tools. The second case study covers it.',
+      'A multi-agent system behind the product chatbot: a RAG agent for document questions, portal tools agents for actions inside the product, a ticket agent, a log agent, and a pod agent for the runtime, with an orchestrator routing each request to the agent that owns it. Underneath, Model Context Protocol servers built with FastMCP expose four enterprise backend systems as narrow, typed tools, and every agent step is traced in Langfuse. The second case study covers it.',
     go: { id: 'work', label: 'Open the case study' },
   },
   {
@@ -146,7 +146,7 @@ export const answers: Answer[] = [
     id: 'observability',
     keys: ['observab', 'monitor', 'opentelemetry', 'otel', 'prometheus', 'langfuse', 'structlog', 'logging', 'logs', 'metrics', 'tracing', 'latency'],
     text:
-      'Every model call carries OpenTelemetry, Prometheus and Langfuse instrumentation, so latency, token cost and retrieval quality are per-request facts rather than guesses. Logs go through structlog.',
+      'Every model call and every agent step carries OpenTelemetry, Prometheus and Langfuse instrumentation, so latency, token cost, retrieval quality and the path an agent took are per-request facts rather than guesses. Logs go through structlog.',
   },
   {
     id: 'internal-tools',
