@@ -84,7 +84,7 @@ export function AgentPlanDemo() {
     rank === 'done' ? 'done' : search === 'pending' ? 'pending' : 'running';
 
   const tasks: AITask[] = [
-    { id: 'parse', label: 'Parse request, pick tools', status: at('parse') },
+    { id: 'parse', label: 'Route to an agent, pick tools', status: at('parse') },
     {
       id: 'kb',
       label: 'Query knowledge base',

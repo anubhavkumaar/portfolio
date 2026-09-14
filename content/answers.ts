@@ -66,7 +66,7 @@ export const answers: Answer[] = [
     general: true,
     keys: ['what all', 'did', 'done', 'everything', 'all', 'summary', 'overview', 'highlights', 'accomplish', 'what has', 'worked on', 'project', 'contribution', 'tell me', 'about him', 'his work', 'proud'],
     text:
-      'Since July 2023, all on one GenAI platform at Deloitte: built the retrieval stack twice (a from-scratch RAG first, then AWS Bedrock Knowledge Bases), built the Model Context Protocol servers and agents behind the product chatbot, wrote the end-to-end test framework that gates every merge request, cleared HIPAA and FIPS security review with zero critical findings, instrumented every model call with OpenTelemetry, Prometheus and Langfuse, refactored SSE streaming across 16 React components, and built 20+ internal APIs and tools that cut support tickets by roughly 40%. Before that, a year validating UiPath automations on a programme saving over 69,000 manual hours a year. The three case studies tell the big ones properly.',
+      'Since July 2023, all on one GenAI platform at Deloitte: built the retrieval stack twice (a from-scratch RAG first, then AWS Bedrock Knowledge Bases), built the multi-agent system (RAG, portal tools, ticket, log and pod agents) and the Model Context Protocol servers behind the product chatbot, wrote the end-to-end test framework that gates every merge request, cleared HIPAA and FIPS security review with zero critical findings, instrumented every model call with OpenTelemetry, Prometheus and Langfuse, refactored SSE streaming across 16 React components, and built 20+ internal APIs and tools that cut support tickets by roughly 40%. Before that, a year validating UiPath automations on a programme saving over 69,000 manual hours a year. The three case studies tell the big ones properly.',
     go: { id: 'work', label: 'Open the work' },
   },
   {
@@ -109,9 +109,9 @@ export const answers: Answer[] = [
   },
   {
     id: 'agents',
-    keys: ['agent', 'mcp', 'model context protocol', 'chatbot', 'tool', 'orchestrat', 'multi-agent', 'assistant'],
+    keys: ['agent', 'mcp', 'model context protocol', 'chatbot', 'tool', 'orchestrat', 'multi-agent', 'multi agent', 'assistant', 'rag agent', 'ticket agent', 'log agent', 'pod', 'router'],
     text:
-      'I built the Model Context Protocol servers and the agents behind the product chatbot, exposing four enterprise backend systems as tools the model can act through. The second case study covers it.',
+      'A multi-agent system behind the product chatbot: a RAG agent for document questions, portal tools agents for actions inside the product, a ticket agent, a log agent, and a pod agent for the runtime, with an orchestrator routing each request to the agent that owns it. Underneath, Model Context Protocol servers expose four enterprise backend systems as narrow, typed tools. The second case study covers it.',
     go: { id: 'work', label: 'Open the case study' },
   },
   {

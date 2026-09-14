@@ -67,14 +67,14 @@ export const work: CaseStudy[] = [
     word: 'AGENTS',
     tag: 'MCP',
     year: '2025',
-    title: 'Tool layer for four backends',
+    title: 'Agents over four backends',
     lede:
-      'The chatbot could answer from documents. It could not do anything. Adding tools meant deciding how much of four enterprise backends a language model gets to touch.',
+      'The chatbot could answer from documents. It could not do anything. The answer was not one bigger agent but several small ones, each owning one kind of action, over a tool layer that decides how much of four enterprise backends a model gets to touch.',
     beats: [
       {
         label: 'problem',
         body:
-          'Retrieval answers questions. It does not file a ticket, look up a case, or check whether a system is healthy. The platform needed the model to act on four enterprise backends, not just read about them.',
+          'Retrieval answers questions. It does not file a ticket, look up a record, read a log, or check whether a pod is healthy. The platform needed the model to act on four enterprise backends, not just read about them, and no single agent should hold every tool.',
       },
       {
         label: 'constraint',
@@ -84,15 +84,15 @@ export const work: CaseStudy[] = [
       {
         label: 'decision',
         body:
-          'I exposed each backend through a Model Context Protocol server with a deliberately narrow tool surface, rather than letting the model call APIs directly. Each tool takes typed arguments, does its own auth, and redacts at the boundary before anything returns. The model gets a menu, not a network.',
+          'A multi-agent system rather than one agent with every tool: a RAG agent for document questions, portal tools agents for actions inside the product, a ticket agent, a log agent, and a pod agent for the runtime on OpenShift, with an orchestrator routing each request to the agent that owns it. Underneath, each backend is exposed through a Model Context Protocol server with a deliberately narrow tool surface. Each tool takes typed arguments, does its own auth, and redacts at the boundary before anything returns. An agent gets a menu, not a network.',
       },
       {
         label: 'cost',
         body:
-          'A tool layer is a thing to maintain, and a narrow surface means some requests fail that a wider one would have served. In exchange the model cannot reach anything I have not explicitly exposed. That property is most of the reason the security review went the way it did.',
+          'More moving parts: several agents and a tool layer to maintain, and a narrow surface means some requests fail that a wider one would have served. In exchange each agent can reach only what it was given, and the model cannot reach anything I have not explicitly exposed. That property is most of the reason the security review went the way it did.',
       },
     ],
-    stack: ['Model Context Protocol', 'Python', 'FastAPI', 'AWS Bedrock'],
+    stack: ['Multi-agent orchestration', 'Model Context Protocol', 'Python', 'FastAPI', 'AWS Bedrock'],
   },
 
   {
