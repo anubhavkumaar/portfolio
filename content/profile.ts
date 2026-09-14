@@ -9,7 +9,7 @@ export const profile = {
   email: 'work@anubhavkumaar.in',
 
   lede:
-    'I build production GenAI platforms at Deloitte: retrieval, agents, and the streaming backends under them, licensed to US state governments.',
+    'I build production GenAI platforms at Deloitte: retrieval, agents, and the streaming backends under them.',
   ledeMeta: 'Three years at Deloitte. Hyderabad, India.',
 
   links: [
@@ -33,7 +33,7 @@ export const about = {
 
 // Measured facts. Kept separate so they render as annotations, not prose.
 export const facts = [
-  { value: '5', label: 'state portals running the platform' },
+  { value: '5', label: 'portals running the platform' },
   { value: '5,000+', label: 'users on it' },
   { value: '40%', label: 'drop in support tickets after the internal tooling' },
   { value: '0', label: 'critical findings at HIPAA and FIPS review' },

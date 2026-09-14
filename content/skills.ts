@@ -30,7 +30,7 @@ export const skills: SkillGroup[] = [
   {
     name: 'Backend',
     items: ['Python', 'FastAPI', 'Streaming APIs', 'PostgreSQL', 'psycopg3', 'Redis', 'OAuth', 'OpenTelemetry', 'Prometheus'],
-    where: 'The backend re-platform, and every service under the platform.',
+    where: 'Every service under the platform.',
   },
   {
     name: 'Frontend',

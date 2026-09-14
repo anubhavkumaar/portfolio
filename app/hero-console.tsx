@@ -41,7 +41,7 @@ const INTENTS: Intent[] = [
     label: 'Show me the work',
     match: /\b(work|project|portfolio|show|built|shipped)\b/i,
     answer:
-      'Four public builds (PitStop, HEAT, SAPR and Valo Tourney) plus three case studies from the Deloitte platform: retrieval, agents, and the backend re-platform. Each one opens further down.',
+      'Four public builds (PitStop, HEAT, SAPR and Valo Tourney) plus three case studies from the Deloitte platform: retrieval, agents, and the backend under them. Each one opens further down.',
     go: { id: 'work', label: 'Open the work' },
   },
   {

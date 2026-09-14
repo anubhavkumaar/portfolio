@@ -20,7 +20,7 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const DEMOS: Record<string, ComponentType> = {
   'retrieval-layer': RagPipelineDemo,
   'agent-layer': AgentPlanDemo,
-  'backend-v2': DeepChatDemo,
+  backend: DeepChatDemo,
 };
 
 const LISTED = work.filter((w) => w.listed !== false);

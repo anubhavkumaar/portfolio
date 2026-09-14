@@ -13,7 +13,7 @@ Audience and job: a recruiter or hiring manager with 30 seconds, then an enginee
 
 Constraints: PRODUCT.md confidentiality, cleared metrics, copy rules, anti-pattern list. GitHub and LinkedIn only. No availability line. Static export. Lighthouse a11y over 95, perf over 85.
 
-Unresolved: whether the three simulated platform demos stay (confidentiality); two facts for the v2 case study.
+Unresolved: whether the three simulated platform demos stay (confidentiality).
 
 ## Direction contract
 

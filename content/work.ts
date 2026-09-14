@@ -1,10 +1,10 @@
 // Case studies. Each answers four beats: problem, constraint, decision, cost.
 // If a project cannot answer all four it does not go on the site.
 //
-// Confidentiality: the platform is an internal Deloitte product licensed to US
-// state governments. Describe capability, decisions and tradeoffs only. No
-// architecture diagrams, no client names, no product screenshots, no backend
-// system names, no uncleared metrics.
+// Confidentiality: the platform is an internal Deloitte product licensed to
+// external customers. Describe capability, decisions and tradeoffs only. No
+// architecture diagrams, no client or customer-category names, no product
+// screenshots, no backend system names, no uncleared metrics.
 
 export type Beat = {
   label: 'problem' | 'constraint' | 'decision' | 'cost';
@@ -36,12 +36,12 @@ export const work: CaseStudy[] = [
     year: '2024',
     title: 'Retrieval layer, built twice',
     lede:
-      'The platform answers policy questions for caseworkers. I built the retrieval behind it twice, and the second one was only right because the first one was mine.',
+      'The platform answers policy questions with citations. I built the retrieval behind it twice, and the second one was only right because the first one was mine.',
     beats: [
       {
         label: 'problem',
         body:
-          'Caseworkers needed answers out of a large policy corpus, with citations they could open and check. A wrong answer delivered in a confident tone is worse than no answer, so retrieval had to be inspectable, not just accurate on average.',
+          'Users needed answers out of a large policy corpus, with citations they could open and check. A wrong answer delivered in a confident tone is worse than no answer, so retrieval had to be inspectable, not just accurate on average.',
       },
       {
         label: 'constraint',
@@ -56,7 +56,7 @@ export const work: CaseStudy[] = [
       {
         label: 'cost',
         body:
-          'The rewrite cost what a rewrite costs. It bought back ingestion and citation extraction I no longer maintain, and a retrieval path I can still reason about when it returns the wrong thing. Policy lookup time for caseworkers dropped. I would not have known which knobs mattered on the managed version without having built the manual one.',
+          'The rewrite cost what a rewrite costs. It bought back ingestion and citation extraction I no longer maintain, and a retrieval path I can still reason about when it returns the wrong thing. Policy lookup time dropped. I would not have known which knobs mattered on the managed version without having built the manual one.',
       },
     ],
     stack: ['Python', 'AWS Bedrock Knowledge Bases', 'S3', 'PostgreSQL', 'psycopg3'],
@@ -96,35 +96,33 @@ export const work: CaseStudy[] = [
   },
 
   {
-    slug: 'backend-v2',
+    slug: 'backend',
     word: 'PLATFORM',
     tag: 'FastAPI',
     year: '2025',
-    title: 'Backend re-platform',
+    title: 'One backend, several tenants',
     lede:
-      'One codebase runs for several state customers, each with their own extensions on top. v2 was the rework that made that seam real instead of implied.',
-    needsReview:
-      'Reconstructed from resume material. Two beats need Anubhav to confirm or replace: what specifically would not hold in v1, and what the re-platform actually cost.',
+      'One codebase serves several customers, each with their own extensions on top. The backend is built so that seam is real instead of implied.',
     beats: [
       {
         label: 'problem',
         body:
-          'The backend had grown around the shape of a single deployment. Every new state customer runs the same codebase with their own extensions on top, and v1 had no clean seam for that, so customer specific behaviour was landing in places that belonged to everyone.',
+          'Every customer runs the same codebase with their own extensions on top. Without a clean seam for that, customer specific behaviour lands in places that belong to everyone, and each new customer makes the shared paths harder to change.',
       },
       {
         label: 'constraint',
         body:
-          'The portals are live government services, so there was no window where the platform could simply stop. One customer\'s extensions must not become visible to another. And streaming responses meant the request path could not be quietly rebuilt underneath the part users actually watch.',
+          'The portals are live services, so there is no window where the platform can simply stop. One customer\'s extensions must not become visible to another. And streaming responses mean the request path cannot be quietly rebuilt underneath the part users actually watch.',
       },
       {
         label: 'decision',
         body:
-          'I reworked the services around a defined extension seam: streaming FastAPI over server sent events, PostgreSQL schema designed with psycopg3 rather than an ORM so the queries stay legible, and Redis semantic caching in front of model calls. Every model call carries OpenTelemetry, Prometheus and Langfuse instrumentation, so latency, token cost and retrieval quality are per request facts rather than guesses.',
+          'I built the services around a defined extension seam: streaming FastAPI over server sent events, a PostgreSQL schema written with psycopg3 rather than an ORM so the queries stay legible, and Redis semantic caching in front of model calls. Every model call carries OpenTelemetry, Prometheus and Langfuse instrumentation, so latency, token cost and retrieval quality are per request facts rather than guesses.',
       },
       {
         label: 'cost',
         body:
-          'Migration work that shipped no new features, and a stricter contract for anyone adding customer specific behaviour. What it bought was the ability to onboard a customer without editing shared paths, and enough instrumentation to answer why a request was slow instead of speculating.',
+          'A stricter contract for anyone adding customer specific behaviour, and instrumentation that has to be kept honest as the services change. What it buys is onboarding a customer without editing shared paths, and being able to answer why a request was slow instead of speculating.',
       },
     ],
     stack: ['FastAPI', 'PostgreSQL', 'psycopg3', 'Redis', 'OpenTelemetry', 'Prometheus'],
@@ -138,17 +136,17 @@ export const work: CaseStudy[] = [
     year: '2025',
     title: 'HIPAA and FIPS, zero critical findings',
     lede:
-      'Government healthcare work means the platform clears review before it ships. A generative model is a boundary the existing controls were not written for.',
+      'The platform handles protected health information, so it clears review before it ships. A generative model is a boundary the existing controls were not written for.',
     beats: [
       {
         label: 'problem',
         body:
-          'The platform handles protected health information for government customers. It does not ship without clearing HIPAA and FIPS review, and a single finding rated critical means it does not ship at all.',
+          'The platform handles protected health information. It does not ship without clearing HIPAA and FIPS review, and a single finding rated critical means it does not ship at all.',
       },
       {
         label: 'constraint',
         body:
-          'The controls have to hold without making the product unusable. Every check added at the model boundary is latency a caseworker waits through. The review process also assumes conventional software, and a component that takes free text and returns free text is a class of boundary the existing controls did not describe.',
+          'The controls have to hold without making the product unusable. Every check added at the model boundary is latency a user waits through. The review process also assumes conventional software, and a component that takes free text and returns free text is a class of boundary the existing controls did not describe.',
       },
       {
         label: 'decision',
