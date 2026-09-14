@@ -7,7 +7,6 @@ export const profile = {
   role: 'Full Stack Developer and GenAI Engineer',
   location: 'Hyderabad, India',
   email: 'work@anubhavkumaar.in',
-  phone: '+91 7079397940',
 
   roleLine: 'I am a',
   lede:

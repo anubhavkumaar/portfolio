@@ -216,9 +216,9 @@ export const answers: Answer[] = [
   {
     id: 'reach',
     chip: 'How do I reach you?',
-    keys: ['reach', 'contact', 'email', 'mail', 'linkedin', 'phone', 'number', 'call', 'whatsapp', 'connect', 'hire', 'hiring', 'available', 'open to', 'freelance', 'contract', 'opportunit', 'talk', 'social', 'github'],
+    keys: ['reach', 'contact', 'email', 'mail', 'linkedin', 'phone', 'number', 'call', 'whatsapp', 'text', 'connect', 'hire', 'hiring', 'available', 'open to', 'freelance', 'contract', 'opportunit', 'talk', 'social', 'github'],
     text: () =>
-      `Email is the fastest route: ${profile.email}. LinkedIn: linkedin.com/in/anubhavkumaar. Phone: ${profile.phone}. The rest of the profiles are in the connect section.`,
+      `Email is the fastest route: ${profile.email}. LinkedIn: linkedin.com/in/anubhavkumaar. The rest of the profiles are in the connect section.`,
     go: { id: 'connect', label: 'Get in touch' },
   },
   {
