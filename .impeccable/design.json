@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-14T17:05:00+05:30",
+  "title": "Design System: Anubhav Kumar, portfolio",
+  "extensions": {
+    "colorMeta": {
+      "ground": { "role": "neutral", "displayName": "Ground", "canonical": "#0a0c10", "tonalRamp": ["#0a0c10", "#12151c", "#1c2029", "#2a2f3b", "#3f4554", "#666d7e", "#9ba1ae", "#eef1f6"] },
+      "surface": { "role": "neutral", "displayName": "Surface", "canonical": "#12151c", "tonalRamp": ["#0a0c10", "#12151c", "#1c2029", "#2a2f3b", "#3f4554", "#666d7e", "#9ba1ae", "#eef1f6"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#eef1f6", "tonalRamp": ["#0b0e14", "#1c2029", "#3f4554", "#666d7e", "#9ba1ae", "#c4c9d3", "#dfe3ea", "#eef1f6"] },
+      "electric-blue": { "role": "primary", "displayName": "Electric Blue", "canonical": "#5b9fff", "tonalRamp": ["#0d1f45", "#173a80", "#2f6bff", "#4386ff", "#5b9fff", "#86b8ff", "#b4d2ff", "#e2eeff"] },
+      "electric-blue-deep": { "role": "primary", "displayName": "Electric Blue Deep", "canonical": "#2f6bff", "tonalRamp": ["#0d1f45", "#173a80", "#2f6bff", "#4386ff", "#5b9fff", "#86b8ff", "#b4d2ff", "#e2eeff"] },
+      "field-violet": { "role": "tertiary", "displayName": "Field Violet", "canonical": "#7c5cff", "tonalRamp": ["#1b1247", "#352482", "#5539cc", "#6a4cf0", "#7c5cff", "#9d86ff", "#c2b3ff", "#e8e2ff"] },
+      "ground-light": { "role": "neutral", "displayName": "Ground, light theme", "canonical": "#f4f6fa", "tonalRamp": ["#0b0e14", "#1c2029", "#3f4554", "#666d7e", "#9ba1ae", "#c4c9d3", "#e9edf4", "#f4f6fa"] },
+      "surface-light": { "role": "neutral", "displayName": "Surface, light theme", "canonical": "#e9edf4", "tonalRamp": ["#0b0e14", "#1c2029", "#3f4554", "#666d7e", "#9ba1ae", "#c4c9d3", "#e9edf4", "#f4f6fa"] },
+      "ink-light": { "role": "neutral", "displayName": "Ink, light theme", "canonical": "#0b0e14", "tonalRamp": ["#0b0e14", "#1c2029", "#3f4554", "#666d7e", "#9ba1ae", "#c4c9d3", "#dfe3ea", "#eef1f6"] },
+      "electric-blue-light": { "role": "primary", "displayName": "Electric Blue, light theme", "canonical": "#2f6fed", "tonalRamp": ["#0d1f45", "#173a80", "#1f57d6", "#2f6fed", "#4386ff", "#86b8ff", "#b4d2ff", "#e2eeff"] },
+      "electric-blue-deep-light": { "role": "primary", "displayName": "Electric Blue Deep, light theme", "canonical": "#1f57d6", "tonalRamp": ["#0d1f45", "#173a80", "#1f57d6", "#2f6fed", "#4386ff", "#86b8ff", "#b4d2ff", "#e2eeff"] },
+      "field-violet-light": { "role": "tertiary", "displayName": "Field Violet, light theme", "canonical": "#6a4cf0", "tonalRamp": ["#1b1247", "#352482", "#5539cc", "#6a4cf0", "#7c5cff", "#9d86ff", "#c2b3ff", "#e8e2ff"] }
+    },
+    "typographyMeta": {
+      "hero": { "displayName": "Hero", "purpose": "The name only, one glyph per element so it can answer the pointer." },
+      "display": { "displayName": "Display", "purpose": "One section heading per section; the mask reveal applies here only." },
+      "title": { "displayName": "Title", "purpose": "Spread titles, side-project names, skill groups, the About heading, the email address." },
+      "lead": { "displayName": "Lead", "purpose": "The role line, section ledes, About lead; usually muted." },
+      "body": { "displayName": "Body", "purpose": "Reading text, capped at 62ch." },
+      "small": { "displayName": "Small", "purpose": "Captions, handles, footer, nav links, button labels." },
+      "meta": { "displayName": "Meta", "purpose": "Years, counts, stack tags, the scroll cue. Mono is a measurement." }
+    },
+    "shadows": [
+      { "name": "panel-ambient", "value": "inset 0 1px 0 rgba(238,241,246,0.06), 0 24px 60px -20px rgba(0,0,0,0.55)", "purpose": "The glass panel: console, email card, demo panel." },
+      { "name": "panel-ambient-light", "value": "inset 0 1px 0 rgba(255,255,255,0.7), 0 24px 60px -24px rgba(11,14,20,0.28)", "purpose": "The same panel on the light theme." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "The one easing family for arrivals and hover transforms." },
+      { "name": "dur-fast", "value": "180ms", "purpose": "Colour and border state changes, button press." },
+      { "name": "dur-base", "value": "360ms", "purpose": "Hover transforms, background changes, nav chrome." },
+      { "name": "dur-slow", "value": "700ms", "purpose": "The heading mask reveal." },
+      { "name": "spring-name", "value": "k 0.09, damping 0.78, radius 220px, push 26px", "purpose": "Per-glyph proximity spring on the hero name." },
+      { "name": "lerp-preview", "value": "0.16 per frame, tilt up to 6deg by velocity", "purpose": "The cursor-following side-project preview." }
+    ],
+    "breakpoints": [
+      { "name": "socials-four-up", "value": "720px" },
+      { "name": "register-two-column", "value": "760px" },
+      { "name": "landing-two-column", "value": "900px" },
+      { "name": "section-head-two-column", "value": "960px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one filled button: ink on ground, blue on hover.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\">See the work</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 0.5rem; height: 44px; padding: 0 1.25rem; border-radius: 999px; font-family: var(--font-text, Manrope, system-ui, sans-serif); font-size: 0.9375rem; font-weight: 600; text-decoration: none; white-space: nowrap; transition: background-color 180ms linear, border-color 180ms linear, color 180ms linear, transform 180ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn:active { transform: scale(0.97); } .ds-btn:focus-visible { outline: 2px solid var(--accent, #5b9fff); outline-offset: 4px; } .ds-btn-primary { background: var(--ink, #eef1f6); color: var(--bg, #0a0c10); } .ds-btn-primary:hover { background: var(--accent, #5b9fff); color: #06080c; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The secondary action: a hairline pill that fills in to full ink on hover.",
+      "html": "<a class=\"ds-btn ds-btn-ghost\" href=\"#\">Email me</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 0.5rem; height: 44px; padding: 0 1.25rem; border-radius: 999px; font-family: var(--font-text, Manrope, system-ui, sans-serif); font-size: 0.9375rem; font-weight: 600; text-decoration: none; white-space: nowrap; transition: background-color 180ms linear, border-color 180ms linear, color 180ms linear, transform 180ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn:active { transform: scale(0.97); } .ds-btn:focus-visible { outline: 2px solid var(--accent, #5b9fff); outline-offset: 4px; } .ds-btn-ghost { border: 1px solid rgba(238,241,246,0.22); color: rgba(238,241,246,0.85); background: transparent; } .ds-btn-ghost:hover { border-color: var(--ink, #eef1f6); color: var(--ink, #eef1f6); }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "A static tag for a stack item or a skill. Never interactive.",
+      "html": "<span class=\"ds-chip\">FastAPI</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; height: 28px; padding: 0 0.7rem; border-radius: 999px; border: 1px solid rgba(238,241,246,0.1); font-family: var(--font-text, Manrope, system-ui, sans-serif); font-size: 0.8rem; color: rgba(238,241,246,0.7); }"
+    },
+    {
+      "name": "Glass Panel",
+      "kind": "card",
+      "refersTo": "glass-panel",
+      "description": "Hairline plus a 5% fill and an ambient shadow; the only container on the site.",
+      "html": "<div class=\"ds-glass\"><div class=\"ds-glass-title\">work@anubhavkumaar.in</div><p class=\"ds-glass-small\">Email is the fastest route.</p></div>",
+      "css": ".ds-glass { background: rgba(238,241,246,0.05); border: 1px solid rgba(238,241,246,0.1); border-radius: 20px; padding: clamp(1.5rem, 3vw, 2.25rem); box-shadow: inset 0 1px 0 rgba(238,241,246,0.06), 0 24px 60px -20px rgba(0,0,0,0.55); color: var(--ink, #eef1f6); } .ds-glass-title { font-family: var(--font-display, 'Bricolage Grotesque', system-ui, sans-serif); font-size: clamp(1.5rem, 2.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.08; } .ds-glass-small { margin-top: 0.75rem; font-family: var(--font-text, Manrope, system-ui, sans-serif); font-size: 0.9375rem; color: rgba(238,241,246,0.62); }"
+    },
+    {
+      "name": "Ruled Row",
+      "kind": "custom",
+      "refersTo": "ruled-register",
+      "description": "One row of a ruled register: hairline below, text slides right on hover, meta in mono.",
+      "html": "<a class=\"ds-row\" href=\"#\"><span class=\"ds-row-main\"><span class=\"ds-row-name\">PitStop</span><span class=\"ds-row-blurb\">Auto services: bookings, job logs, crew management.</span></span><span class=\"ds-row-meta\">2025</span></a>",
+      "css": ".ds-row { display: flex; align-items: baseline; justify-content: space-between; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid rgba(238,241,246,0.1); text-decoration: none; color: var(--ink, #eef1f6); } .ds-row-main { display: block; transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-row:hover .ds-row-main { transform: translateX(0.75rem); } .ds-row:focus-visible { outline: 2px solid var(--accent, #5b9fff); outline-offset: 4px; } .ds-row-name { display: block; font-family: var(--font-display, 'Bricolage Grotesque', system-ui, sans-serif); font-size: clamp(1.5rem, 2.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.08; transition: color 180ms linear; } .ds-row:hover .ds-row-name { color: var(--accent, #5b9fff); } .ds-row-blurb { display: block; margin-top: 0.35rem; font-family: var(--font-text, Manrope, system-ui, sans-serif); font-size: 0.9375rem; color: rgba(238,241,246,0.62); } .ds-row-meta { font-family: var(--font-mono, 'Azeret Mono', ui-monospace, monospace); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.01em; color: rgba(238,241,246,0.55); font-variant-numeric: tabular-nums; white-space: nowrap; }"
+    },
+    {
+      "name": "Social Cell",
+      "kind": "custom",
+      "refersTo": "social-cell",
+      "description": "One cell of the ruled social grid: glyph, name, handle; hover fills the cell and lights the glyph.",
+      "html": "<a class=\"ds-social\" href=\"#\"><span class=\"ds-social-icon\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12\"/></svg></span><span class=\"ds-social-text\"><span class=\"ds-social-name\">GitHub</span><span class=\"ds-social-handle\">anubhavkumaar</span></span></a>",
+      "css": ".ds-social { display: flex; align-items: center; gap: 0.9rem; min-height: 5.75rem; padding: 1.1rem 1.15rem; border: 1px solid rgba(238,241,246,0.1); text-decoration: none; color: var(--ink, #eef1f6); transition: background-color 360ms linear; } .ds-social:hover { background: rgba(238,241,246,0.05); } .ds-social:focus-visible { outline: 2px solid var(--accent, #5b9fff); outline-offset: 4px; } .ds-social-icon { flex: none; display: inline-flex; color: rgba(238,241,246,0.72); transition: color 180ms linear, transform 360ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-social:hover .ds-social-icon { color: var(--accent, #5b9fff); transform: translateY(-2px); } .ds-social-name { display: block; font-family: var(--font-display, 'Bricolage Grotesque', system-ui, sans-serif); font-size: 1.05rem; font-weight: 600; letter-spacing: -0.02em; transition: color 180ms linear; } .ds-social:hover .ds-social-name { color: var(--accent, #5b9fff); } .ds-social-handle { display: block; margin-top: 0.1rem; font-family: var(--font-text, Manrope, system-ui, sans-serif); font-size: 0.9375rem; color: rgba(238,241,246,0.62); overflow-wrap: anywhere; }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Small text link at ink 0.66; hover and current draw a 1px underline from the left.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"#\">Work</a><a class=\"ds-nav-link\" href=\"#\" aria-current=\"true\">Skills</a><a class=\"ds-nav-link\" href=\"#\">About</a><a class=\"ds-nav-link\" href=\"#\">Connect</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 1.75rem; } .ds-nav-link { position: relative; font-family: var(--font-text, Manrope, system-ui, sans-serif); font-size: 0.9375rem; color: rgba(238,241,246,0.66); padding: 0.35rem 0.1rem; text-decoration: none; transition: color 180ms linear; } .ds-nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--ink, #eef1f6); transform: scaleX(0); transform-origin: left; transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-link:hover, .ds-nav-link[aria-current='true'] { color: var(--ink, #eef1f6); } .ds-nav-link:hover::after, .ds-nav-link[aria-current='true']::after { transform: scaleX(1); } .ds-nav-link:focus-visible { outline: 2px solid var(--accent, #5b9fff); outline-offset: 4px; border-radius: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Living Field",
+    "overview": "One deep blue-black ground carries the whole site. Behind the landing a slow field of light drifts through warped noise, blue into violet, dim enough that a name set at the largest scale on the page sits on it without a halo. Everything after the landing is structure rather than atmosphere: hairlines, one electric blue used for meaning, display type that does the work headings usually leave to boxes. The page is a work sample for a backend and GenAI engineer, so it argues by precision. Nothing glows, nothing floats, nothing is tracked or shouted.\n\nDensity is editorial rather than dashboard: sections breathe at a viewport-scaled rhythm, lists are ruled rather than carded, and the one panel that reads as glass (the console) exists because it sits over the light and lets it through. The light theme is the same world lit, not a second palette: the ground inverts, the accent deepens to hold contrast, the field tints instead of glowing.\n\nMotion answers the visitor. The name's glyphs ease away from the pointer on a spring, the side-project preview lags the cursor like a plate being lifted, headings rise once through a mask when they arrive. Nothing fires on scroll for its own sake, and the resting state under reduced motion is the design, not a stripped version of it.",
+    "keyCharacteristics": [
+      "Blue-black ground (#0a0c10) with a WebGL light field behind the landing only",
+      "One accent, electric blue (#5b9fff), reserved for meaning: role line, labels, links, focus",
+      "Hairlines (ink at 10%) as the structure; no boxes, no card grids",
+      "Bricolage Grotesque at scale with optical sizing; Manrope for reading; mono for measurements only",
+      "Glass is a hairline plus a faint fill; backdrop blur on two surfaces only",
+      "Pointer-responsive motion, mask reveals, one exponential-out easing family"
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Electric blue marks meaning (a label, a link, the active thing, focus). It is never decorative, never a background, never a gradient, and never appears on more than a few elements per viewport.", "section": "colors" },
+      { "name": "The Opacity Rule", "body": "Secondary tones are ink at an opacity, never a second grey. A new tone is a new opacity step on ink, not a new hex.", "section": "colors" },
+      { "name": "The Field Only Rule", "body": "Violet lives in the WebGL field and nowhere else. If an element needs a second accent, the answer is no.", "section": "colors" },
+      { "name": "The Mono Is A Measurement Rule", "body": "Mono sets numbers, years, identifiers, and pipeline names. A sentence, a label, or a caption is never set in mono.", "section": "typography" },
+      { "name": "The One Reveal Rule", "body": "The mask rise belongs to display headings, once per section. Body copy, rows, and panels arrive plain.", "section": "typography" },
+      { "name": "The No Costume Rule", "body": "No tracked uppercase, no eyebrow labels, no gradient text, no accented single word inside a headline.", "section": "typography" },
+      { "name": "The Two Blurs Rule", "body": "Backdrop blur exists on the console (blur 18px, ground at 30%) because it sits over the light field, and on the scrolled nav (blur 14px, ground at 72%). Everywhere else glass is a hairline plus a 5% fill, flat.", "section": "elevation" },
+      { "name": "The Field Is The Depth Rule", "body": "The landing's depth comes from the moving light, not from layered surfaces. Do not stack panels or add glows to imitate it.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do build every list as a ruled register: hairlines above and between, no gaps between boxes.",
+      "Do use electric blue for meaning only: labels, links, the active item, focus, one hover state.",
+      "Do set new secondary tones as ink at an opacity (0.78, 0.62, 0.55, 0.5) rather than a new grey.",
+      "Do keep mono for numbers, years, identifiers, and pipeline names, with tabular numerals.",
+      "Do use the one easing family: cubic-bezier(0.22, 1, 0.36, 1) at 180ms, 360ms, or 700ms, and springs for pointer response.",
+      "Do give every entrance a resting state that stands on its own under prefers-reduced-motion.",
+      "Do keep both themes as the same five values inverted; the light theme deepens the accent to hold contrast."
+    ],
+    "donts": [
+      "Don't add a backdrop blur to anything other than the console and the scrolled nav.",
+      "Don't set a sentence, caption, or label in mono, tracked uppercase, or as an eyebrow.",
+      "Don't put a gradient, glow, or wash on an element; the field is the only light on the site.",
+      "Don't arrange content as a grid of same-size rounded cards with one shadow.",
+      "Don't add a second accent, an accented word inside a headline, or an arrow to a link.",
+      "Don't animate padding, height, or layout on hover; move transforms and colours only.",
+      "Don't add a custom cursor; the native pointer is the pointer."
+    ]
+  }
+}
