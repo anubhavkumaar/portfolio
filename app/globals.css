@@ -124,6 +124,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-size-adjust: 100%;
+  /* A real active state replaces this everywhere it matters, so the default
+     flash never shows over a pill or a ruled row that does not expect it. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -1173,11 +1176,13 @@ button {
   transition: transform var(--dur-base) var(--ease-out);
 }
 
-.connect__email:hover {
+.connect__email:hover,
+.connect__email:active {
   color: var(--accent);
 }
 
-.connect__email:hover::after {
+.connect__email:hover::after,
+.connect__email:active::after {
   transform: scaleX(1);
 }
 
@@ -1186,6 +1191,17 @@ button {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.5rem;
+}
+
+/* Two full-width, stacked taps beat two half-width ones on a phone. */
+@media (max-width: 479px) {
+  .connect__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .connect__actions .btn {
+    justify-content: center;
+  }
 }
 
 /* All eight profiles as one ruled register: hairlines between cells, no
@@ -1229,7 +1245,8 @@ button {
   }
 }
 
-.social:hover {
+.social:hover,
+.social:active {
   background: var(--glass);
 }
 
@@ -1240,7 +1257,8 @@ button {
   transition: color var(--dur-fast) linear, transform var(--dur-base) var(--ease-out);
 }
 
-.social:hover .social__icon {
+.social:hover .social__icon,
+.social:active .social__icon {
   color: var(--accent);
   transform: translateY(-2px);
 }
@@ -1259,7 +1277,8 @@ button {
   transition: color var(--dur-fast) linear;
 }
 
-.social:hover .social__name {
+.social:hover .social__name,
+.social:active .social__name {
   color: var(--accent);
 }
 
@@ -1279,7 +1298,8 @@ button {
   transition: color var(--dur-fast) linear;
 }
 
-.footer__top:hover {
+.footer__top:hover,
+.footer__top:active {
   color: var(--ink);
 }
 
