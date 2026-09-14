@@ -225,7 +225,7 @@ A WebGL2 fullscreen-triangle shader behind the landing: two bands of ground-tint
 The scripted assistant on the landing: a `--lit` glass panel with an avatar, "ask anubhav", a transcript that streams an answer word by word, five suggestion chips, and a prompt input. Answers come from a keyword-scored set in `content/answers.ts`, first person, facts from the profile sheet only, and each routes to the section it describes.
 
 ### Side-project preview (signature)
-Rows in the ruled register; on hover a 26vw screenshot follows the pointer beside the cursor on a 0.16 lerp, flips sides past 60% of the viewport, tilts up to 6 degrees with horizontal velocity, and crossfades between rows. Touch devices get the screenshot inline under the row.
+Rows in the ruled register on the left; a sticky, titled preview panel on the right (hairline frame, 16:10, the project name as a caption beneath) crossfades to the hovered row via `:has()`, reading the hover state from a sibling with no pointer tracking. Below 900px, or on touch, the panel is replaced by the screenshot inline under each row.
 
 ## Do's and Don'ts
 

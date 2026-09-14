@@ -888,10 +888,23 @@ button {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Side projects: a list of rows, and the preview appears under the cursor on
-   hover, the way the earlier build showed them. On touch the preview sits
-   inline under each row instead.
+   Side projects: rows on the left, a fixed titled preview on the right,
+   the way the earlier build showed them. Sticky as the list scrolls, no
+   pointer tracking. On touch or below 900px the shot sits inline instead.
    ═══════════════════════════════════════════════════════════════════════════ */
+
+.side {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 3.5rem);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .side {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 30%);
+  }
+}
 
 .plist {
   list-style: none;
@@ -946,48 +959,91 @@ button {
   display: none;
 }
 
-/* The floating preview. Position and visibility are driven by JS transforms;
-   this only draws the plate. */
-.ppreview {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 30;
-  width: clamp(260px, 26vw, 400px);
+/* The fixed preview: sticky beside the list, a hairline frame, the name
+   as a caption underneath. Crossfades between projects; :has() reads which
+   row is hovered from a sibling, since the panel and the list are not
+   nested. Without :has() support it simply sits on the first project. */
+.spreview {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .spreview {
+    display: block;
+    position: sticky;
+    top: calc(var(--nav-h) + 1.5rem);
+    padding-bottom: 2.4rem;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .spreview {
+    display: none;
+  }
+}
+
+.spreview__frame {
+  position: relative;
+  display: block;
+  width: 100%;
   aspect-ratio: 16 / 10;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--hair-strong);
-  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
-  pointer-events: none;
-  opacity: 0;
-  transform: translate3d(-50%, -50%, 0) scale(0.92);
-  transition: opacity var(--dur-base) linear;
-  will-change: transform, opacity;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
 }
 
-.ppreview.is-on {
-  opacity: 1;
-}
-
-.ppreview img {
+.spreview__img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity var(--dur-base) linear;
+  transition: opacity var(--dur-slow) linear;
 }
 
-.ppreview img.is-current {
+.spreview__img--0 {
   opacity: 1;
 }
 
-@media (hover: none), (pointer: coarse), (max-width: 800px) {
-  .ppreview {
-    display: none;
+.spreview__title {
+  position: absolute;
+  top: calc(100% + 0.85rem);
+  left: 0;
+  color: rgba(var(--ink-rgb), 0.6);
+  opacity: 0;
+  transition: opacity var(--dur-base) linear;
+}
+
+.spreview__title--0 {
+  opacity: 1;
+}
+
+@supports selector(:has(*)) {
+  .side:has(.prow-li:hover) .spreview__img--0,
+  .side:has(.prow-li:hover) .spreview__title--0 {
+    opacity: 0;
   }
+  .side:has(.prow-li:nth-child(1):hover) .spreview__img--0,
+  .side:has(.prow-li:nth-child(1):hover) .spreview__title--0 {
+    opacity: 1;
+  }
+  .side:has(.prow-li:nth-child(2):hover) .spreview__img--1,
+  .side:has(.prow-li:nth-child(2):hover) .spreview__title--1 {
+    opacity: 1;
+  }
+  .side:has(.prow-li:nth-child(3):hover) .spreview__img--2,
+  .side:has(.prow-li:nth-child(3):hover) .spreview__title--2 {
+    opacity: 1;
+  }
+  .side:has(.prow-li:nth-child(4):hover) .spreview__img--3,
+  .side:has(.prow-li:nth-child(4):hover) .spreview__title--3 {
+    opacity: 1;
+  }
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 899px) {
   .prow {
     grid-template-columns: 1fr;
   }
