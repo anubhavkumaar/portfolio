@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, Mail } from 'lucide-react';
 import { profile } from '@/content/profile';
 import { BrandIcon, type Brand } from './BrandIcon';
 import { Reveal } from './Reveal';
@@ -54,11 +54,12 @@ export function Connect() {
         </a>
         <div className="connect__actions">
           <a className="btn btn--primary" href={`mailto:${profile.email}`}>
-            Email me
+            <Mail size={15} className="btn__icon" aria-hidden="true" />
+            <span>Email me</span>
           </a>
           <button type="button" className="btn btn--ghost" onClick={copy} aria-live="polite">
             {copied ? <Check size={15} /> : <Copy size={15} />}
-            {copied ? 'Copied' : 'Copy address'}
+            <span>{copied ? 'Copied' : 'Copy address'}</span>
           </button>
         </div>
 

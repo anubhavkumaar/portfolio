@@ -1193,14 +1193,31 @@ button {
   margin-top: 1.5rem;
 }
 
-/* Two full-width, stacked taps beat two half-width ones on a phone. */
-@media (max-width: 479px) {
+/* Below 768px the two actions become a pair of square icon buttons, icon
+   over caption, the way a phone's own share sheet presents its shortcuts.
+   The desktop pill stays a pill; only the box model changes underneath. */
+@media (max-width: 767px) {
   .connect__actions {
-    flex-direction: column;
-    align-items: stretch;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-top: 2rem;
   }
   .connect__actions .btn {
+    flex-direction: column;
     justify-content: center;
+    width: 5.5rem;
+    height: 5.5rem;
+    padding: 0;
+    border-radius: 22px;
+    gap: 0.4rem;
+    white-space: normal;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1.15;
+  }
+  .connect__actions .btn__icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -1210,15 +1227,22 @@ button {
 .socials {
   list-style: none;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: clamp(2.5rem, 6vh, 4rem);
   border-top: 1px solid var(--hair);
   border-left: 1px solid var(--hair);
 }
 
-/* One row per profile on a phone so no handle breaks mid-word; four cells
-   across once there is room for the longest handle on one line. */
-@media (min-width: 720px) {
+/* One row per profile once there is room for the longest handle on one
+   line; below that, a compact grid of icon tiles reads faster on a phone
+   than eight long rows, so the handle drops and three sit across. */
+@media (min-width: 768px) {
+  .socials {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
   .socials {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -1231,14 +1255,37 @@ button {
 
 .social {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
-  min-height: 3.9rem;
-  padding: 0.8rem 1rem;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  min-height: 6.25rem;
+  padding: 1rem 0.5rem;
   transition: background-color var(--dur-base) linear;
 }
 
-@media (min-width: 720px) {
+.social__handle {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .social {
+    flex-direction: row;
+    text-align: left;
+    gap: 0.9rem;
+    min-height: 3.9rem;
+    padding: 0.8rem 1rem;
+  }
+  .social__handle {
+    display: block;
+  }
+  .social__name {
+    font-size: 1.05rem;
+  }
+}
+
+@media (min-width: 900px) {
   .social {
     min-height: 5.75rem;
     padding: 1.1rem 1.15rem;
@@ -1270,7 +1317,7 @@ button {
 .social__name {
   display: block;
   font-family: var(--font-display), system-ui, sans-serif;
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -1283,7 +1330,6 @@ button {
 }
 
 .social__handle {
-  display: block;
   margin-top: 0.1rem;
   overflow-wrap: anywhere;
 }

@@ -207,8 +207,11 @@ Two silhouettes. Structure is square: ruled registers, hairline grids, and the r
 - **Internal Padding:** clamp(1.5rem, 3vw, 2.25rem) on the email card; 1.25rem to 1.5rem on the console.
 
 ### Ruled Register
-- **Style:** top hairline on the list, bottom hairline on each row; rows are a grid that stacks under 760px. Used by spreads, side projects, skills, About's listing, and the socials (as a bordered cell grid).
-- **Hover:** row text moves 0.75rem right on a 360ms exponential-out transform (side projects), title turns electric blue (spreads), cell takes the glass fill and the glyph lifts 2px (socials). Hover moves transforms and colours only, never padding.
+- **Style:** top hairline on the list, bottom hairline on each row; rows are a grid that stacks under 760px. Used by spreads, side projects, skills, and About's listing.
+- **Hover:** row text moves 0.75rem right on a 360ms exponential-out transform (side projects), title turns electric blue (spreads). Hover moves transforms and colours only, never padding.
+
+### Connect (signature, redesigned for mobile 2026-09-15)
+Below 768px the socials are a 3-column grid of hairline-ruled square tiles, icon over name, handle dropped for density; the two actions become 5.5rem square icon buttons (icon over caption) instead of pills, echoing a phone's own share-sheet shortcuts. At 768px and up both revert to the original form: a single-column ruled list with the handle restored, and pill buttons. Tap and hover carry the same feedback (`:active` mirrors `:hover`) since touch never fires the latter.
 
 ### Inputs
 - **Style:** the console's prompt input is the SmoothUI primitive on the `--sh-*` tokens: surface fill, hair border, 20px radius inside the panel, a circular send button.
