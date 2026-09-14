@@ -1134,39 +1134,68 @@ button {
    Connect
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* The last screen: a full viewport on desktop, three rows (head, the
+   address and the register, the footer) with the middle row centred in
+   whatever height is left. Phones take the natural height. */
 .connect {
   position: relative;
-  padding-block: var(--space-section) 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  row-gap: clamp(2.5rem, 7vh, 5rem);
+  padding-top: var(--space-section);
   border-top: 1px solid var(--hair);
 }
 
-.connect__top {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 4rem);
-  align-items: start;
-  margin-bottom: clamp(2.5rem, 6vh, 4rem);
-}
-
-@media (min-width: 960px) {
-  .connect__top {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+@media (min-width: 900px) {
+  .connect {
+    min-height: 100svh;
   }
 }
 
-.connect__card {
-  padding: clamp(1.5rem, 3vw, 2.25rem);
+.connect__head {
+  margin-bottom: 0;
 }
 
+.connect__main {
+  align-self: center;
+}
+
+/* The address is the action, so it carries the largest type on the screen. */
 .connect__email {
-  display: block;
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(1.6rem, 4.9vw, 6.5rem);
+  font-weight: 650;
+  font-variation-settings: 'opsz' 72;
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--ink);
   overflow-wrap: anywhere;
+  padding-bottom: 0.1em;
   transition: color var(--dur-fast) linear;
+}
+
+.connect__email::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
 .connect__email:hover {
   color: var(--accent);
+}
+
+.connect__email:hover::after {
+  transform: scaleX(1);
 }
 
 .connect__actions {
@@ -1183,6 +1212,7 @@ button {
   list-style: none;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  margin-top: clamp(2.5rem, 6vh, 4rem);
   border-top: 1px solid var(--hair);
   border-left: 1px solid var(--hair);
 }
@@ -1259,6 +1289,15 @@ button {
 .footer {
   border-top: 1px solid var(--hair);
   padding-block: 1.5rem;
+}
+
+.footer__top {
+  color: rgba(var(--ink-rgb), 0.62);
+  transition: color var(--dur-fast) linear;
+}
+
+.footer__top:hover {
+  color: var(--ink);
 }
 
 .footer__inner {

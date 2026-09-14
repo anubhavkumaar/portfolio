@@ -5,6 +5,7 @@ import { Check, Copy } from 'lucide-react';
 import { profile } from '@/content/profile';
 import { BrandIcon, type Brand } from './BrandIcon';
 import { Reveal } from './Reveal';
+import { scrollToId } from './SmoothScroll';
 
 const SOCIALS: { id: Brand; name: string; handle: string; href: string }[] = [
   { id: 'github', name: 'GitHub', handle: 'anubhavkumaar', href: 'https://github.com/anubhavkumaar' },
@@ -17,6 +18,11 @@ const SOCIALS: { id: Brand; name: string; handle: string; href: string }[] = [
   { id: 'steam', name: 'Steam', handle: 'anubhavkumar', href: 'https://steamcommunity.com/id/anubhavkumar/' },
 ];
 
+/**
+ * The last screen. Full viewport on desktop: the heading at the top, the email
+ * address at the largest scale on the screen because it is the action, the
+ * eight profiles as one ruled register, and the footer on the bottom edge.
+ */
 export function Connect() {
   const [copied, setCopied] = useState(false);
 
@@ -32,32 +38,28 @@ export function Connect() {
 
   return (
     <section className="connect" id="connect">
-      <div className="wrap">
-        <div className="connect__top">
-          <div>
-            <Reveal>
-              <h2 className="t-display">Get in touch.</h2>
-            </Reveal>
-            <p className="t-lead muted" style={{ marginTop: '1rem', maxWidth: '40ch' }}>
-              For a role, a contract, or a question about any of the work above. Email is the fastest
-              route.
-            </p>
-          </div>
+      <div className="wrap section__head connect__head">
+        <Reveal>
+          <h2 className="t-display">Get in touch.</h2>
+        </Reveal>
+        <p className="t-lead muted">
+          For a role, a contract, or a question about any of the work above. Email is the fastest
+          route.
+        </p>
+      </div>
 
-          <div className="connect__card glass">
-            <a className="t-title connect__email" href={`mailto:${profile.email}`}>
-              {profile.email}
-            </a>
-            <div className="connect__actions">
-              <a className="btn btn--primary" href={`mailto:${profile.email}`}>
-                Email me
-              </a>
-              <button type="button" className="btn btn--ghost" onClick={copy} aria-live="polite">
-                {copied ? <Check size={15} /> : <Copy size={15} />}
-                {copied ? 'Copied' : 'Copy address'}
-              </button>
-            </div>
-          </div>
+      <div className="wrap connect__main">
+        <a className="connect__email" href={`mailto:${profile.email}`}>
+          {profile.email}
+        </a>
+        <div className="connect__actions">
+          <a className="btn btn--primary" href={`mailto:${profile.email}`}>
+            Email me
+          </a>
+          <button type="button" className="btn btn--ghost" onClick={copy} aria-live="polite">
+            {copied ? <Check size={15} /> : <Copy size={15} />}
+            {copied ? 'Copied' : 'Copy address'}
+          </button>
         </div>
 
         <ul className="socials" aria-label="Profiles">
@@ -77,12 +79,21 @@ export function Connect() {
         </ul>
       </div>
 
-      <footer className="footer" style={{ marginTop: 'var(--space-section)' }}>
+      <footer className="footer">
         <div className="wrap footer__inner">
           <span className="t-small">
             {profile.name}. {new Date().getFullYear()}.
           </span>
-          <span className="t-small">Built with Next.js, deployed as static files. No tracking.</span>
+          <a
+            className="t-small footer__top"
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToId('top');
+            }}
+          >
+            Back to top
+          </a>
         </div>
       </footer>
     </section>

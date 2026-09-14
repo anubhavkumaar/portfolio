@@ -151,7 +151,7 @@ Five values per theme, and every other colour on the page is one of them at an o
 ### Hierarchy
 - **Hero** (700, clamp(3.5rem, 11vw, 9.5rem), 0.9, -0.035em, opsz 96): the name only, set one glyph per element so it can answer the pointer.
 - **Display** (650, clamp(2.25rem, 5vw, 4.5rem), 0.98, -0.03em, opsz 72): one section heading per section; the mask reveal applies here and nowhere else.
-- **Title** (600, clamp(1.5rem, 2.6vw, 2.25rem), 1.08, -0.02em, opsz 48): spread titles, side-project names, skill group names, the About heading, the email address.
+- **Title** (600, clamp(1.5rem, 2.6vw, 2.25rem), 1.08, -0.02em, opsz 48): spread titles, side-project names, skill group names. The email address on the connect screen sits above this, at clamp(1.6rem, 4.9vw, 6.5rem), because it is the action.
 - **Lead** (400, clamp(1.15rem, 1.6vw, 1.35rem), 1.45): the role line, section ledes, About lead. Usually muted.
 - **Body** (400, 1.0625rem, 1.62): reading text, capped at 62ch.
 - **Small** (400, 0.9375rem, 1.55, ink 0.62): captions, handles, footer, nav links, button labels at 600.
