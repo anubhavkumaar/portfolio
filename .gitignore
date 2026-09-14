@@ -40,3 +40,10 @@ yarn-error.log*
 
 # OS
 Thumbs.db
+
+# Dev server cache, kept separate from the production build
+/.next-dev/
+
+# Review captures and build-info churn
+/.impeccable/review/
+tsconfig.tsbuildinfo
