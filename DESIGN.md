@@ -225,7 +225,7 @@ A WebGL2 fullscreen-triangle shader behind the landing: two bands of ground-tint
 The scripted assistant on the landing: a `--lit` glass panel with an avatar, "ask anubhav", a transcript that streams an answer word by word, five suggestion chips, and a prompt input. Answers come from a keyword-scored set in `content/answers.ts`, first person, facts from the profile sheet only, and each routes to the section it describes.
 
 ### Side-project preview (signature)
-Rows in the ruled register on the left; a sticky, titled preview panel on the right (hairline frame, 16:10, the project name as a caption beneath) crossfades to the hovered row via `:has()`, reading the hover state from a sibling with no pointer tracking. Below 900px, or on touch, the panel is replaced by the screenshot inline under each row.
+Rows on the left; behind and to the right, the four screenshots drift as ghostly, blue-tinted 3D panels (three.js, dynamically imported, mounts only once the section is in view) and resolve into clear focus on hover of their row, the others fading toward invisible. Off under reduced motion and on touch, where the screenshot sits inline under each row instead. Reintroduces three.js for this one effect at the user's explicit request (2026-09-15), after the rebuild had removed it; the cost is lazy-loaded and does not touch the first-load bundle.
 
 ## Do's and Don'ts
 
