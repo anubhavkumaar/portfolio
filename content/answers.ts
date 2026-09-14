@@ -112,7 +112,7 @@ export const answers: Answer[] = [
     id: 'rag',
     keys: ['rag', 'retrieval', 'bedrock', 'knowledge base', 'embedding', 'vector', 'citation', 'ingest', 'search', 'document', 'corpus', 's3'],
     text:
-      'I built the retrieval stack twice: a from-scratch RAG implementation first, to learn the failure modes, then a migration onto AWS Bedrock Knowledge Bases with S3 document ingestion, query routing and citation extraction, plus the portal section that manages the corpus: the S3 documents, their ingest jobs, the list of what is indexed, and deleting from it. The first case study is that story.',
+      'I built the retrieval stack twice: a from-scratch RAG implementation first, to learn the failure modes, then a migration onto AWS Bedrock Knowledge Bases with S3 document ingestion, query routing and citation extraction, plus a RAG file management system: the S3 documents, their ingest jobs, the list of what is indexed, and deleting from it. The first case study is that story.',
     go: { id: 'work', label: 'Open the case study' },
   },
   {

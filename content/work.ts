@@ -51,7 +51,7 @@ export const work: CaseStudy[] = [
       {
         label: 'decision',
         body:
-          'I built the whole pipeline by hand first: chunking, embeddings, vector search, ranking. Not because it was the right long term choice, but because I wanted to watch it fail against my own instrumentation before handing the problem to a managed service. Then I moved it onto AWS Bedrock Knowledge Bases with S3 document ingestion, query routing and citation extraction, and built the section of the portal that manages the corpus: the S3 documents and their ingest jobs, the list of what is indexed, and deleting from it.',
+          'I built the whole pipeline by hand first: chunking, embeddings, vector search, ranking. Not because it was the right long term choice, but because I wanted to watch it fail against my own instrumentation before handing the problem to a managed service. Then I moved it onto AWS Bedrock Knowledge Bases with S3 document ingestion, query routing and citation extraction, and built a RAG file management system on top: the S3 documents and their ingest jobs, the list of what is indexed, and deleting from it.',
       },
       {
         label: 'cost',
