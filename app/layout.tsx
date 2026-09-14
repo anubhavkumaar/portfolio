@@ -30,7 +30,7 @@ const mono = Azeret_Mono({
 export const metadata: Metadata = {
   title: 'Anubhav Kumar, Full Stack Developer and GenAI Engineer',
   description:
-    'I build production GenAI platforms at Deloitte: retrieval, agents, and the streaming backends under them. Three years, Hyderabad.',
+    'Building production-grade GenAI platforms at Deloitte: LLMs, RAG, AWS Bedrock, from backend APIs to frontend dashboards.',
   metadataBase: new URL('https://anubhavkumaar.in'),
   openGraph: {
     title: 'Anubhav Kumar',

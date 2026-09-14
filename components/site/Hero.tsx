@@ -147,7 +147,10 @@ export function Hero() {
       <div className="wrap hero__inner">
         <div className="hero__copy">
           <ProximityName lines={['Anubhav', 'Kumar']} />
-          <p className="hero__role t-lead">{profile.role}</p>
+          <p className="hero__role t-lead">
+            <span className="hero__role-pre">{profile.roleLine} </span>
+            {profile.role}
+          </p>
           <p className="hero__lede t-body">{profile.lede}</p>
           <div className="hero__actions">
             <MagneticButton
@@ -159,10 +162,18 @@ export function Hero() {
               }}
               href="#work"
             >
-              See the work
+              View Work
             </MagneticButton>
-            <MagneticButton className="btn btn--ghost" strength={0.3} href={`mailto:${profile.email}`}>
-              Email me
+            <MagneticButton
+              className="btn btn--ghost"
+              strength={0.3}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToId('connect');
+              }}
+              href="#connect"
+            >
+              Connect
             </MagneticButton>
           </div>
         </div>

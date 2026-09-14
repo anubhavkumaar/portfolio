@@ -8,8 +8,9 @@ export const profile = {
   location: 'Hyderabad, India',
   email: 'work@anubhavkumaar.in',
 
+  roleLine: 'I am a',
   lede:
-    'I build production GenAI platforms at Deloitte: retrieval, agents, and the streaming backends under them.',
+    'Building production-grade GenAI platforms at Deloitte: LLMs, RAG, AWS Bedrock, from backend APIs to frontend dashboards.',
   ledeMeta: 'Three years at Deloitte. Hyderabad, India.',
 
   links: [
@@ -18,16 +19,20 @@ export const profile = {
   ],
 } as const;
 
-// About. The review-gate claim leads because it is the strongest single signal:
-// three years in and approving merges from engineers senior in grade.
+// About. The wording from the previous site, kept at his request (2026-09-14).
 export const about = {
-  heading: 'Three years on one platform.',
+  heading: 'About',
   lead:
-    'I joined Deloitte in July 2023 and have worked on the same GenAI platform since: backend, retrieval, and the front end around them. I review most of what ships on the team and carry releases into production.',
-
+    'I design and ship production-grade GenAI platforms used across large-scale enterprise environments. My work spans frontend, backend, cloud infrastructure, and AI systems, with a strong focus on reliability, performance, and measurable business impact.',
+  problemsLabel: "Here's the kind of problems I solve",
+  problems: [
+    'Turning complex policies and data into fast, usable AI-driven systems',
+    'Building LLM and RAG-based platforms on AWS that reduce manual effort and decision time',
+    'Creating scalable APIs and dashboards that teams actually enjoy using',
+    'Improving operational efficiency through automation and data-driven workflows',
+  ],
   body: [
-    'My degree is in mechanical engineering. What transferred was load paths: knowing which part of a structure is carrying, and what happens when it stops. Most of what I know about software I learned by shipping it into environments where being wrong is expensive.',
-    'Before the platform work I validated UiPath automations on a programme that removed over 69,000 manual hours a year, writing the SQL and test plans that checked each workflow against source data.',
+    'My background in engineering and data analysis shapes how I think: structured, curious, and impact-focused. I enjoy collaborating with cross-functional teams, mentoring peers, and building systems that hold up in production, not just demos.',
   ],
 } as const;
 
@@ -47,7 +52,11 @@ export const education = {
 } as const;
 
 export const awards = [
-  { title: 'Applause Award', issuer: 'Deloitte', year: '2026' },
-  { title: 'Applause Award', issuer: 'Deloitte', year: '2024' },
-  { title: 'AI and Machine Learning', issuer: 'IIT Roorkee', year: '2023' },
+  { title: 'Applause Award', issuer: 'Deloitte: AI upskilling, delivery speed and defect resolution', year: 'May 2026' },
+  { title: 'Impact Day', issuer: 'Deloitte', year: 'Nov 2024' },
+  { title: 'Applause Award', issuer: 'Deloitte: built and supported two automation bots', year: 'Sep 2024' },
+  { title: 'AI and Machine Learning', issuer: 'IIT Roorkee with Deloitte', year: '2023' },
+  { title: 'Data Engineering', issuer: 'Deloitte', year: '2023' },
+  { title: 'Machine Learning', issuer: 'Deloitte', year: '2023' },
+  { title: 'SolidWorks', issuer: 'Internshala', year: '2021' },
 ] as const;

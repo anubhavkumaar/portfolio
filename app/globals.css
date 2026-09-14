@@ -1030,9 +1030,43 @@ button {
   filter: saturate(0.9);
 }
 
-.about__lead {
-  color: var(--ink);
-  max-width: 22ch;
+/* The role line keeps the previous site's voice: a quiet "I am a" before the title. */
+.hero__role-pre {
+  color: rgba(var(--ink-rgb), 0.62);
+  font-weight: 400;
+}
+
+.about__problems {
+  margin-top: 1.75rem;
+}
+
+.about__problems-label {
+  color: rgba(var(--ink-rgb), 0.5);
+  margin-bottom: 0.75rem;
+}
+
+.about__list {
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+  max-width: 54ch;
+}
+
+.about__list li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: rgba(var(--ink-rgb), 0.78);
+}
+
+.about__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--accent);
 }
 
 .about__body {

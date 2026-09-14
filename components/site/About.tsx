@@ -18,11 +18,22 @@ export function About() {
 
         <div>
           <Reveal>
-            <h2 className="t-title about__lead">{about.heading}</h2>
+            <h2 className="t-display">{about.heading}</h2>
           </Reveal>
           <p className="t-lead" style={{ marginTop: '1rem', maxWidth: '46ch' }}>
             {about.lead}
           </p>
+
+          <div className="about__problems">
+            <p className="t-small about__problems-label">{about.problemsLabel}</p>
+            <ul className="about__list">
+              {about.problems.map((p) => (
+                <li key={p} className="t-body">
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className="about__body">
             {about.body.map((p) => (
@@ -41,7 +52,7 @@ export function About() {
             ))}
           </dl>
 
-          <ul className="listing" aria-label="Education and awards">
+          <ul className="listing" aria-label="Education, awards and certifications">
             <li className="listing__row">
               <span>
                 <span className="t-body">{education.degree}</span>

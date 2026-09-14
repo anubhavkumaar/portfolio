@@ -33,7 +33,7 @@ const INTENTS: Intent[] = [
     label: 'What do you build?',
     match: /\b(build|do you|what do|make|working on)\b/i,
     answer:
-      'Production GenAI platforms at Deloitte: LLM and RAG systems on AWS Bedrock, multi-step agents with LangGraph, and the FastAPI and React surfaces around them. End to end, in production, not demos.',
+      'Production-grade GenAI platforms at Deloitte: LLMs and RAG on AWS Bedrock, multi-step agents with LangGraph, from backend APIs to frontend dashboards. In production, not demos.',
     go: { id: 'about', label: 'More about me' },
   },
   {
