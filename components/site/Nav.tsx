@@ -46,12 +46,12 @@ export function Nav() {
   }, []);
 
   // The address follows the section, the way the previous site's did:
-  // /work/, /skills/, /about/, /connect/, and / for the landing. Replaced,
-  // not pushed, so the back button still leaves the site in one step.
+  // /work/, /skills/, /about/, /connect/, and /home/ for the landing.
+  // Replaced, not pushed, so the back button still leaves in one step.
   useEffect(() => {
     let path: string | null = null;
     if (current) path = `/${current}/`;
-    else if (window.scrollY < window.innerHeight * 0.5) path = '/';
+    else if (window.scrollY < window.innerHeight * 0.5) path = '/home/';
     if (path && window.location.pathname !== path) {
       history.replaceState(null, '', path);
     }
