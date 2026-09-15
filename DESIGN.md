@@ -101,7 +101,7 @@ components:
 
 **Creative North Star: "The Living Field"**
 
-One deep blue-black ground carries the whole site. Behind the landing a slow field of light drifts through warped noise, blue into violet, dim enough that a name set at the largest scale on the page sits on it without a halo. Everything after the landing is structure rather than atmosphere: hairlines, one electric blue used for meaning, display type that does the work headings usually leave to boxes. The page is a work sample for a backend and GenAI engineer, so it argues by precision. Nothing glows, nothing floats, nothing is tracked or shouted.
+One deep blue-black ground carries the whole site. Behind the landing a slow field of light drifts through warped noise, blue into violet, luminous where a band runs strong and weighted to the upper right, so a name set at the largest scale on the page sits on the quiet part of it. Everything after the landing is structure rather than atmosphere: hairlines, one electric blue used for meaning, display type that does the work headings usually leave to boxes. The page is a work sample for a backend and GenAI engineer, so it argues by precision. Nothing glows, nothing floats, nothing is tracked or shouted.
 
 Density is editorial rather than dashboard: sections breathe at a viewport-scaled rhythm, lists are ruled rather than carded, and the one panel that reads as glass (the console) exists because it sits over the light and lets it through. The light theme is the same world lit, not a second palette: the ground inverts, the accent deepens to hold contrast, the field tints instead of glowing.
 
