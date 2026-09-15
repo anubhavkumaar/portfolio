@@ -5,6 +5,7 @@ import { Check, Copy, Mail } from 'lucide-react';
 import { profile } from '@/content/profile';
 import { BrandIcon, type Brand } from './BrandIcon';
 import { Reveal } from './Reveal';
+import { Stagger } from './Stagger';
 import { scrollToId } from './SmoothScroll';
 
 const SOCIALS: { id: Brand; name: string; handle: string; href: string }[] = [
@@ -63,6 +64,7 @@ export function Connect() {
           </button>
         </div>
 
+        <Stagger>
         <ul className="socials" aria-label="Profiles">
           {SOCIALS.map((s) => (
             <li key={s.id}>
@@ -78,6 +80,7 @@ export function Connect() {
             </li>
           ))}
         </ul>
+        </Stagger>
       </div>
 
       <footer className="footer">

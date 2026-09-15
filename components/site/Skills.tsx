@@ -1,5 +1,6 @@
 import { skills, skillsAlso, skillsNote } from '@/content/skills';
 import { Reveal } from './Reveal';
+import { Stagger } from './Stagger';
 
 /**
  * One ruled register: a group per row, the tools as chips, and a line naming
@@ -16,6 +17,7 @@ export function Skills() {
           <p className="t-lead muted">{skillsNote}</p>
         </div>
 
+        <Stagger>
         <dl className="skills">
           {skills.map((g) => (
             <div key={g.name} className="skill">
@@ -35,6 +37,7 @@ export function Skills() {
             </div>
           ))}
         </dl>
+        </Stagger>
         <p className="t-small skills__also">{skillsAlso}</p>
       </div>
     </section>

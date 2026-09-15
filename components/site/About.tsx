@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { about, facts, education, awards } from '@/content/profile';
 import { Reveal } from './Reveal';
+import { Stagger } from './Stagger';
+import { CountUp } from './CountUp';
 
 export function About() {
   return (
@@ -43,15 +45,20 @@ export function About() {
             ))}
           </div>
 
+          <Stagger>
           <dl className="facts" aria-label="Measured facts">
             {facts.map((f) => (
               <div key={f.label} className="fact">
-                <dt className="fact__value tnum">{f.value}</dt>
+                <dt className="fact__value tnum">
+                  <CountUp value={f.value} />
+                </dt>
                 <dd className="fact__label t-small">{f.label}</dd>
               </div>
             ))}
           </dl>
+          </Stagger>
 
+          <Stagger>
           <ul className="listing" aria-label="Education, awards and certifications">
             <li className="listing__row">
               <span>
@@ -74,6 +81,7 @@ export function About() {
               </li>
             ))}
           </ul>
+          </Stagger>
         </div>
       </div>
     </section>

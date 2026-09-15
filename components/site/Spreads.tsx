@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Plus } from 'lucide-react';
 import { work, type CaseStudy } from '@/content/work';
 import { Reveal } from './Reveal';
+import { Stagger } from './Stagger';
 
 // The demos and the SmoothUI primitives they pull in are below the fold, so
 // their code arrives when a spread is opened rather than in the first bundle.
@@ -114,6 +115,7 @@ export function Spreads() {
           </p>
         </div>
 
+        <Stagger>
         <div className="spreads">
           {LISTED.map((c) => (
             <Spread
@@ -124,6 +126,7 @@ export function Spreads() {
             />
           ))}
         </div>
+        </Stagger>
       </div>
     </section>
   );

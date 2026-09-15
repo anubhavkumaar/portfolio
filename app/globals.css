@@ -642,11 +642,6 @@ button {
   .hero__cue {
     display: none;
   }
-  /* The name is the largest paint on a phone. It lands on the first frame
-     rather than rising in, so the page reads as loaded as soon as it is. */
-  .hero__line > span {
-    animation: none;
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1038,6 +1033,42 @@ button {
   font-weight: 400;
 }
 
+/* The title types through several roles. The caret only exists once the
+   script is running; the static line carries no ornament. */
+.role-cycle.is-live > span::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 0.1em;
+  vertical-align: -0.08em;
+  background: currentColor;
+  animation: caret 1s steps(2, start) infinite;
+}
+
+@keyframes caret {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* Rows of a ruled register rise in one after another on touch, where no
+   pointer gives the page life. Armed by script, so nothing is hidden
+   without it; on a desktop the rows are simply there. */
+@media (hover: none), (pointer: coarse) {
+  .stagger.is-armed > * > * {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 520ms linear calc(var(--i, 0) * 55ms),
+      transform 620ms var(--ease-out) calc(var(--i, 0) * 55ms);
+  }
+  .stagger.is-armed.is-in > * > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .about__problems {
   margin-top: 1.75rem;
 }
@@ -1397,6 +1428,13 @@ button {
   }
   .reveal > span {
     transform: none;
+  }
+  .stagger.is-armed > * > * {
+    opacity: 1;
+    transform: none;
+  }
+  .role-cycle.is-live > span::after {
+    animation: none;
   }
   .hero__cue-line {
     animation: none;

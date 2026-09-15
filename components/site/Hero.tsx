@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { profile } from '@/content/profile';
 import { scrollToId } from './SmoothScroll';
 import { MagneticButton } from '@/components/amicro/magnetic-button';
+import { RoleCycle } from './RoleCycle';
 
 const LightField = dynamic(() => import('./LightField').then((m) => m.LightField), { ssr: false });
 
@@ -149,7 +150,7 @@ export function Hero() {
           <ProximityName lines={['Anubhav', 'Kumar']} />
           <p className="hero__role t-lead">
             <span className="hero__role-pre">{profile.roleLine} </span>
-            {profile.role}
+            <RoleCycle roles={profile.roles} />
           </p>
           <p className="hero__lede t-body">{profile.lede}</p>
           <div className="hero__actions">

@@ -9,6 +9,15 @@ export const profile = {
   email: 'work@anubhavkumaar.in',
 
   roleLine: 'I am a',
+  /** The role line cycles through these after the first; all from the profile sheet. */
+  roles: [
+    'Full Stack Developer and GenAI Engineer',
+    'Data Engineer',
+    'Backend Engineer',
+    'Agentic AI Engineer',
+    'LLM and RAG Engineer',
+    'Gamer',
+  ],
   lede:
     'Building production-grade GenAI platforms at Deloitte: LLMs, RAG, AWS Bedrock, from backend APIs to frontend dashboards.',
 

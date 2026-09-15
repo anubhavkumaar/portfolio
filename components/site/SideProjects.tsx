@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import { projects, projectsNote } from '@/content/projects';
 import { Reveal } from './Reveal';
+import { Stagger } from './Stagger';
 
 // three.js and react-three-fiber load only once this section is on screen,
 // and never under reduced motion or on touch, where the JS buys nothing.
@@ -54,6 +55,7 @@ export function SideProjects() {
           <p className="t-lead muted">{projectsNote}</p>
         </div>
 
+        <Stagger>
         <ul className="plist" aria-label="Side projects" onMouseLeave={() => setHovered(null)}>
           {projects.map((p, i) => (
             <li key={p.name}>
@@ -80,6 +82,7 @@ export function SideProjects() {
             </li>
           ))}
         </ul>
+        </Stagger>
       </div>
     </section>
   );

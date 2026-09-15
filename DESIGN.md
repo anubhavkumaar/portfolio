@@ -105,7 +105,7 @@ One deep blue-black ground carries the whole site. Behind the landing a slow fie
 
 Density is editorial rather than dashboard: sections breathe at a viewport-scaled rhythm, lists are ruled rather than carded, and the one panel that reads as glass (the console) exists because it sits over the light and lets it through. The light theme is the same world lit, not a second palette: the ground inverts, the accent deepens to hold contrast, the field tints instead of glowing.
 
-Motion answers the visitor. The name's glyphs ease away from the pointer on a spring, the side-project preview lags the cursor like a plate being lifted, headings rise once through a mask when they arrive. Nothing fires on scroll for its own sake, and the resting state under reduced motion is the design, not a stripped version of it.
+Motion answers the visitor. The name's glyphs ease away from the pointer on a spring, the side-project panels resolve under the cursor, headings rise once through a mask when they arrive, the role line types through its titles, the facts count up once. On touch, where there is no pointer, the rows of each ruled register rise in one after another as the list enters view instead; on a desktop they are simply there. Nothing fires on scroll for its own sake, and the resting state under reduced motion is the design, not a stripped version of it.
 
 **Key Characteristics:**
 - Blue-black ground (#0a0c10) with a WebGL light field behind the landing only
@@ -160,7 +160,7 @@ Five values per theme, and every other colour on the page is one of them at an o
 ### Named Rules
 **The Mono Is A Measurement Rule.** Mono sets numbers, years, identifiers, and pipeline names. A sentence, a label, or a caption is never set in mono.
 
-**The One Reveal Rule.** The mask rise belongs to display headings, once per section. Body copy, rows, and panels arrive plain.
+**The One Reveal Rule.** The mask rise belongs to display headings, once per section. On a desktop, body copy, rows, and panels arrive plain; on touch, the rows of a ruled register may rise in staggered (55ms apart) as the list enters view, since that is the phone's substitute for hover.
 
 **The No Costume Rule.** No tracked uppercase, no eyebrow labels, no gradient text, no accented single word inside a headline.
 
