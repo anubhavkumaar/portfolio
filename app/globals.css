@@ -1194,10 +1194,10 @@ button {
    their own (skills, about). */
 .stagger--always.is-armed > * > * {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(28px);
   transition:
-    opacity 520ms linear calc(var(--i, 0) * 70ms),
-    transform 620ms var(--ease-out) calc(var(--i, 0) * 70ms);
+    opacity 640ms linear calc(var(--i, 0) * 110ms),
+    transform 820ms var(--ease-out) calc(var(--i, 0) * 110ms);
 }
 
 .stagger--always.is-armed.is-in > * > * {
@@ -1227,19 +1227,43 @@ button {
 }
 
 .stagger--always.is-armed.is-in .skill .chip {
-  animation: chip-in 480ms var(--ease-out) both;
-  animation-delay: calc(var(--i, 0) * 70ms + 160ms + var(--j, 0) * 28ms);
+  animation: chip-in 560ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 240ms + var(--j, 0) * 40ms);
 }
 
 @keyframes chip-in {
   from {
     opacity: 0;
-    transform: translateY(6px) scale(0.96);
+    transform: translateY(10px) scale(0.8);
   }
   to {
     opacity: 1;
     transform: none;
   }
+}
+
+/* The rule under each skills row draws itself from the left, a beat after
+   the row lands, so the register is ruled in front of the visitor. */
+.stagger--always.is-armed .skill {
+  position: relative;
+  border-bottom-color: transparent;
+}
+
+.stagger--always.is-armed .skill::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--hair);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1000ms var(--ease-out) calc(var(--i, 0) * 110ms + 200ms);
+}
+
+.stagger--always.is-armed.is-in .skill::after {
+  transform: scaleX(1);
 }
 
 /* Once set, a chip answers the pointer. The lift uses the separate
@@ -1630,6 +1654,12 @@ button {
     opacity: 1;
     transform: none;
     animation: none;
+  }
+  .stagger--always.is-armed .skill {
+    border-bottom-color: var(--hair);
+  }
+  .stagger--always.is-armed .skill::after {
+    display: none;
   }
   .about__portrait-wrap.is-armed .about__portrait {
     clip-path: none;

@@ -32,6 +32,10 @@ export function Stagger({
       Array.from(child.querySelectorAll<HTMLElement>('.chip')).forEach((chip, j) => chip.style.setProperty('--j', String(j)));
     });
     el.classList.add('is-armed');
+    // Touch lists fire as soon as they show; the always lists wait until a
+    // fifth of them is inside the lower part of the viewport, so a smooth
+    // scroll from the nav lands with the entrance still to come rather
+    // than already over.
     const io = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -39,11 +43,11 @@ export function Stagger({
           io.disconnect();
         }
       },
-      { rootMargin: '0px 0px -8% 0px' },
+      always ? { threshold: 0.2, rootMargin: '0px 0px -18% 0px' } : { rootMargin: '0px 0px -8% 0px' },
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [always]);
 
   return (
     <div ref={ref} className={`stagger${always ? ' stagger--always' : ''}${className ? ` ${className}` : ''}`}>
