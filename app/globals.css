@@ -1120,13 +1120,40 @@ button {
 }
 
 /* Sticky only once the portrait has its own column; stacked above the
-   text on a phone it would pin to the top and cover what scrolls under it. */
+   text on a phone it would pin to the top and cover what scrolls under it.
+   The wrapper is the sticky item so the figure inside is free to animate. */
 @media (min-width: 900px) {
-  .about__portrait {
+  .about__portrait-wrap {
     position: sticky;
     top: calc(var(--nav-h) + 1.5rem);
   }
 }
+
+/* The portrait develops in: the frame wipes open from the bottom while the
+   photograph settles from a slight zoom and its colour comes up. */
+.about__portrait-wrap.is-armed .about__portrait {
+  clip-path: inset(100% 0 0 0 round 22px);
+  transition: clip-path 900ms var(--ease-out);
+}
+
+.about__portrait-wrap.is-armed.is-in .about__portrait {
+  clip-path: inset(0 0 0 0 round 22px);
+}
+
+.about__portrait-wrap.is-armed .about__portrait img {
+  opacity: 1;
+  transform: scale(1.08);
+  filter: saturate(0);
+  transition:
+    transform 1400ms var(--ease-out),
+    filter 1200ms linear 200ms;
+}
+
+.about__portrait-wrap.is-armed.is-in .about__portrait img {
+  transform: none;
+  filter: saturate(0.9);
+}
+
 
 .about__portrait img {
   width: 100%;
@@ -1160,9 +1187,24 @@ button {
   }
 }
 
-/* Rows of a ruled register rise in one after another on touch, where no
-   pointer gives the page life. Armed by script, so nothing is hidden
-   without it; on a desktop the rows are simply there. */
+/* Rows of a ruled register rise in one after another as the list enters
+   view. Armed by script, so nothing is hidden without it. On touch every
+   list does it, since no pointer gives the page life there; on a desktop
+   only the lists marked always, the ones with no hover interaction of
+   their own (skills, about). */
+.stagger--always.is-armed > * > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 520ms linear calc(var(--i, 0) * 70ms),
+    transform 620ms var(--ease-out) calc(var(--i, 0) * 70ms);
+}
+
+.stagger--always.is-armed.is-in > * > * {
+  opacity: 1;
+  transform: none;
+}
+
 @media (hover: none), (pointer: coarse) {
   .stagger.is-armed > * > * {
     opacity: 0;
@@ -1175,6 +1217,52 @@ button {
     opacity: 1;
     transform: none;
   }
+}
+
+/* Inside a skills row the chips set themselves one at a time, a beat after
+   the row, like type being placed. An animation rather than a transition,
+   so the entrance delay never leaks into the hover that follows. */
+.stagger--always.is-armed .skill .chip {
+  opacity: 0;
+}
+
+.stagger--always.is-armed.is-in .skill .chip {
+  animation: chip-in 480ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 160ms + var(--j, 0) * 28ms);
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Once set, a chip answers the pointer. The lift uses the separate
+   translate property so the entrance animation's fill cannot block it. */
+.skill__items .chip {
+  transition:
+    border-color var(--dur-fast) linear,
+    color var(--dur-fast) linear,
+    translate var(--dur-fast) var(--ease-out);
+}
+
+.skill__items .chip:hover {
+  border-color: rgba(var(--accent-rgb), 0.6);
+  color: var(--ink);
+  translate: 0 -1px;
+}
+
+.skill:hover .skill__name {
+  color: var(--accent);
+}
+
+.skill__name {
+  transition: color var(--dur-fast) linear;
 }
 
 .about__problems {
@@ -1537,9 +1625,18 @@ button {
   .reveal > span {
     transform: none;
   }
-  .stagger.is-armed > * > * {
+  .stagger.is-armed > * > *,
+  .stagger--always.is-armed .skill .chip {
     opacity: 1;
     transform: none;
+    animation: none;
+  }
+  .about__portrait-wrap.is-armed .about__portrait {
+    clip-path: none;
+  }
+  .about__portrait-wrap.is-armed .about__portrait img {
+    transform: none;
+    filter: saturate(0.9);
   }
   .role-cycle.is-live > span::after {
     animation: none;

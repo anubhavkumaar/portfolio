@@ -17,7 +17,7 @@ export function Skills() {
           <p className="t-lead muted">{skillsNote}</p>
         </div>
 
-        <Stagger>
+        <Stagger always>
         <dl className="skills">
           {skills.map((g) => (
             <div key={g.name} className="skill">
