@@ -6,11 +6,11 @@ import Lenis from 'lenis';
 let instance: Lenis | null = null;
 
 /** Scroll to an id through Lenis when it is running, natively otherwise. */
-export function scrollToId(id: string) {
+export function scrollToId(id: string, immediate = false) {
   const el = document.getElementById(id);
   if (!el) return;
-  if (instance) instance.scrollTo(el, { offset: -8 });
-  else el.scrollIntoView({ block: 'start' });
+  if (instance) instance.scrollTo(el, { offset: -8, immediate });
+  else el.scrollIntoView({ block: 'start', behavior: immediate ? 'instant' : 'auto' });
 }
 
 /**

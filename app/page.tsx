@@ -1,19 +1,5 @@
-import { Hero } from '@/components/site/Hero';
-import { Spreads } from '@/components/site/Spreads';
-import { SideProjects } from '@/components/site/SideProjects';
-import { Skills } from '@/components/site/Skills';
-import { About } from '@/components/site/About';
-import { Connect } from '@/components/site/Connect';
+import { Home } from '@/components/site/Home';
 
-export default function Home() {
-  return (
-    <>
-      <Hero />
-      <Spreads />
-      <SideProjects />
-      <Skills />
-      <About />
-      <Connect />
-    </>
-  );
+export default function Page() {
+  return <Home />;
 }

@@ -1,5 +1,14 @@
-import { Redirect } from '@/components/site/Redirect';
+import type { Metadata } from 'next';
+import { Home } from '@/components/site/Home';
+import { JumpTo } from '@/components/site/JumpTo';
+
+export const metadata: Metadata = { title: 'About, Anubhav Kumar' };
 
 export default function Page() {
-  return <Redirect to="/#about" />;
+  return (
+    <>
+      <Home />
+      <JumpTo id="about" />
+    </>
+  );
 }
