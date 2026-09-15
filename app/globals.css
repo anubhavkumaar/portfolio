@@ -334,9 +334,50 @@ button {
 }
 
 .glass--lit {
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  position: relative;
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
   background: rgba(var(--bg-rgb), 0.3);
+  /* After Liquid Glass (WWDC 2025): the material has a highlight layer
+     where a light source catches its top edge, and lensing at the rim,
+     brighter above and dimmer below, so it reads as a thin pane over the
+     field rather than a tinted rectangle. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 24px 60px -20px rgba(0, 0, 0, 0.55);
+  transition: box-shadow var(--dur-base) linear;
+}
+
+/* The sheen: light concentrated along the top of the pane, gone within
+   the first third. It sits on the glass, never on the content. */
+.glass--lit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0) 34%);
+}
+
+/* Internal glow on interaction: the pane lights from within while the
+   visitor is typing in it. */
+.glass--lit:focus-within {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 0 0 1px rgba(var(--accent-rgb), 0.22),
+    inset 0 0 48px rgba(var(--accent-rgb), 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 24px 60px -20px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme='light'] .glass--lit {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(11, 14, 20, 0.08),
+    0 24px 60px -24px rgba(11, 14, 20, 0.28);
 }
 
 [data-theme='light'] .glass {
@@ -363,8 +404,10 @@ button {
 .nav.is-scrolled {
   border-bottom-color: var(--hair);
   background: rgba(var(--bg-rgb), 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  /* The same top-edge highlight as the console: one light source, two panes. */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .nav__inner {
@@ -1256,6 +1299,26 @@ button {
   .connect__actions .btn__icon {
     width: 20px;
     height: 20px;
+  }
+  /* Floating controls get the glass rim, and the glow that starts under
+     the finger on press (Liquid Glass's internal glow). The filled button
+     stays a fill: a control sitting on glass is not itself glass. */
+  .connect__actions .btn--ghost {
+    background: var(--glass);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    transition:
+      background-color var(--dur-fast) linear,
+      box-shadow var(--dur-fast) linear,
+      transform var(--dur-fast) var(--ease-out);
+  }
+  .connect__actions .btn--ghost:active {
+    background: rgba(var(--accent-rgb), 0.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      inset 0 0 28px rgba(var(--accent-rgb), 0.28),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
   }
 }
 

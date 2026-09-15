@@ -183,6 +183,8 @@ Tonal and hairline, not shadowed. Depth on this site is the light field behind t
 ### Named Rules
 **The Two Blurs Rule.** Backdrop blur exists on the console (blur 18px, ground at 30%) because it sits over the light field, and on the scrolled nav (blur 14px, ground at 72%). Everywhere else glass is a hairline plus a 5% fill, flat.
 
+**The Glass Is A Pane Rule.** (After Apple's Liquid Glass, borrowed 2026-09-15.) The two blurred surfaces carry a highlight layer, one light source catching the top edge (`inset 0 1px 0` white at 0.22 on the console, 0.08 on the nav) with a sheen fading out in the first third, and lensing at the rim (a 1px inner ring, dimmer at the bottom). Interaction lights the pane from within: the console on `:focus-within`, the mobile connect controls on `:active`, in the accent. Glass is reserved for the chrome layer; content never gets it, and glass never sits on glass, so the controls inside the console stay solid fills.
+
 **The Field Is The Depth Rule.** The landing's depth comes from the moving light, not from layered surfaces. Do not stack panels or add glows to imitate it.
 
 ## Shapes
