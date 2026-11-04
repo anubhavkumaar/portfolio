@@ -1,22 +1,63 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-
-  # SPA Router: Rewrite all requests to index.html for non-existent files/directories
-  # This allows clean URLs like /about, /socials etc to work with the SPA router
   RewriteBase /
-  
+
+  # Everything under /_next/static/ is named by its content hash, so it can be
+  # cached for good. This only tags the request; the header is set below.
+  RewriteRule ^_next/static/ - [E=AK_IMMUTABLE:1]
+
+  # ── Short links ────────────────────────────────────────────────────────────
+  # These are the addresses read out loud and typed from a screen. They sit
+  # above the SPA rule on purpose: rewrite rules run top to bottom and [L]
+  # stops at the first match, so a short link has to be answered with its
+  # redirect before the catch-all below sends the request to index.html.
+  # They are rewrite rules rather than mod_alias "Redirect" lines so that the
+  # order is the whole story. [NC] lets /Kick work as well as /kick, and the
+  # trailing slash is optional.
+  #
+  # 301: the destination is a person's channel and does not change.
+  RewriteRule ^kick/?$      https://kick.com/anubhavkumaar [R=301,NC,L]
+  RewriteRule ^youtube/?$   https://www.youtube.com/@anubhavkumaar [R=301,NC,L]
+  RewriteRule ^twitch/?$    https://www.twitch.tv/anubhavkumaar [R=301,NC,L]
+  RewriteRule ^discord/?$   https://discord.gg/qysMbEXq5R [R=301,NC,L]
+  RewriteRule ^insta/?$     https://www.instagram.com/theanubhavkumar/ [R=301,NC,L]
+  RewriteRule ^x/?$         https://x.com/theanubhavkumar [R=301,NC,L]
+  RewriteRule ^steam/?$     https://steamcommunity.com/id/anubhavkumar [R=301,NC,L]
+  RewriteRule ^github/?$    https://github.com/anubhavkumaar [R=301,NC,L]
+  RewriteRule ^linkedin/?$  https://www.linkedin.com/in/anubhavkumaar/ [R=301,NC,L]
+
+  # 302: /links and /socials point at the page for the day, which can change,
+  # so browsers are not told to remember them.
+  RewriteRule ^(links|socials)/?$ /live/ [R=302,NC,L]
+
+  # /live/?mode=stream is the same page as /stream/. The query string (scene,
+  # only, bg and the rest) travels with the redirect.
+  RewriteCond %{QUERY_STRING} (^|&)mode=stream(&|$)
+  RewriteRule ^live/?$ /stream/ [R=302,L]
+
+  # ── SPA router ─────────────────────────────────────────────────────────────
+  # Rewrite requests for files and directories that do not exist to index.html.
+  # This allows clean URLs like /about to work with the SPA router.
+
   # Don't rewrite if it's a real file
   RewriteCond %{REQUEST_FILENAME} !-f
   # Don't rewrite if it's a real directory
   RewriteCond %{REQUEST_FILENAME} !-d
   # Don't rewrite the index file itself
   RewriteCond %{REQUEST_FILENAME} !-l
-  
+
   # Rewrite everything else to index.html
   RewriteRule ^(.*)$ index.html [L,QSA]
+</IfModule>
 
-  # 301 Redirects
-  Redirect 301 /discord https://discord.gg/qysMbEXq5R
-  Redirect 301 /insta https://www.instagram.com/theanubhavkumar/
-  Redirect 301 /youtube https://youtube.com/anubhavkumaar
+# ── Speed ────────────────────────────────────────────────────────────────────
+# Text compresses to a third of its size, which is most of what a phone on
+# mobile data has to download before /live/ can be tapped. Both blocks are
+# harmless where the module is missing.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set Cache-Control "public, max-age=31536000, immutable" env=AK_IMMUTABLE
 </IfModule>

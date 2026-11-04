@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Manrope, Azeret_Mono } from 'next/font/google';
 import './globals.css';
-import { Nav } from '@/components/site/Nav';
-import { SmoothScroll } from '@/components/site/SmoothScroll';
+import { SiteChrome } from '@/components/site/SiteChrome';
 
 // Self-hosted through next/font: preloaded, subset, no render-blocking CSS
 // import. Bricolage carries the optical-size axis so display and text sizes
@@ -39,27 +38,33 @@ export const metadata: Metadata = {
   },
 };
 
+// The site opens light. The browser bar follows: one colour here, and the theme
+// toggle (Nav) swaps it when a visitor chooses dark.
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#0a0c10' },
-    { media: '(prefers-color-scheme: light)', color: '#f4f6fa' },
-  ],
+  themeColor: '#f4f6fa',
 };
 
 // Runs before paint so the theme never flashes.
 const themeInit = `
 (function(){try{
+var d=document.documentElement,p=location.pathname;
+if(/^\\/stream(\\/|$)/.test(p)){
+  d.classList.add('is-stream');
+  d.setAttribute('data-theme','dark');
+  if(/^\\/stream\\/lower/.test(p)||/[?&]bg=transparent/.test(location.search))d.classList.add('is-transparent');
+  return;
+}
+// Light is the default. A saved choice wins; the system preference does not.
 var s=localStorage.getItem('theme');
-var l=window.matchMedia('(prefers-color-scheme: light)').matches;
-document.documentElement.setAttribute('data-theme', s || (l?'light':'dark'));
-}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+d.setAttribute('data-theme', s==='dark'?'dark':'light');
+}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
 `;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      data-theme="dark"
+      data-theme="light"
       className={`${display.variable} ${text.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
@@ -70,8 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <SmoothScroll />
-        <Nav />
+        <SiteChrome />
         <main id="main">{children}</main>
       </body>
     </html>

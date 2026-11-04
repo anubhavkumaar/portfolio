@@ -277,6 +277,12 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
+/* Light is the default, so the small mono text carries a firmer ink there.
+   12px at 0.55 measured 4.18 on the ground; 0.68 clears AA with room. */
+[data-theme='light'] .t-meta {
+  color: rgba(var(--ink-rgb), 0.68);
+}
+
 .muted {
   color: rgba(var(--ink-rgb), 0.62);
 }
@@ -620,6 +626,12 @@ button {
   font-weight: 500;
 }
 
+/* Light is the default, and the field is at its brightest behind this line.
+   A deeper step of the same blue holds AA against the lightest cloud. */
+[data-theme='light'] .hero__role {
+  color: #1946b0;
+}
+
 .hero__lede {
   margin-top: clamp(1rem, 2.5vh, 1.5rem);
   max-width: 40ch;
@@ -673,6 +685,16 @@ button {
   align-items: center;
   gap: 0.6rem;
   color: rgba(var(--ink-rgb), 0.5);
+}
+
+/* The console sits on the brightest part of the light field. */
+[data-theme='light'] .hero__console .text-muted-foreground {
+  color: rgba(var(--ink-rgb), 0.78);
+}
+
+[data-theme='light'] .hero__cue,
+[data-theme='light'] .hero__cue .t-meta {
+  color: rgba(var(--ink-rgb), 0.8);
 }
 
 .hero__cue-line {
@@ -1298,6 +1320,10 @@ button {
   margin-bottom: 0.75rem;
 }
 
+[data-theme='light'] .about__problems-label {
+  color: rgba(var(--ink-rgb), 0.68);
+}
+
 .about__list {
   list-style: none;
   display: grid;
@@ -1378,30 +1404,28 @@ button {
    Connect
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* The last screen: a full viewport on desktop, three rows (head, the
-   address and the register, the footer) with the middle row centred in
-   whatever height is left. Phones take the natural height. */
+/* The last screen. Two audiences read it: a recruiter with a role in mind and
+   a viewer from a stream, so the address keeps the largest type and the nine
+   profiles sit in two ruled registers beside or under it. The grid is built
+   from single-column lists, so no count can leave a hole. */
 .connect {
   position: relative;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   row-gap: clamp(2.5rem, 7vh, 5rem);
   padding-top: var(--space-section);
   border-top: 1px solid var(--hair);
 }
 
-@media (min-width: 900px) {
-  .connect {
-    min-height: 100svh;
-  }
+.connect__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: clamp(2.5rem, 6vh, 4rem);
+  align-content: center;
 }
 
 .connect__head {
-  margin-bottom: 0;
-}
-
-.connect__main {
-  align-self: center;
+  margin-bottom: clamp(1.75rem, 4vh, 3rem);
 }
 
 /* The address is the action, so it carries the largest type on the screen. */
@@ -1479,117 +1503,211 @@ button {
   }
 }
 
-/* All eight profiles as one ruled register: hairlines between cells, no
-   boxes, no fills at rest. Same size and weight for every network so none
-   looks more important than another. Hover lights the glyph and the name. */
-.socials {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: clamp(2.5rem, 6vh, 4rem);
-  border-top: 1px solid var(--hair);
-  border-left: 1px solid var(--hair);
-}
-
-/* One row per profile once there is room for the longest handle on one
-   line; below that, a compact grid of icon tiles reads faster on a phone
-   than eight long rows, so the handle drops and three sit across. */
-@media (min-width: 768px) {
-  .socials {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
+/* ── Layout: address first ───────────────────────────────────────────────── */
 
 @media (min-width: 900px) {
-  .socials {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .connect--address .connect__groups {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--gutter);
+    align-items: start;
   }
 }
 
-.socials > li {
-  border-right: 1px solid var(--hair);
+/* ── Layout: ledger ──────────────────────────────────────────────────────── */
+
+@media (min-width: 900px) {
+  .connect--ledger .connect__inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: calc(var(--gutter) * 1.5);
+    align-items: start;
+    align-content: start;
+  }
+  .connect--ledger .connect__lead {
+    position: sticky;
+    top: calc(var(--nav-h) + 2rem);
+  }
+  .connect--ledger .connect__head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .connect--ledger .connect__email {
+    font-size: clamp(1.6rem, 2.9vw, 3.4rem);
+  }
+  .connect--ledger .connect__groups {
+    display: grid;
+    row-gap: clamp(2rem, 4vh, 3rem);
+  }
+}
+
+/* ── The profiles: two ruled registers ───────────────────────────────────── */
+
+.profiles {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: clamp(2rem, 4vh, 3rem);
+}
+
+.profiles__label {
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.profiles__list {
+  list-style: none;
+  border-top: 1px solid var(--hair);
+}
+
+.profiles__list > li {
   border-bottom: 1px solid var(--hair);
 }
 
-.social {
-  display: flex;
-  flex-direction: column;
+/* One row per profile at every size. Mobile stacks name over handle; from
+   768px the handle moves to the right edge. A live row adds the stream title
+   under the name and the label on the right. */
+.profile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'icon head'
+    'icon handle'
+    'icon title';
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 0.5rem;
-  min-height: 6.25rem;
-  padding: 1rem 0.5rem;
+  column-gap: 1rem;
+  min-height: 4.5rem;
+  padding: 0.9rem 0.25rem;
   transition: background-color var(--dur-base) linear;
 }
 
-.social__handle {
-  display: none;
-}
-
 @media (min-width: 768px) {
-  .social {
-    flex-direction: row;
-    text-align: left;
-    gap: 0.9rem;
-    min-height: 3.9rem;
-    padding: 0.8rem 1rem;
-  }
-  .social__handle {
-    display: block;
-  }
-  .social__name {
-    font-size: 1.05rem;
+  .profile {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'icon head handle'
+      'icon title title';
+    column-gap: 1.1rem;
+    min-height: 4.75rem;
   }
 }
 
-@media (min-width: 900px) {
-  .social {
-    min-height: 5.75rem;
-    padding: 1.1rem 1.15rem;
-  }
-}
-
-.social:hover,
-.social:active {
+.profile:hover,
+.profile:active,
+.profile:focus-visible {
   background: var(--glass);
 }
 
-.social__icon {
-  flex: none;
+.profile:focus-visible {
+  outline-offset: -2px;
+}
+
+.profile__icon {
+  grid-area: icon;
   display: inline-flex;
-  color: rgba(var(--ink-rgb), 0.72);
-  transition: color var(--dur-fast) linear, transform var(--dur-base) var(--ease-out);
-}
-
-.social:hover .social__icon,
-.social:active .social__icon {
-  color: var(--accent);
-  transform: translateY(-2px);
-}
-
-.social__text {
-  min-width: 0;
-}
-
-.social__name {
-  display: block;
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
   color: var(--ink);
   transition: color var(--dur-fast) linear;
 }
 
-.social:hover .social__name,
-.social:active .social__name {
+.profile__head {
+  grid-area: head;
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.profile__name {
+  min-width: 0;
+  color: var(--ink);
+  transition: color var(--dur-fast) linear;
+}
+
+.profile__handle {
+  grid-area: handle;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 768px) {
+  .profile__handle {
+    text-align: right;
+  }
+}
+
+.profile__title {
+  grid-area: title;
+  min-width: 0;
+  margin-top: 0.15rem;
+  color: rgba(var(--ink-rgb), 0.78);
+  overflow-wrap: anywhere;
+}
+
+/* Brand glyph and name: ink at rest, electric blue on hover or press. The
+   name also takes the colour when a row is focused from the keyboard. */
+.profile:hover .profile__icon,
+.profile:active .profile__icon,
+.profile:focus-visible .profile__icon,
+.profile:hover .profile__name,
+.profile:active .profile__name,
+.profile:focus-visible .profile__name {
   color: var(--accent);
 }
 
-.social__handle {
-  margin-top: 0.1rem;
-  overflow-wrap: anywhere;
+/* The live label: small, electric blue, with a still dot that breathes in
+   opacity only. On the light theme it takes the deeper blue to hold AA. */
+.profile__live {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--t-small);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+}
+
+[data-theme='light'] .profile__live {
+  color: var(--accent-deep);
+}
+
+.profile__live::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: currentColor;
+  animation: live-dot 2.4s var(--ease-out) infinite;
+}
+
+@keyframes live-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ── Glyph names ─────────────────────────────────────────────────────────── */
+
+.gname {
+  display: block;
+}
+
+.gname__line {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.gc {
+  display: inline-block;
+}
+
+.gc__i {
+  display: inline-block;
+}
+
+.gc--space {
+  width: 0.28em;
 }
 
 .footer {
@@ -1635,13 +1753,1009 @@ button {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   /live/
+
+   The page a chat link points at. One continuous ruled list over the light
+   field, tuned for a thumb: every row is at least 5rem tall and the whole
+   row is the link. Type sits on the same tokens as the rest of the site.
+
+   The intro is CSS only and plays when the pre-paint script has put
+   `live-intro` on <html> (first visit of a session, never under reduced
+   motion). It is over in about 1.3s and any tap adds `live-skip`, which
+   snaps every animation to its end. Without the class the page is simply
+   complete.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.live {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  isolation: isolate;
+}
+
+/* Full screen behind everything. It is fixed so the light holds still while
+   the list scrolls over it, and sized to the large viewport so the browser
+   bar collapsing never resizes the canvas. */
+.live__field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out);
+}
+
+.live__field.is-on {
+  opacity: 1;
+}
+
+.live__field-host,
+.live__field-host canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.live__layer {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: clamp(1.75rem, 5vh, 3rem);
+  max-width: 36rem;
+  margin-inline: auto;
+  padding: clamp(1.25rem, 4vh, 2.25rem) var(--gutter) calc(2.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.live__head {
+  min-width: 0;
+  padding-top: env(safe-area-inset-top, 0px);
+  will-change: transform;
+}
+
+.live__body {
+  --col: min(calc(100vw - 2 * var(--gutter)), 34rem);
+  min-width: 0;
+  will-change: transform;
+}
+
+/* The AK mark. A wipe: the window slides right while the drawing slides left
+   by the same amount, so the drawing holds still and is uncovered. */
+.live__mark {
+  display: block;
+  width: 2.67rem;
+  height: 3rem;
+  color: var(--ink);
+  transition: color 700ms var(--ease-out);
+}
+
+.live[data-state='live'] .live__mark {
+  color: var(--accent);
+}
+
+[data-theme='light'] .live[data-state='live'] .live__mark {
+  color: var(--accent-deep);
+}
+
+.live__mark-clip,
+.live__mark-in {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.live__mark-clip {
+  overflow: hidden;
+}
+
+.live__mark-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.live__name {
+  margin-top: clamp(1.25rem, 4vh, 2rem);
+  margin-left: -0.04em;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(3rem, 16.5vw, 6rem);
+  font-weight: 700;
+  font-variation-settings: 'opsz' 96;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+
+.live__lede {
+  margin-top: clamp(1rem, 2.5vh, 1.5rem);
+  max-width: 28ch;
+  color: rgba(var(--ink-rgb), 0.94);
+}
+
+/* The line fades in when the state changes under the viewer's eyes. */
+.live__lede--in {
+  animation: live-fade 520ms var(--ease-out) both;
+}
+
+/* ── The list ────────────────────────────────────────────────────────────── */
+
+.live__list {
+  list-style: none;
+  border-top: 1px solid var(--hair);
+}
+
+.lhero + .live__list {
+  border-top: 0;
+}
+
+.lrow-item {
+  border-bottom: 1px solid var(--hair);
+}
+
+/* The Social group ends at Steam and Work ends at LinkedIn; a stronger rule
+   marks each turn without breaking the one continuous list. */
+.lrow-item[data-edge='after'] {
+  border-bottom-color: var(--hair-strong);
+}
+
+.lrow {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  align-items: center;
+  column-gap: 1.1rem;
+  min-height: 5rem;
+  padding: 0.9rem 0.25rem;
+  transition: background-color var(--dur-base) linear, transform var(--dur-fast) var(--ease-out);
+}
+
+.lrow:active,
+.lrow:focus-visible {
+  background: var(--glass-hover);
+}
+
+.lrow:active {
+  transform: scale(0.985);
+}
+
+.lrow:focus-visible {
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  .lrow:hover {
+    background: var(--glass);
+  }
+}
+
+.lrow__icon {
+  display: inline-flex;
+  color: var(--ink);
+  transition: color var(--dur-fast) linear;
+}
+
+.lrow__text {
+  display: grid;
+  min-width: 0;
+  row-gap: 0.2rem;
+}
+
+.lrow__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.lrow__name {
+  min-width: 0;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(1.9rem, 8.6vw, 2.75rem);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 48;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  transition: color var(--dur-fast) linear;
+}
+
+.lrow__handle {
+  font-size: var(--t-small);
+  line-height: 1.4;
+  color: rgba(var(--ink-rgb), 0.94);
+  overflow-wrap: anywhere;
+}
+
+.lrow:active .lrow__icon,
+.lrow:active .lrow__name,
+.lrow:focus-visible .lrow__icon,
+.lrow:focus-visible .lrow__name {
+  color: var(--accent);
+}
+
+@media (hover: hover) {
+  .lrow:hover .lrow__icon,
+  .lrow:hover .lrow__name {
+    color: var(--accent);
+  }
+}
+
+[data-theme='light'] .lrow:active .lrow__icon,
+[data-theme='light'] .lrow:active .lrow__name,
+[data-theme='light'] .lrow:focus-visible .lrow__icon,
+[data-theme='light'] .lrow:focus-visible .lrow__name {
+  color: var(--accent-deep);
+}
+
+/* ── Live: the platform he is on takes the top of the page ───────────────── */
+
+.lhero {
+  display: block;
+  padding: 0.5rem 0.25rem 1.5rem;
+  border-bottom: 1px solid var(--hair-strong);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.lhero:active {
+  transform: scale(0.99);
+}
+
+.lhero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 1.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.lhero__icon {
+  display: inline-flex;
+  color: var(--accent);
+}
+
+[data-theme='light'] .lhero__icon {
+  color: var(--accent-deep);
+}
+
+.live__timer {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--t-small);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: rgba(var(--ink-rgb), 0.94);
+}
+
+/* On this page the label sits on a moving field, so it is set as large text
+   (19px, bold) and in a tint of the accent: lighter on the dark ground, deeper
+   on the light one. That keeps it at 3 to 1 even where the light is at its
+   brightest, which the plain accent does not. Same hue, same single accent. */
+.live {
+  --live-label: #99c4ff;
+}
+
+:root[data-theme='light'] .live {
+  --live-label: #1d4696;
+}
+
+.live .profile__live {
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--live-label);
+}
+
+.live .profile__live::before {
+  width: 8px;
+  height: 8px;
+}
+
+/* The largest type on the page. The size follows the name's length so each
+   platform fills the column: --n is the character count. */
+.lhero__name {
+  margin-left: -0.04em;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: min(26vw, calc(var(--col) / (var(--n) * 0.56)), 10rem);
+  font-weight: 700;
+  font-variation-settings: 'opsz' 96;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  transition: color var(--dur-fast) linear;
+}
+
+.lhero:active .lhero__name {
+  color: var(--accent);
+}
+
+[data-theme='light'] .lhero:active .lhero__name {
+  color: var(--accent-deep);
+}
+
+@media (hover: hover) {
+  .lhero:hover .lhero__name {
+    color: var(--accent);
+  }
+  [data-theme='light'] .lhero:hover .lhero__name {
+    color: var(--accent-deep);
+  }
+}
+
+.lhero__title {
+  display: -webkit-box;
+  margin-top: 0.9rem;
+  font-size: var(--t-lead);
+  line-height: 1.35;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.lhero__handle {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: var(--t-small);
+  color: rgba(var(--ink-rgb), 0.94);
+}
+
+/* ── Foot ────────────────────────────────────────────────────────────────── */
+
+.live__foot {
+  display: grid;
+  justify-items: start;
+  row-gap: 0.25rem;
+  margin-top: 1.75rem;
+}
+
+.live__foot p {
+  color: rgba(var(--ink-rgb), 0.94);
+}
+
+.live__link,
+.live__tilt {
+  font-size: var(--t-small);
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: rgba(var(--ink-rgb), 0.45);
+  transition: color var(--dur-fast) linear, text-decoration-color var(--dur-fast) linear;
+}
+
+.live__tilt {
+  min-height: 2.75rem;
+  text-align: left;
+}
+
+.live__link:active,
+.live__tilt:active {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+[data-theme='light'] .live__link:active,
+[data-theme='light'] .live__tilt:active {
+  color: var(--accent-deep);
+}
+
+@media (hover: hover) {
+  .live__link:hover,
+  .live__tilt:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+  [data-theme='light'] .live__link:hover,
+  [data-theme='light'] .live__tilt:hover {
+    color: var(--accent-deep);
+  }
+}
+
+/* ── Desktop: one column, on the quiet side ──────────────────────────────────
+   The field's light is weighted to the upper right, so the left of the screen
+   is where it is quiet. Everything sits in one column there and the light
+   gets the rest of the screen to itself. */
+
+@media (min-width: 1000px) {
+  .live__layer {
+    max-width: calc(36rem + 2 * var(--gutter));
+    margin-left: max(0px, calc((100vw - var(--page-max)) / 2));
+    margin-right: 0;
+    padding-top: clamp(2rem, 7vh, 4.5rem);
+  }
+}
+
+/* ── Glyph rise: a name climbs through a mask, one glyph after another ───── */
+
+@keyframes glyph-rise {
+  from {
+    /* Far enough down that no part of a glyph shows in the mask's bottom padding. */
+    transform: translateY(140%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes live-fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes live-settle {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes live-wipe-clip {
+  from {
+    transform: translateX(-101%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes live-wipe-in {
+  from {
+    transform: translateX(101%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* A live platform that arrives while the page is open rises the same way.
+   The mask is only on while it plays, so the spring is never clipped. */
+.gname--rise .gname__line {
+  overflow: hidden;
+  overflow: clip; /* clip keeps the line's baseline where it was, so removing the mask moves nothing */
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.gname--rise .gc {
+  animation: glyph-rise 700ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 40ms);
+}
+
+/* The first-visit intro: mark 0 to 520ms, name from 160ms, lede at 380ms,
+   rows from 440ms in a 40ms cascade. Done by about 1.3s. */
+html.live-intro .live__mark-clip {
+  animation: live-wipe-clip 520ms var(--ease-out) both;
+}
+
+html.live-intro .live__mark-in {
+  animation: live-wipe-in 520ms var(--ease-out) both;
+}
+
+html.live-intro .live__name .gname__line {
+  overflow: hidden;
+  overflow: clip; /* clip keeps the line's baseline where it was, so removing the mask moves nothing */
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+html.live-intro .live__name .gc {
+  animation: glyph-rise 640ms var(--ease-out) both;
+  animation-delay: calc(160ms + var(--i) * 28ms);
+}
+
+/* The line under the name is the largest text on first paint, so it is never
+   hidden: it only settles upward. (A fade from opacity 0 would hold the page's
+   largest-contentful-paint back until the main thread was free.) */
+html.live-intro .live__lede {
+  animation: live-settle 520ms var(--ease-out) both;
+  animation-delay: 380ms;
+}
+
+html.live-intro .lrow-item {
+  animation: live-fade 520ms var(--ease-out) both;
+  animation-delay: calc(440ms + var(--r) * 40ms);
+}
+
+html.live-intro .live__foot {
+  animation: live-fade 520ms var(--ease-out) both;
+  animation-delay: 860ms;
+}
+
+/* A tap during the intro: everything jumps to its end state. */
+html.live-skip .live *,
+html.live-skip .live *::before {
+  animation-duration: 1ms !important;
+  animation-delay: 0ms !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Stream mode
+
+   A 1920 by 1080 stage (and a 1920 by 200 lower third) laid out in stage
+   pixels; the component scales it to the window, so in OBS it is 1:1. Built
+   for OBS's embedded Chromium 103: no :has(), no dvh, no individual transform
+   properties. Everything is at least 28px, because a viewer sees this after
+   Kick or Twitch has compressed it: nothing lives only in a hairline, nothing
+   is thin, and the motion is slow enough to survive the encoder.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html.is-stream,
+html.is-stream body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* A browser source with no ground: OBS composites the page over the scene. */
+html.is-transparent,
+html.is-transparent body {
+  background: transparent !important;
+}
+
+html.is-stream {
+  scrollbar-width: none;
+}
+
+html.is-stream ::-webkit-scrollbar {
+  display: none;
+}
+
+html.is-stream .skip-link {
+  display: none;
+}
+
+.stream {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.stream__field {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1600ms var(--ease-out);
+}
+
+.stream__field.is-on {
+  opacity: 1;
+}
+
+.stream__field-host,
+.stream__field-host canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  font-family: var(--font-text), system-ui, sans-serif;
+  line-height: 1.2;
+}
+
+.stage--lower {
+  height: 200px;
+}
+
+.stream--lower[data-plate='on'] .stage--lower {
+  background: rgba(var(--bg-rgb), 0.9);
+}
+
+/* Where the cycle sits in each scene. */
+.st-main {
+  position: absolute;
+  top: 96px;
+  left: 120px;
+  width: 1680px;
+  height: 580px;
+}
+
+.st-main--starting {
+  top: 470px;
+  height: 330px;
+}
+
+.st-main--brb,
+.st-main--ending {
+  top: 684px;
+  height: 110px;
+}
+
+.cycle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* ── One profile ─────────────────────────────────────────────────────────── */
+
+.sk__name {
+  display: block;
+  margin-left: -0.04em;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  font-variation-settings: 'opsz' 96;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+
+/* The size follows the name's length so every platform fills the frame:
+   --n is its character count. */
+.sk--stage .sk__name {
+  font-size: min(400px, calc(1680px / (var(--n) * 0.6)));
+}
+
+.st-main--starting .sk--stage .sk__name {
+  font-size: min(190px, calc(1100px / (var(--n) * 0.6)));
+}
+
+.sk__handle {
+  display: block;
+  margin-top: 28px;
+  font-size: 72px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: rgba(var(--ink-rgb), 0.92);
+}
+
+.sk__short {
+  display: block;
+  margin-top: 14px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 48px;
+  line-height: 1.2;
+  color: var(--accent);
+}
+
+.st-main--starting .sk__handle {
+  margin-top: 18px;
+  font-size: 56px;
+}
+
+.st-main--starting .sk__short {
+  margin-top: 10px;
+  font-size: 40px;
+}
+
+/* The mask only exists while a name is rising; the ascenders and the
+   descenders of a g or a y are given room inside it. */
+.sk--mask .gname__line {
+  overflow: hidden;
+  overflow: clip; /* clip keeps the line's baseline where it was, so removing the mask moves nothing */
+  padding: 0.1em 0 0.26em;
+  margin: -0.1em 0 -0.26em;
+}
+
+.sk--in .gc {
+  animation: glyph-rise 1100ms var(--ease-out) both;
+  animation-delay: calc(80ms + var(--i) * 60ms);
+}
+
+.sk--in .sk__icon {
+  animation: live-fade 900ms var(--ease-out) both;
+}
+
+.sk--in .sk__handle {
+  animation: live-fade 900ms var(--ease-out) both;
+  animation-delay: 760ms;
+}
+
+.sk--in .sk__short {
+  animation: live-fade 900ms var(--ease-out) both;
+  animation-delay: 940ms;
+}
+
+/* Leaving: the glyphs are sent flying by the spring (see Cycle.tsx); the rest
+   of the layer lifts and fades while they go. */
+.sk--out {
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out) 350ms;
+}
+
+.sk--out .sk__handle,
+.sk--out .sk__short,
+.sk--out .sk__icon {
+  opacity: 0;
+  transform: translateY(-34px);
+  /* The small type clears first, so the next name never rises through it. */
+  transition:
+    opacity 320ms var(--ease-out),
+    transform 900ms var(--ease-out);
+}
+
+/* Reduced motion: no rise and no flight; names dissolve into one another. */
+.sk--still .gc,
+.sk--still .sk__handle,
+.sk--still .sk__short,
+.sk--still .sk__icon {
+  animation: none !important;
+}
+
+.sk--still.sk--in {
+  animation: sk-dissolve 1200ms var(--ease-out) both;
+}
+
+.sk--still.sk--out {
+  transition: opacity 1200ms var(--ease-out);
+}
+
+.sk--still.sk--out .sk__handle,
+.sk--still.sk--out .sk__short,
+.sk--still.sk--out .sk__icon {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+@keyframes sk-dissolve {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── The same cycle at two smaller scales ────────────────────────────────── */
+
+.sk--mini,
+.sk--strip {
+  display: flex;
+  align-items: center;
+}
+
+.sk--mini {
+  height: 110px;
+  gap: 32px;
+}
+
+.sk--mini .sk__icon {
+  width: 72px;
+  height: 72px;
+}
+
+.sk--mini .sk__name {
+  font-size: 88px;
+}
+
+.sk--mini .sk__handle {
+  margin: 0;
+  font-size: 48px;
+}
+
+.sk--mini .sk__short {
+  display: none;
+}
+
+.sk--strip {
+  height: 200px;
+  padding: 0 120px;
+  gap: 40px;
+}
+
+.sk--strip .sk__icon {
+  width: 88px;
+  height: 88px;
+}
+
+.sk--strip .sk__name {
+  font-size: 112px;
+}
+
+.sk--strip .sk__handle {
+  margin: 0;
+  font-size: 52px;
+}
+
+.sk--strip .sk__short {
+  margin: 0 0 0 auto;
+  font-size: 40px;
+}
+
+.sk__icon {
+  display: block;
+  flex: none;
+  color: var(--ink);
+}
+
+.sk__icon svg {
+  display: block;
+}
+
+/* ── Scenes ──────────────────────────────────────────────────────────────── */
+
+.st-head {
+  position: absolute;
+  top: 96px;
+  left: 120px;
+}
+
+.st-label {
+  font-size: 64px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.st-count {
+  display: block;
+  margin: 8px 0 0 -0.04em;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 232px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.st-headline {
+  position: absolute;
+  top: 96px;
+  left: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 1680px;
+  height: 540px;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  font-variation-settings: 'opsz' 96;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+}
+
+.st-headline__row {
+  display: block;
+}
+
+.st-headline__line {
+  margin-left: -0.04em;
+  font-size: min(300px, calc(1680px / (var(--len) * 0.6)));
+}
+
+.st-headline .gname__line {
+  overflow: hidden;
+  overflow: clip; /* clip keeps the line's baseline where it was, so removing the mask moves nothing */
+  padding: 0.1em 0 0.3em;
+  margin: -0.1em 0 -0.3em;
+}
+
+.st-headline .gc {
+  animation: glyph-rise 1300ms var(--ease-out) both;
+  animation-delay: calc(200ms + var(--i) * 70ms);
+}
+
+.st-headline--still .gc {
+  animation: none !important;
+}
+
+.st-headline--still {
+  animation: sk-dissolve 1200ms var(--ease-out) both;
+}
+
+/* ── The frame: where to find him, always in view ────────────────────────── */
+
+.st-foot {
+  position: absolute;
+  bottom: 96px;
+  left: 120px;
+}
+
+.st-progress {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 40px;
+  list-style: none;
+}
+
+.st-progress li {
+  width: 44px;
+  height: 44px;
+  color: rgba(var(--ink-rgb), 0.6);
+  transition: color 700ms var(--ease-out);
+}
+
+.st-progress li.is-now {
+  color: var(--accent);
+}
+
+.st-addr {
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.st-qr {
+  position: absolute;
+  right: 120px;
+  bottom: 96px;
+  display: flex;
+  align-items: flex-end;
+  gap: 36px;
+}
+
+.st-qr__label {
+  max-width: 300px;
+  padding-bottom: 8px;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: right;
+  color: var(--ink);
+}
+
+/* Always a light plate: a scanner needs dark modules on a light ground, and
+   compression makes that margin matter. 35 modules at exactly 8px each. */
+.st-qr__plate {
+  width: 280px;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #f4f6fa;
+}
+
+.st-qr__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    Reduced motion: the resting state is the design.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  .lrow:active,
+  .lhero:active {
+    transform: none;
+  }
+  .live__field {
+    transition: none;
+  }
+  .gname--rise .gname__line {
+    overflow: visible;
+  }
+  /* Stream mode lifts this with ?motion=full for a host whose OS has animation
+     switched off, and keeps the slow dissolve between names, which is a fade. */
+  html:not(.stream-motion) *:not(.sk--still),
+  html:not(.stream-motion) *:not(.sk--still)::before,
+  html:not(.stream-motion) *:not(.sk--still)::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

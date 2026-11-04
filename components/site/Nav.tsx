@@ -11,13 +11,20 @@ const LINKS = [
   { id: 'connect', label: 'Connect', keep: true },
 ];
 
+/** The browser bar takes the page's ground: the layout ships the light one, this swaps it. */
+function syncThemeColor(theme: 'dark' | 'light') {
+  document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', theme === 'dark' ? '#0a0c10' : '#f4f6fa'));
+}
+
 export function Nav() {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>('light');
   const [scrolled, setScrolled] = useState(false);
   const [current, setCurrent] = useState<string>('');
 
   useEffect(() => {
-    setTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+    const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    setTheme(t);
+    syncThemeColor(t);
 
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
@@ -53,7 +60,8 @@ export function Nav() {
     if (current) path = `/${current}/`;
     else if (window.scrollY < window.innerHeight * 0.5) path = '/home/';
     if (path && window.location.pathname !== path) {
-      history.replaceState(null, '', path);
+      // Keep the query string: campaign tags and the ?live= preview survive the scroll.
+      history.replaceState(null, '', path + window.location.search);
     }
   }, [current]);
 
@@ -66,6 +74,7 @@ export function Nav() {
       /* private mode: the choice does not persist and that is fine */
     }
     setTheme(next);
+    syncThemeColor(next);
   };
 
   return (

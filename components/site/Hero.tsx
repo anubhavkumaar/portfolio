@@ -6,6 +6,7 @@ import { profile } from '@/content/profile';
 import { scrollToId } from './SmoothScroll';
 import { MagneticButton } from '@/components/amicro/magnetic-button';
 import { RoleCycle } from './RoleCycle';
+import { SPRING } from '@/lib/glyph-spring';
 
 const LightField = dynamic(() => import('./LightField').then((m) => m.LightField), { ssr: false });
 
@@ -61,10 +62,9 @@ function ProximityName({ lines }: { lines: string[] }) {
     };
     window.addEventListener('pointermove', onMove, { passive: true });
 
-    const RADIUS = 220;
-    const PUSH = 26;
-    const K = 0.09; // spring stiffness
-    const D = 0.78; // damping
+    // The spring lives in lib/glyph-spring.ts so Connect, /live/ and stream
+    // mode answer on exactly the same one.
+    const { radius: RADIUS, push: PUSH, k: K, damping: D } = SPRING;
     let frame = 0;
     const loop = () => {
       for (let i = 0; i < chars.length; i++) {
