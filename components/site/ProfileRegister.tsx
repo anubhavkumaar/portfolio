@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { GROUPS, byGroup, type Profile, type StreamId } from '@/content/profiles';
+import { GROUPS, byGroup, type Profile, type ProfileId, type StreamId } from '@/content/profiles';
 import type { LiveStatus } from '@/lib/live-status';
 import { BrandIcon } from './BrandIcon';
 import { GlyphName } from './GlyphName';
@@ -19,8 +19,8 @@ import { useGlyphRegister } from './useGlyphRegister';
  * alone carries the state.
  */
 
-function Row({ p, live }: { p: Profile; live: LiveStatus }) {
-  const entry = p.streams ? live.live[p.id as StreamId] : undefined;
+function Row({ p, live }: { p: Profile; live?: LiveStatus }) {
+  const entry = p.streams && live ? live.live[p.id as StreamId] : undefined;
   return (
     <li>
       <a
@@ -43,20 +43,39 @@ function Row({ p, live }: { p: Profile; live: LiveStatus }) {
   );
 }
 
-export function ProfileRegister({ live, className = '' }: { live: LiveStatus; className?: string }) {
+/**
+ * `exclude` leaves profiles out of this register only; the list in
+ * content/profiles.ts is untouched, so /live/ and stream mode still show them.
+ * A group left with no rows is not drawn. `live` is optional: without it no
+ * row shows a live state.
+ */
+export function ProfileRegister({
+  live,
+  exclude = [],
+  className = '',
+}: {
+  live?: LiveStatus;
+  exclude?: readonly ProfileId[];
+  className?: string;
+}) {
   const root = useRef<HTMLDivElement>(null);
   useGlyphRegister(root, { rowSelector: '.profile', hover: { radius: 130, push: 11 } });
 
+  const groups = GROUPS.map((g) => ({
+    ...g,
+    rows: byGroup(g.id).filter((p) => !exclude.includes(p.id)),
+  })).filter((g) => g.rows.length > 0);
+
   return (
     <div ref={root} className={`profiles${className ? ` ${className}` : ''}`}>
-      {GROUPS.map((g) => (
+      {groups.map((g) => (
         <section key={g.id} className="profiles__group" aria-labelledby={`profiles-${g.id}`}>
           <h3 id={`profiles-${g.id}`} className="profiles__label t-small">
             {g.label}
           </h3>
           <Stagger>
             <ul className="profiles__list">
-              {byGroup(g.id).map((p) => (
+              {g.rows.map((p) => (
                 <Row key={p.id} p={p} live={live} />
               ))}
             </ul>
