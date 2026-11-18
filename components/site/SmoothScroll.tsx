@@ -44,3 +44,16 @@ export function SmoothScroll() {
   }, []);
   return null;
 }
+
+/**
+ * Click handler for in-page links: on a page that carries the section it
+ * scrolls there, and otherwise lets the link navigate to its route. Modified
+ * clicks (new tab, new window) are left alone.
+ */
+export function goSection(e: React.MouseEvent, id: string) {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  if (document.getElementById(id)) {
+    e.preventDefault();
+    scrollToId(id);
+  }
+}

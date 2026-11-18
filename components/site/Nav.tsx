@@ -8,8 +8,8 @@ import { scrollToId } from './SmoothScroll';
 
 type Active = 'home' | 'work' | 'about' | 'connect' | '';
 
-/** The sections the page tracks. `skills` has no link of its own, so it reads as part of Work. */
-const SECTION_IDS = ['work', 'skills', 'about', 'connect'];
+/** The sections the page tracks. Nothing is current while the landing holds the middle of the view. */
+const SECTION_IDS = ['work', 'about', 'connect'];
 
 const ROUTE: Record<string, string> = { top: '/', work: '/work/', about: '/about/', connect: '/connect/' };
 
@@ -123,22 +123,9 @@ export function Nav() {
     return () => io.disconnect();
   }, [hasSections]);
 
-  // The address follows the section: /work/, /skills/, /about/, /connect/, and
-  // /home/ for the landing. Replaced, not pushed, so the back button still
-  // leaves in one step. Phase 2 reworks this; for now it only runs on pages
-  // that carry the sections.
-  useEffect(() => {
-    if (!hasSections) return;
-    let target: string | null = null;
-    if (current) target = `/${current}/`;
-    else if (window.scrollY < window.innerHeight * 0.5) target = '/home/';
-    if (target && window.location.pathname !== target) {
-      // Keep the query string: campaign tags and the ?live= preview survive the scroll.
-      history.replaceState(null, '', target + window.location.search);
-    }
-  }, [current, hasSections]);
-
-  const active: Active = hasSections ? (current === '' ? 'home' : current === 'skills' ? 'work' : (current as Active)) : routeActive(path);
+  // The address follows the section too, but ConnectedScroll owns that (it
+  // replaces the URL with history.replaceState as each section takes the view).
+  const active: Active = hasSections ? (current === '' ? 'home' : (current as Active)) : routeActive(path);
 
   const close = useCallback((returnFocus = false) => {
     setOpen(false);

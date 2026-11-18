@@ -44,7 +44,7 @@ export function Connect({ variant = 'address' }: { variant?: 'address' | 'ledger
   };
 
   return (
-    <section className={`connect connect--${variant}`} id="connect">
+    <section className={`connect connect--${variant}`}>
       <div className="wrap connect__inner">
         <div className="connect__lead">
           <div className="section__head connect__head">

@@ -103,7 +103,7 @@ export function Spreads() {
   const [openSlug, setOpenSlug] = useState<string | null>(LISTED[0].slug);
 
   return (
-    <section className="section" id="work">
+    <section className="section" id="work-list">
       <div className="wrap">
         <div className="section__head">
           <Reveal>

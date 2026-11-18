@@ -92,7 +92,7 @@ export const answers: Answer[] = [
     keys: ['stack', 'tech', 'tools', 'technolog', 'language', 'framework', 'skills', 'know', 'use'],
     text:
       'Python, FastAPI, Pydantic and SQL on the backend; TypeScript, React and Next.js on the front end. AWS Bedrock and Knowledge Bases, Model Context Protocol and agent orchestration on the AI side. PostgreSQL, psycopg3, Redis and S3 for data. Docker, OpenShift and GitLab CI/CD to ship it. The full set is in the skills section.',
-    go: { id: 'skills', label: 'What I work with' },
+    go: { id: 'about', label: 'What I work with' },
   },
   {
     id: 'education',
@@ -134,7 +134,7 @@ export const answers: Answer[] = [
     keys: ['react', 'next', 'typescript', 'frontend', 'front end', 'ui', 'tailwind', 'javascript', 'component'],
     text:
       'TypeScript, React and Next.js. On the platform I refactored SSE streaming across 16 React components and roughly 10,000 lines to eliminate dropped-token and reconnect failures. This site is Next.js, exported as static files.',
-    go: { id: 'skills', label: 'What I work with' },
+    go: { id: 'about', label: 'What I work with' },
   },
   {
     id: 'testing',
@@ -182,14 +182,14 @@ export const answers: Answer[] = [
     keys: ['python', 'flask', 'pydantic'],
     text:
       'Python since day one at Deloitte, including in periods when the role called for less of it. FastAPI, Flask and Pydantic on the service side; pytest for the tests.',
-    go: { id: 'skills', label: 'What I work with' },
+    go: { id: 'about', label: 'What I work with' },
   },
   {
     id: 'cloud',
     keys: ['cloud', 'aws', 'docker', 'openshift', 'kubernetes', 'k8s', 'lambda', 'ec2', 'iam', 's3', 'gitlab', 'devops', 'infra'],
     text:
       'AWS: Bedrock, S3, Lambda, EC2 and IAM. Docker and Red Hat OpenShift for running things, GitLab CI/CD and Azure DevOps for shipping them. Kubernetes through OpenShift.',
-    go: { id: 'skills', label: 'What I work with' },
+    go: { id: 'about', label: 'What I work with' },
   },
   {
     id: 'ai-tools',

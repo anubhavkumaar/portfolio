@@ -6,7 +6,7 @@ import { CountUp } from './CountUp';
 
 export function About() {
   return (
-    <section className="section" id="about">
+    <section className="section">
       <div className="wrap about">
         {/* The wrapper is the sticky grid item; the figure inside develops in. */}
         <Stagger always className="about__portrait-wrap">

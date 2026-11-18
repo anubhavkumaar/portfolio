@@ -1,14 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { profile } from '@/content/profile';
-import { scrollToId } from './SmoothScroll';
-import { MagneticButton } from '@/components/amicro/magnetic-button';
-import { RoleCycle } from './RoleCycle';
-import { SPRING } from '@/lib/glyph-spring';
-
-const LightField = dynamic(() => import('./LightField').then((m) => m.LightField), { ssr: false });
+import { goSection } from './SmoothScroll';
 
 // The console and the SmoothUI primitives it pulls in are the heaviest script
 // above the fold. They arrive after the page is interactive, behind a shell of
@@ -16,178 +11,194 @@ const LightField = dynamic(() => import('./LightField').then((m) => m.LightField
 const HeroConsole = dynamic(() => import('@/app/hero-console').then((m) => m.HeroConsole), {
   ssr: false,
   loading: () => (
-    <div className="glass glass--lit console-shell" aria-hidden="true">
-      <div className="console-shell__head">
-        <span className="console-shell__avatar" />
-        <span className="t-small">ask anubhav</span>
-      </div>
+    <div className="hx-shell" aria-hidden="true">
+      <span className="hx-shell__line" />
     </div>
   ),
 });
 
-/**
- * The name is set one character at a time so each glyph can answer the
- * pointer: glyphs near the cursor ease away from it and settle back on a
- * spring. Positions are measured once per resize, and the loop writes only
- * transforms, so nothing reads layout per frame.
- */
-function ProximityName({ lines }: { lines: string[] }) {
-  const root = useRef<HTMLHeadingElement>(null);
+/** The role cycler: one line, rolled by CSS (akRoles in redesign.css). The first role repeats last so the loop is seamless. */
+const ROLES = [
+  'Full Stack Developer and GenAI Engineer',
+  'Data Engineer',
+  'Backend Engineer',
+  'Agentic AI Engineer',
+  'LLM and RAG Engineer',
+  'Gamer',
+  'Full Stack Developer and GenAI Engineer',
+];
 
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const chars = Array.from(el.querySelectorAll<HTMLElement>('.hero__char:not(.hero__char--space)'));
-    let centres: { x: number; y: number }[] = [];
-    const measure = () => {
-      centres = chars.map((c) => {
-        const r = c.getBoundingClientRect();
-        return { x: r.left + r.width / 2 + window.scrollX, y: r.top + r.height / 2 + window.scrollY };
-      });
-    };
-    // Measure after the entrance animation has landed the glyphs.
-    const t = setTimeout(measure, 1200);
-    window.addEventListener('resize', measure);
-
-    const cur = chars.map(() => ({ x: 0, y: 0 }));
-    const vel = chars.map(() => ({ x: 0, y: 0 }));
-    let mx = -9999;
-    let my = -9999;
-    const onMove = (e: PointerEvent) => {
-      mx = e.clientX + window.scrollX;
-      my = e.clientY + window.scrollY;
-    };
-    window.addEventListener('pointermove', onMove, { passive: true });
-
-    // The spring lives in lib/glyph-spring.ts so Connect, /live/ and stream
-    // mode answer on exactly the same one.
-    const { radius: RADIUS, push: PUSH, k: K, damping: D } = SPRING;
-    let frame = 0;
-    const loop = () => {
-      for (let i = 0; i < chars.length; i++) {
-        const c = centres[i];
-        let tx = 0;
-        let ty = 0;
-        if (c) {
-          const dx = c.x - mx;
-          const dy = c.y - my;
-          const d = Math.hypot(dx, dy);
-          if (d < RADIUS && d > 0.001) {
-            const f = (1 - d / RADIUS) ** 2 * PUSH;
-            tx = (dx / d) * f;
-            ty = (dy / d) * f;
-          }
-        }
-        const s = cur[i];
-        const v = vel[i];
-        v.x = (v.x + (tx - s.x) * K) * D;
-        v.y = (v.y + (ty - s.y) * K) * D;
-        s.x += v.x;
-        s.y += v.y;
-        chars[i].style.transform = `translate3d(${s.x.toFixed(2)}px, ${s.y.toFixed(2)}px, 0)`;
-      }
-      frame = requestAnimationFrame(loop);
-    };
-    frame = requestAnimationFrame(loop);
-
-    return () => {
-      clearTimeout(t);
-      cancelAnimationFrame(frame);
-      window.removeEventListener('resize', measure);
-      window.removeEventListener('pointermove', onMove);
-    };
-  }, []);
-
+function Letters({ text, start }: { text: string; start: number }) {
   return (
-    <h1 ref={root} className="t-hero hero__name" aria-label={lines.join(' ')}>
-      {lines.map((line, li) => (
-        <span key={line} className="hero__line" aria-hidden="true">
-          <span style={{ animationDelay: `${0.25 + li * 0.1}s` }}>
-            {line.split('').map((ch, i) =>
-              ch === ' ' ? (
-                <span key={i} className="hero__char hero__char--space" />
-              ) : (
-                <span key={i} className="hero__char">
-                  {ch}
-                </span>
-              ),
-            )}
-          </span>
+    <>
+      {text.split('').map((ch, i) => (
+        <span key={i} className="hx__l" style={{ animationDelay: `${(start + i * 0.035).toFixed(3)}s` }}>
+          {ch}
         </span>
       ))}
-    </h1>
+    </>
   );
 }
 
-/** Mounts the field after the page is interactive rather than at hydration,
-    so shader compilation never lands inside the first-input window. */
-function DeferredField() {
-  const [ready, setReady] = useState(false);
+/**
+ * The smoke loop behind the hero. The poster is a CSS background chosen by
+ * theme and screen, so only the matching still is ever fetched, and it is what
+ * shows when the video cannot play (iOS Low Power Mode blocks autoplay), when
+ * the visitor presses Pause (WCAG 2.2.2), under reduced motion, and on Save-Data.
+ */
+function Backdrop({ still }: { still: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [phone, setPhone] = useState(false);
+  const [failed, setFailed] = useState(false);
+
   useEffect(() => {
-    const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
-      .requestIdleCallback;
-    if (idle) {
-      idle(() => setReady(true), { timeout: 1200 });
-      return;
-    }
-    const t = setTimeout(() => setReady(true), 400);
-    return () => clearTimeout(t);
+    const root = document.documentElement;
+    const read = () => setTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    read();
+    const mo = new MutationObserver(read);
+    mo.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    const mq = window.matchMedia('(max-width: 767px)');
+    const onMq = () => setPhone(mq.matches);
+    onMq();
+    mq.addEventListener('change', onMq);
+    return () => {
+      mo.disconnect();
+      mq.removeEventListener('change', onMq);
+    };
   }, []);
-  return ready ? <LightField /> : null;
+
+  const src = `/redesign/media/smoke-${theme}${phone ? '-phone' : ''}.mp4`;
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || still) return;
+    setFailed(false);
+    // Autoplay can be refused (iOS Low Power Mode): the poster stays. An abort
+    // only means the source changed under us, which is not a refusal.
+    v.play().catch((err: unknown) => {
+      if ((err as { name?: string } | null)?.name !== 'AbortError') setFailed(true);
+    });
+  }, [src, still]);
+
+  return (
+    <div className="hx__bg" aria-hidden="true">
+      <div className="hx__poster" />
+      {!still && !failed && (
+        <video
+          ref={ref}
+          className="hx__video"
+          src={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onError={() => setFailed(true)}
+        />
+      )}
+      <div className="hx__scrim" />
+    </div>
+  );
 }
 
 export function Hero() {
+  const [still, setStill] = useState(false);
+  const [phone, setPhone] = useState(false);
+
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
+    if (reduced || nav.connection?.saveData) setStill(true);
+    const mq = window.matchMedia('(max-width: 767px)');
+    const onMq = () => setPhone(mq.matches);
+    onMq();
+    mq.addEventListener('change', onMq);
+    return () => mq.removeEventListener('change', onMq);
+  }, []);
+
   return (
-    <section className="hero" id="top">
-      <DeferredField />
-      <div className="hero__grain" aria-hidden="true" />
+    <div className="hx">
+      <Backdrop still={still} />
 
-      <div className="wrap hero__inner">
-        <div className="hero__copy">
-          <ProximityName lines={['Anubhav', 'Kumar']} />
-          <p className="hero__role t-lead">
-            <span className="hero__role-pre">{profile.roleLine} </span>
-            <RoleCycle roles={profile.roles} />
-          </p>
-          <p className="hero__lede t-body">{profile.lede}</p>
-          <div className="hero__actions">
-            <MagneticButton
-              className="btn btn--primary"
-              strength={0.3}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId('work');
-              }}
-              href="#work"
-            >
-              View Work
-            </MagneticButton>
-            <MagneticButton
-              className="btn btn--ghost"
-              strength={0.3}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToId('connect');
-              }}
-              href="#connect"
-            >
-              Connect
-            </MagneticButton>
-          </div>
-        </div>
-
-        <div className="hero__console">
-          <HeroConsole className="glass glass--lit" />
+      <div className="hx__copy">
+        <p className="hx__eyebrow">
+          <span className="hx__dot" aria-hidden="true" />
+          <span className="hx__eyebrow-long">OPEN TO GENAI ENGINEERING ROLES</span>
+          <span className="hx__eyebrow-short">OPEN TO GENAI ROLES</span>
+        </p>
+        <h1 className="hx__name" aria-label="Anubhav Kumar">
+          <span aria-hidden="true">
+            <Letters text="Anubhav" start={0.3} />
+            <br />
+            <Letters text="Kumar" start={0.545} />
+          </span>
+        </h1>
+        <p className="hx__role">
+          <span className="hx__pre">I am a </span>
+          <span className="hx__roles" aria-label="Full Stack Developer and GenAI Engineer">
+            <span className="hx__roles-track" aria-hidden="true">
+              {ROLES.map((r, i) => (
+                <span key={i} className="hx__role-line">
+                  {r}
+                  <span className="hx__caret" aria-hidden="true" />
+                </span>
+              ))}
+            </span>
+          </span>
+        </p>
+        <p className="hx__lede">
+          <span className="hx__lede-long">
+            I build AI agents, retrieval and the screens around them for a GenAI product platform at Deloitte: Python and
+            FastAPI services, MCP tools on AWS Bedrock, and React front ends.
+          </span>
+          <span className="hx__lede-short">
+            I build AI agents, retrieval and the screens around them for a GenAI product platform at Deloitte.
+          </span>
+        </p>
+        <div className="hx__actions">
+          <Link href="/work/" className="hx__btn hx__btn--solid" onClick={(e) => goSection(e, 'work')}>
+            View work
+          </Link>
+          <Link href="/about/" className="hx__btn hx__btn--line" onClick={(e) => goSection(e, 'about')}>
+            About me
+          </Link>
+          <a className="hx__btn hx__btn--text" href="/resume.pdf" download="Anubhav_Kumar_Resume.pdf">
+            <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 4v11" />
+              <path d="M7 10l5 5 5-5" />
+              <path d="M5 20h14" />
+            </svg>
+            Resume
+          </a>
         </div>
       </div>
 
-      <div className="hero__cue" aria-hidden="true">
-        <span className="hero__cue-line" />
-        <span className="t-meta">scroll</span>
+      <div className="hx__chat">
+        <aside className="hx__card" aria-label="Ask anubhav chat">
+          <span className="hx__sheen" aria-hidden="true" />
+          <HeroConsole compact={phone} />
+        </aside>
       </div>
-    </section>
+
+      <button type="button" className="hx__ctl" aria-pressed={still} onClick={() => setStill((s) => !s)}>
+        {still ? (
+          <>
+            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 5l12 7-12 7z" />
+            </svg>
+            Play background
+          </>
+        ) : (
+          <>
+            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="5" width="4" height="14" rx="1" />
+              <rect x="14" y="5" width="4" height="14" rx="1" />
+            </svg>
+            Pause background
+          </>
+        )}
+      </button>
+    </div>
   );
 }

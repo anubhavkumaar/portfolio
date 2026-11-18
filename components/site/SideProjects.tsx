@@ -40,7 +40,7 @@ export function SideProjects() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section section--tight side-section" id="side">
+    <section ref={sectionRef} className="section section--tight side-section">
       {canvasOn && (
         <div className="side-canvas-host" aria-hidden="true">
           <SideCanvas hoveredIdx={hovered} previews={projects.map((p) => p.preview)} />

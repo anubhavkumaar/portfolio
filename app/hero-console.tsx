@@ -19,7 +19,7 @@ const EASE_EXPO: [number, number, number, number] = [0.23, 1, 0.32, 1];
 const WORD_MS = 42;
 const AUTOPLAY_DELAY_MS = 1500;
 
-export function HeroConsole({ className = '' }: { className?: string }) {
+export function HeroConsole({ className = '', compact = false }: { className?: string; compact?: boolean }) {
   const reduced = useReducedMotion();
   const [question, setQuestion] = useState<string | null>(null);
   const [answer, setAnswer] = useState<Answer | null>(null);
@@ -60,8 +60,10 @@ export function HeroConsole({ className = '' }: { className?: string }) {
     [reduced, stop],
   );
 
-  // Autoplay the first chip so the landing has life without a click.
+  // Autoplay the first chip so the landing has life without a click. The
+  // compact (phone) card stays a prompt and chips until a question is asked.
   useEffect(() => {
+    if (compact) return;
     const t = setTimeout(() => ask(chips[0].label), AUTOPLAY_DELAY_MS);
     return () => {
       clearTimeout(t);
@@ -70,18 +72,16 @@ export function HeroConsole({ className = '' }: { className?: string }) {
   }, [ask, stop]);
 
   return (
-    <div className={`relative w-full p-5 md:p-6 flex flex-col gap-5 ${className}`}>
-      <div className="flex items-center gap-2.5">
-        <span
-          className="w-7 h-7 rounded-full flex items-center justify-center overflow-hidden"
-          style={{ background: 'rgba(var(--accent-rgb),0.14)', border: '1px solid rgba(var(--accent-rgb),0.28)' }}
-        >
-          <img src="/logo/avatar.png" alt="" className="w-[60%] h-[60%] object-contain" draggable={false} />
-        </span>
-        <span className="text-sm font-medium text-[rgba(var(--ink-rgb),calc(0.85*var(--ink-boost)))]">ask anubhav</span>
+    <div className={`hx-console relative w-full flex flex-col ${className}`}>
+      <div className="hx-console__head">
+        <img className="rd-logo-light" src="/redesign/brand/logo-on-light.png" alt="" height={23} />
+        <img className="rd-logo-dark" src="/redesign/brand/logo-on-dark.png" alt="" height={23} />
+        <span className="hx-console__name">ask anubhav</span>
+        <span className="hx-console__ping" aria-hidden="true" />
+        <span className="hx-console__mem">remembers this chat</span>
       </div>
 
-      <div className="min-h-[7.5rem]">
+      <div className={compact && !question ? 'hidden' : 'min-h-[7.5rem]'}>
         <AnimatePresence mode="wait" initial={false}>
           {question ? (
             <motion.div
@@ -131,7 +131,7 @@ export function HeroConsole({ className = '' }: { className?: string }) {
       <AISuggestions
         suggestions={chips}
         onSelect={(s) => ask(s.label)}
-        className="[&_button]:text-[12.5px] [&_button]:py-1"
+        className={compact ? 'hx-chips hx-chips--row' : 'hx-chips [&_button]:text-[12.5px] [&_button]:py-1'}
       />
 
       <AIPromptInput
