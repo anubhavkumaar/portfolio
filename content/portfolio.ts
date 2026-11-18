@@ -47,7 +47,7 @@ export type ProjectId = (typeof ORDER)[number];
 export const PROJECTS: Record<ProjectId, Project> = {
   agent: {
     id: 'agent',
-    title: 'Agent backend, v2',
+    title: 'Agent backend',
     group: 'Agents',
     year: '2026',
     kind: 'agent',
