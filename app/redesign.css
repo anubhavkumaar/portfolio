@@ -90,8 +90,11 @@
   color: var(--p-ink);
 }
 
+/* pointer-events flips at the halfway point: once a section is mostly gone it
+   must not sit invisibly over the next one and swallow its clicks. */
 @keyframes akSecOut {
-  to { transform: translateY(198px) scale(0.93); opacity: 0; filter: blur(3px); }
+  from { pointer-events: auto; }
+  to { transform: translateY(198px) scale(0.93); opacity: 0; filter: blur(3px); pointer-events: none; }
 }
 @keyframes akSecIn {
   from { transform: translateY(-54px); opacity: 0.6; }
