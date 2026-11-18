@@ -2,11 +2,15 @@
 
 import { useEffect, useRef } from 'react';
 
-const DURATION_MS = 2800;
-const FADE_MS = 400;
+// The clip (loader.mp4) is 5.87 s: particles stream in, lock into a sphere, the camera flies into
+// its core and light fills the frame. It plays once, in full, sped up to fit DURATION_MS, and the
+// on-screen type and progress line are timed to the same length by --ld-dur in pages.css.
+const CLIP_S = 5.867;
+const DURATION_MS = 4400;
+const FADE_MS = 600;
 
 /**
- * The intro loader (Loader.dc.html), 2.8 s with a Skip link.
+ * The intro loader (Loader.dc.html): the whole clip once, about 4.4 s, with a Skip link.
  *
  * It plays on every load of the home page (a reload or a fresh visit), never on a
  * deep link (any path other than /), never under reduced motion and never on
@@ -18,6 +22,7 @@ const FADE_MS = 400;
  */
 export function Loader() {
   const root = useRef<HTMLDivElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -30,7 +35,13 @@ export function Loader() {
       el?.classList.add('is-out');
       window.setTimeout(() => html.removeAttribute('data-intro'), FADE_MS);
     };
-    const t = window.setTimeout(end, DURATION_MS);
+    const v = video.current;
+    if (v) {
+      v.playbackRate = CLIP_S / (DURATION_MS / 1000);
+      v.addEventListener('ended', end);
+    }
+    // The timer is the backstop if the clip stalls or cannot play.
+    const t = window.setTimeout(end, DURATION_MS + 300);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') end();
     };
@@ -38,6 +49,7 @@ export function Loader() {
     el?.addEventListener('ak-skip', end);
     return () => {
       window.clearTimeout(t);
+      v?.removeEventListener('ended', end);
       window.removeEventListener('keydown', onKey);
       el?.removeEventListener('ak-skip', end);
     };
@@ -46,7 +58,7 @@ export function Loader() {
   const name = 'Anubhav Kumar';
   return (
     <div ref={root} className="ld" role="dialog" aria-label="Loading anubhavkumaar.in" aria-modal="false">
-      <video className="ld__video" src="/redesign/media/loader.mp4" poster="/redesign/media/loader.jpg" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
+      <video ref={video} className="ld__video" src="/redesign/media/loader.mp4" poster="/redesign/media/loader.jpg" autoPlay muted playsInline preload="auto" aria-hidden="true" />
 
       <div className="ld__logo ld-chrome" aria-hidden="true">
         <img src="/redesign/brand/logo-on-dark.png" alt="" height={31} />
@@ -76,8 +88,6 @@ export function Loader() {
       >
         Skip intro <span aria-hidden="true">→</span>
       </button>
-
-      <div className="ld__veil" aria-hidden="true" />
     </div>
   );
 }

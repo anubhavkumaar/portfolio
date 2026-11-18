@@ -1182,6 +1182,8 @@
 /* ── Intro loader ────────────────────────────────────────────────────────── */
 
 .ld {
+  /* One run of the 5.9 s clip, sped up to fit. Keep in step with DURATION_MS in Loader.tsx. */
+  --ld-dur: 4.4s;
   display: none;
   position: fixed;
   inset: 0;
@@ -1190,7 +1192,7 @@
   background: #000;
   color: #e9eefb;
   font-family: var(--font-text), system-ui, sans-serif;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.6s ease;
 }
 html[data-intro='1'] .ld {
   display: block;
@@ -1243,7 +1245,7 @@ html[data-intro='1'] .hx {
 }
 .ld__l {
   display: inline-block;
-  animation: ldName 2.8s cubic-bezier(0.16, 1, 0.3, 1) 1 both;
+  animation: ldName var(--ld-dur) cubic-bezier(0.16, 1, 0.3, 1) 1 both;
 }
 .ld__sub {
   margin: 0;
@@ -1251,7 +1253,7 @@ html[data-intro='1'] .hx {
   font-style: italic;
   font-size: clamp(17px, 3.2vw, 22px);
   color: #b6bfd6;
-  animation: ldSub 2.8s ease 1 both;
+  animation: ldSub var(--ld-dur) ease 1 both;
 }
 .ld__rail {
   position: absolute;
@@ -1260,13 +1262,13 @@ html[data-intro='1'] .hx {
   bottom: 32px;
   height: 1px;
   background: rgba(255, 255, 255, 0.1);
-  animation: ldChrome 2.8s ease 1 both;
+  animation: ldChrome var(--ld-dur) ease 1 both;
 }
 .ld__bar {
   height: 100%;
   background: #8ea2ff;
   transform-origin: left;
-  animation: ldBar 2.8s cubic-bezier(0.65, 0, 0.35, 1) 1 both;
+  animation: ldBar var(--ld-dur) cubic-bezier(0.65, 0, 0.35, 1) 1 both;
 }
 .ld__skip {
   position: absolute;
@@ -1291,13 +1293,6 @@ html[data-intro='1'] .hx {
   outline: 2px solid #8ea2ff;
   outline-offset: 3px;
 }
-.ld__veil {
-  position: absolute;
-  inset: 0;
-  background: #070b16;
-  animation: ldVeil 2.8s ease-in 1 both;
-}
-
 @keyframes ldChrome { 0% { opacity: 0; } 8%, 72% { opacity: 1; } 82%, 100% { opacity: 0; } }
 @keyframes ldBar { 0% { transform: scaleX(0); } 80%, 100% { transform: scaleX(1); } }
 @keyframes ldName {
@@ -1306,7 +1301,6 @@ html[data-intro='1'] .hx {
   80%, 100% { opacity: 0; transform: translateY(-30%); }
 }
 @keyframes ldSub { 0%, 46% { opacity: 0; } 54%, 72% { opacity: 1; } 80%, 100% { opacity: 0; } }
-@keyframes ldVeil { 0%, 88% { opacity: 0; } 100% { opacity: 1; } }
 
 @media (min-width: 768px) {
   .ld__skip {
@@ -1330,4 +1324,30 @@ html[data-intro='1'] .hx {
 
 html[data-intro='1'] {
   overflow: hidden;
+}
+
+/* While the loader plays, the top bar wears its dark look whatever theme the visitor chose:
+   the light bar's pale fade would otherwise wash a grey band across the black clip. */
+html[data-intro='1'] .dock {
+  --rd-ink: #e9eefb;
+  --rd-bg: #070b16;
+  --rd-mute: #9aa3bb;
+  --rd-line: rgba(255, 255, 255, 0.14);
+  --rd-glass: rgba(17, 24, 44, 0.62);
+  --rd-edge: rgba(255, 255, 255, 0.1);
+  --rd-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+  --rd-track: rgba(17, 24, 44, 0.8);
+  --rd-knob: #e9eefb;
+  --rd-knob-fg: #070b16;
+  --rd-veil: linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  --rd-m-mute: #8e98b3;
+  --rd-m-edge: rgba(255, 255, 255, 0.12);
+  --rd-m-pill: rgba(17, 24, 44, 0.6);
+  --rd-m-bar: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+}
+html[data-intro='1'] .dock .dock__logo-light {
+  display: none !important;
+}
+html[data-intro='1'] .dock .dock__logo-dark {
+  display: block !important;
 }
