@@ -91,7 +91,7 @@
 }
 
 @keyframes akSecOut {
-  to { transform: translateY(198px) scale(0.93); opacity: 0.25; filter: blur(3px); }
+  to { transform: translateY(198px) scale(0.93); opacity: 0; filter: blur(3px); }
 }
 @keyframes akSecIn {
   from { transform: translateY(-54px); opacity: 0.6; }

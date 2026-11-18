@@ -1,6 +1,5 @@
 import { Hero } from './Hero';
-import { Spreads } from './Spreads';
-import { SideProjects } from './SideProjects';
+import { WorkDrawer } from './WorkDrawer';
 import { About } from './About';
 import { Connect } from './Connect';
 import { ConnectedScroll, Section } from './ConnectedScroll';
@@ -16,8 +15,7 @@ export function Home() {
         <Hero />
       </Section>
       <Section index={1} exit enter>
-        <Spreads />
-        <SideProjects />
+        <WorkDrawer />
       </Section>
       <Section index={2} exit enter>
         <About />

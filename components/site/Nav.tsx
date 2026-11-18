@@ -19,12 +19,11 @@ const LINKS: { key: Exclude<Active, ''>; id: string; label: string }[] = [
   { key: 'about', id: 'about', label: 'About' },
 ];
 
-/** Phone sheet rows. Index shares the Work section until the Index route exists. */
+/** Phone sheet rows. Index is its own route, so it has no section id and navigates. */
 const SHEET: { key: string; id: string; label: string; note: string; href: string; active: Active }[] = [
   { key: 'home', id: 'top', label: 'Home', note: '01', href: '/', active: 'home' },
   { key: 'work', id: 'work', label: 'Work', note: '02', href: '/work/', active: 'work' },
-  // TODO(phase 3): point Index at /work/index/ once the route exists.
-  { key: 'index', id: 'work', label: 'Index', note: '03', href: '/work/', active: '' },
+  { key: 'index', id: 'index-route', label: 'Index', note: '03', href: '/work/index/', active: '' },
   { key: 'about', id: 'about', label: 'About', note: '04', href: '/about/', active: 'about' },
   { key: 'connect', id: 'connect', label: "Let's talk", note: '05', href: '/connect/', active: 'connect' },
 ];

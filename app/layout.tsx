@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Manrope, Azeret_Mono } from 'next/font/google';
 import './globals.css';
 import './redesign.css';
+import './work.css';
 import { SiteChrome } from '@/components/site/SiteChrome';
 
 // Self-hosted through next/font: preloaded, subset, no render-blocking CSS
