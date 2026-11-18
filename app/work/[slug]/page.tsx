@@ -15,7 +15,13 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title: 'Anubhav Kumar',
     description: p.lede,
-    openGraph: { title: p.title, description: p.lede, type: 'article' },
+    openGraph: {
+      title: p.title,
+      description: p.lede,
+      type: 'article',
+      images: [{ url: `/og/${params.slug}.jpg`, width: 1200, height: 630, alt: p.title }],
+    },
+    twitter: { card: 'summary_large_image' },
   };
 }
 

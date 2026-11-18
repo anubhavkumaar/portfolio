@@ -41,6 +41,8 @@ export function About() {
             alt="Illustration of Anubhav at his desk, smiling, with code on his monitors"
             width={1024}
             height={1024}
+            loading="lazy"
+            decoding="async"
           />
           <div className="ab__shade" aria-hidden="true" />
         </div>

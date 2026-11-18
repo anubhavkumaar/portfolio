@@ -47,3 +47,6 @@ Thumbs.db
 # Review captures and build-info churn
 /.impeccable/review/
 tsconfig.tsbuildinfo
+
+# og card generator scratch profile
+/.og-profile/

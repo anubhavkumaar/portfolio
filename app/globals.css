@@ -217,16 +217,6 @@ button {
    Type roles
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.t-hero {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: var(--t-hero);
-  font-weight: 700;
-  font-variation-settings: 'opsz' 96;
-  line-height: 0.9;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
-}
-
 .t-display {
   font-family: var(--font-display), system-ui, sans-serif;
   font-size: var(--t-display);
@@ -254,12 +244,6 @@ button {
   text-wrap: pretty;
 }
 
-.t-body {
-  font-size: var(--t-body);
-  line-height: 1.62;
-  text-wrap: pretty;
-}
-
 .t-small {
   font-size: var(--t-small);
   line-height: 1.55;
@@ -267,21 +251,8 @@ button {
   text-wrap: pretty;
 }
 
-/* Mono is for measurements and identifiers, never as a costume. */
-.t-meta {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: var(--t-meta);
-  line-height: 1.4;
-  letter-spacing: 0.01em;
-  color: rgba(var(--ink-rgb), 0.55);
-  font-variant-numeric: tabular-nums;
-}
-
 /* Light is the default, so the small mono text carries a firmer ink there.
    12px at 0.55 measured 4.18 on the ground; 0.68 clears AA with room. */
-[data-theme='light'] .t-meta {
-  color: rgba(var(--ink-rgb), 0.68);
-}
 
 .muted {
   color: rgba(var(--ink-rgb), 0.62);
@@ -303,25 +274,6 @@ button {
   padding-block: var(--space-section);
 }
 
-.section--tight {
-  padding-block: calc(var(--space-section) * 0.55);
-}
-
-.section__head {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
-}
-
-@media (min-width: 900px) {
-  .section__head {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    align-items: end;
-    gap: var(--gutter);
-  }
-}
-
 .hairline {
   height: 1px;
   background: var(--hair);
@@ -339,52 +291,8 @@ button {
     0 24px 60px -20px rgba(0, 0, 0, 0.55);
 }
 
-.glass--lit {
-  position: relative;
-  backdrop-filter: blur(18px) saturate(1.35);
-  -webkit-backdrop-filter: blur(18px) saturate(1.35);
-  background: rgba(var(--bg-rgb), 0.3);
-  /* After Liquid Glass (WWDC 2025): the material has a highlight layer
-     where a light source catches its top edge, and lensing at the rim,
-     brighter above and dimmer below, so it reads as a thin pane over the
-     field rather than a tinted rectangle. */
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
-    0 24px 60px -20px rgba(0, 0, 0, 0.55);
-  transition: box-shadow var(--dur-base) linear;
-}
-
-/* The sheen: light concentrated along the top of the pane, gone within
-   the first third. It sits on the glass, never on the content. */
-.glass--lit::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0) 34%);
-}
-
 /* Internal glow on interaction: the pane lights from within while the
    visitor is typing in it. */
-.glass--lit:focus-within {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 0 0 1px rgba(var(--accent-rgb), 0.22),
-    inset 0 0 48px rgba(var(--accent-rgb), 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
-    0 24px 60px -20px rgba(0, 0, 0, 0.55);
-}
-
-[data-theme='light'] .glass--lit {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.85),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
-    inset 0 -1px 0 rgba(11, 14, 20, 0.08),
-    0 24px 60px -24px rgba(11, 14, 20, 0.28);
-}
 
 [data-theme='light'] .glass {
   box-shadow:
@@ -1067,24 +975,6 @@ button {
 }
 
 /* Reserves the console's footprint while its code loads. */
-.console-shell {
-  min-height: 24rem;
-  padding: 1.25rem 1.5rem;
-}
-
-.console-shell__head {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.console-shell__avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  border: 1px solid rgba(var(--accent-rgb), 0.28);
-  background: rgba(var(--accent-rgb), 0.14);
-}
 
 .hero__cue {
   position: absolute;
@@ -1102,8 +992,7 @@ button {
   color: rgba(var(--ink-rgb), 0.78);
 }
 
-[data-theme='light'] .hero__cue,
-[data-theme='light'] .hero__cue .t-meta {
+[data-theme='light'] .hero__cue {
   color: rgba(var(--ink-rgb), 0.8);
 }
 
@@ -1228,99 +1117,6 @@ button {
   border-bottom: 1px solid var(--hair);
 }
 
-.spread__bar {
-  width: 100%;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 1.5rem;
-  padding-block: clamp(1.5rem, 3.5vh, 2.5rem);
-  text-align: left;
-  color: var(--ink);
-  transition: color var(--dur-fast) linear;
-}
-
-.spread__bar:hover .spread__title {
-  color: var(--accent);
-}
-
-.spread__title {
-  display: block;
-  transition: color var(--dur-fast) linear;
-}
-
-.spread__lede {
-  display: block;
-  margin-top: 0.5rem;
-  max-width: 60ch;
-  color: rgba(var(--ink-rgb), 0.66);
-}
-
-.spread__meta {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  justify-self: end;
-}
-
-.spread__tag {
-  color: rgba(var(--ink-rgb), 0.55);
-}
-
-.spread__toggle {
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  border: 1px solid var(--hair-strong);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink);
-  background: var(--glass);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
-  transition:
-    border-color var(--dur-fast) linear,
-    background-color var(--dur-fast) linear,
-    box-shadow var(--dur-fast) linear;
-}
-
-.spread__bar:hover .spread__toggle,
-.spread__bar:active .spread__toggle {
-  border-color: var(--ink);
-  background: rgba(var(--accent-rgb), 0.1);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    inset 0 0 18px rgba(var(--accent-rgb), 0.24),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
-}
-
-.spread__toggle svg {
-  transition: transform var(--dur-base) var(--ease-out);
-}
-
-.spread[data-open='true'] .spread__toggle svg {
-  transform: rotate(45deg);
-}
-
-.spread__body {
-  overflow: hidden;
-}
-
-.spread__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 3rem);
-  padding-bottom: clamp(2rem, 5vh, 3.5rem);
-}
-
-@media (min-width: 960px) {
-  .spread__grid {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  }
-}
-
 .beats {
   display: grid;
   gap: 1.5rem;
@@ -1332,27 +1128,6 @@ button {
   gap: 1rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--hair);
-}
-
-.beat__label {
-  color: var(--accent);
-  font-weight: 600;
-  font-size: var(--t-small);
-  text-transform: capitalize;
-}
-
-.spread__demo {
-  padding: clamp(1rem, 2vw, 1.5rem);
-  align-self: start;
-  position: sticky;
-  top: calc(var(--nav-h) + 1rem);
-}
-
-.spread__stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1.25rem;
 }
 
 .chip {
@@ -1390,140 +1165,10 @@ button {
   }
 }
 
-.skill__name {
-  display: block;
-  font-size: 1.25rem;
-}
-
-.skill__where {
-  display: block;
-  margin-top: 0.25rem;
-  max-width: 34ch;
-}
-
-.skills__also {
-  margin-top: 1.25rem;
-}
-
-.skill__items {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
 @media (max-width: 640px) {
   .beat {
     grid-template-columns: 1fr;
     gap: 0.35rem;
-  }
-  .spread__meta {
-    gap: 0.75rem;
-  }
-  .spread__tag {
-    display: none;
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   Side projects: rows on the left; behind and to the right, the four
-   screenshots drift as ghostly 3D panels (SideCanvas.tsx) and resolve into
-   view on hover, the way the site showed them before this week's rebuild.
-   Off under reduced motion and on touch, where the shot sits inline instead.
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-.side-section {
-  position: relative;
-  overflow: hidden;
-}
-
-.side-canvas-host {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.side-canvas-host canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.side-section .wrap {
-  position: relative;
-  z-index: 1;
-}
-
-.plist {
-  list-style: none;
-  border-top: 1px solid var(--hair);
-  position: relative;
-}
-
-.prow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 1.5rem;
-  padding-block: clamp(1.25rem, 2.6vh, 1.75rem);
-  border-bottom: 1px solid var(--hair);
-  color: var(--ink);
-  transition: color var(--dur-fast) linear;
-}
-
-/* The nudge on hover is a transform on the text block, not padding on the
-   row, so it stays off the layout thread. */
-.prow > span:first-child {
-  display: block;
-  transition: transform var(--dur-base) var(--ease-out);
-}
-
-.prow:hover > span:first-child {
-  transform: translateX(0.75rem);
-}
-
-.prow:hover .prow__name {
-  color: var(--accent);
-}
-
-.prow__name {
-  display: block;
-  transition: color var(--dur-fast) linear;
-}
-
-.prow__blurb {
-  display: block;
-  margin-top: 0.3rem;
-}
-
-.prow__meta {
-  display: flex;
-  align-items: baseline;
-  gap: 1.25rem;
-  white-space: nowrap;
-}
-
-.prow__shot {
-  display: none;
-}
-
-@media (hover: none), (pointer: coarse) {
-  .prow {
-    grid-template-columns: 1fr;
-  }
-  .prow__shot {
-    display: block;
-    margin-top: 1rem;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--hair);
-    aspect-ratio: 16 / 10;
-  }
-  .prow__shot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 }
 
@@ -1544,56 +1189,6 @@ button {
   }
 }
 
-.about__portrait {
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid var(--hair);
-  aspect-ratio: 1;
-}
-
-/* Sticky only once the portrait has its own column; stacked above the
-   text on a phone it would pin to the top and cover what scrolls under it.
-   The wrapper is the sticky item so the figure inside is free to animate. */
-@media (min-width: 900px) {
-  .about__portrait-wrap {
-    position: sticky;
-    top: calc(var(--nav-h) + 1.5rem);
-  }
-}
-
-/* The portrait develops in: the frame wipes open from the bottom while the
-   photograph settles from a slight zoom and its colour comes up. */
-.about__portrait-wrap.is-armed .about__portrait {
-  clip-path: inset(100% 0 0 0 round 22px);
-  transition: clip-path 900ms var(--ease-out);
-}
-
-.about__portrait-wrap.is-armed.is-in .about__portrait {
-  clip-path: inset(0 0 0 0 round 22px);
-}
-
-.about__portrait-wrap.is-armed .about__portrait img {
-  opacity: 1;
-  transform: scale(1.08);
-  filter: saturate(0);
-  transition:
-    transform 1400ms var(--ease-out),
-    filter 1200ms linear 200ms;
-}
-
-.about__portrait-wrap.is-armed.is-in .about__portrait img {
-  transform: none;
-  filter: saturate(0.9);
-}
-
-
-.about__portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.9);
-}
-
 /* The role line keeps the previous site's voice: a quiet "I am a" before the title. */
 .hero__role-pre {
   color: rgba(var(--ink-rgb), 0.62);
@@ -1602,16 +1197,6 @@ button {
 
 /* The title types through several roles. The caret only exists once the
    script is running; the static line carries no ornament. */
-.role-cycle.is-live > span::after {
-  content: '';
-  display: inline-block;
-  width: 2px;
-  height: 0.9em;
-  margin-left: 0.1em;
-  vertical-align: -0.08em;
-  background: currentColor;
-  animation: caret 1s steps(2, start) infinite;
-}
 
 @keyframes caret {
   to {
@@ -1624,18 +1209,6 @@ button {
    list does it, since no pointer gives the page life there; on a desktop
    only the lists marked always, the ones with no hover interaction of
    their own (skills, about). */
-.stagger--always.is-armed > * > * {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 640ms linear calc(var(--i, 0) * 110ms),
-    transform 820ms var(--ease-out) calc(var(--i, 0) * 110ms);
-}
-
-.stagger--always.is-armed.is-in > * > * {
-  opacity: 1;
-  transform: none;
-}
 
 @media (hover: none), (pointer: coarse) {
   .stagger.is-armed > * > * {
@@ -1654,14 +1227,6 @@ button {
 /* Inside a skills row the chips set themselves one at a time, a beat after
    the row, like type being placed. An animation rather than a transition,
    so the entrance delay never leaks into the hover that follows. */
-.stagger--always.is-armed .skill .chip {
-  opacity: 0;
-}
-
-.stagger--always.is-armed.is-in .skill .chip {
-  animation: chip-in 560ms var(--ease-out) both;
-  animation-delay: calc(var(--i, 0) * 110ms + 240ms + var(--j, 0) * 40ms);
-}
 
 @keyframes chip-in {
   from {
@@ -1674,97 +1239,8 @@ button {
   }
 }
 
-/* The rule under each skills row draws itself from the left, a beat after
-   the row lands, so the register is ruled in front of the visitor. */
-.stagger--always.is-armed .skill {
-  position: relative;
-  border-bottom-color: transparent;
-}
-
-.stagger--always.is-armed .skill::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 1px;
-  background: var(--hair);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 1000ms var(--ease-out) calc(var(--i, 0) * 110ms + 200ms);
-}
-
-.stagger--always.is-armed.is-in .skill::after {
-  transform: scaleX(1);
-}
-
 /* Once set, a chip answers the pointer. The lift uses the separate
    translate property so the entrance animation's fill cannot block it. */
-.skill__items .chip {
-  transition:
-    border-color var(--dur-fast) linear,
-    color var(--dur-fast) linear,
-    translate var(--dur-fast) var(--ease-out);
-}
-
-.skill__items .chip:hover {
-  border-color: rgba(var(--accent-rgb), 0.6);
-  color: var(--ink);
-  translate: 0 -1px;
-}
-
-.skill:hover .skill__name {
-  color: var(--accent);
-}
-
-.skill__name {
-  transition: color var(--dur-fast) linear;
-}
-
-.about__problems {
-  margin-top: 1.75rem;
-}
-
-.about__problems-label {
-  color: rgba(var(--ink-rgb), 0.5);
-  margin-bottom: 0.75rem;
-}
-
-[data-theme='light'] .about__problems-label {
-  color: rgba(var(--ink-rgb), 0.68);
-}
-
-.about__list {
-  list-style: none;
-  display: grid;
-  gap: 0.6rem;
-  max-width: 54ch;
-}
-
-.about__list li {
-  position: relative;
-  padding-left: 1.1rem;
-  color: rgba(var(--ink-rgb), 0.78);
-}
-
-.about__list li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.72em;
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--accent);
-}
-
-.about__body {
-  margin-top: 1.5rem;
-  display: grid;
-  gap: 1.1rem;
-  max-width: var(--measure);
-  color: rgba(var(--ink-rgb), 0.78);
-}
 
 .facts {
   display: grid;
@@ -1782,37 +1258,11 @@ button {
   padding: 1.25rem 1.25rem 1.1rem;
 }
 
-.fact__value {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 650;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--ink);
-}
-
-.fact__label {
-  margin-top: 0.45rem;
-}
-
 .listing {
   list-style: none;
   border-top: 1px solid var(--hair);
   margin-top: 2.5rem;
 }
-
-.listing__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 1rem;
-  padding-block: 0.9rem;
-  border-bottom: 1px solid var(--hair);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   Connect
-   ═══════════════════════════════════════════════════════════════════════════ */
 
 /* The last screen. Two audiences read it: a recruiter with a role in mind and
    a viewer from a stream, so the address keeps the largest type and the nine
@@ -1827,148 +1277,12 @@ button {
   border-top: 1px solid var(--hair);
 }
 
-.connect__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: clamp(2.5rem, 6vh, 4rem);
-  align-content: center;
-}
-
-.connect__head {
-  margin-bottom: clamp(1.75rem, 4vh, 3rem);
-}
-
-/* The address is the action, so it carries the largest type on the screen. */
-.connect__email {
-  position: relative;
-  display: inline-block;
-  max-width: 100%;
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: clamp(1.6rem, 4.9vw, 6.5rem);
-  font-weight: 650;
-  font-variation-settings: 'opsz' 72;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: var(--ink);
-  overflow-wrap: anywhere;
-  padding-bottom: 0.1em;
-  transition: color var(--dur-fast) linear;
-}
-
-.connect__email::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--dur-base) var(--ease-out);
-}
-
-.connect__email:hover,
-.connect__email:active {
-  color: var(--accent);
-}
-
-.connect__email:hover::after,
-.connect__email:active::after {
-  transform: scaleX(1);
-}
-
-.connect__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
-/* Below 768px the two actions become a pair of square icon buttons, icon
-   over caption, the way a phone's own share sheet presents its shortcuts.
-   The desktop pill stays a pill; only the box model changes underneath. */
-@media (max-width: 767px) {
-  .connect__actions {
-    justify-content: center;
-    gap: 1.25rem;
-    margin-top: 2rem;
-  }
-  .connect__actions .btn {
-    flex-direction: column;
-    justify-content: center;
-    width: 5.5rem;
-    height: 5.5rem;
-    padding: 0;
-    border-radius: 22px;
-    gap: 0.4rem;
-    white-space: normal;
-    text-align: center;
-    font-size: 0.75rem;
-    line-height: 1.15;
-  }
-  .connect__actions .btn__icon {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-/* ── Layout: address first ───────────────────────────────────────────────── */
-
-@media (min-width: 900px) {
-  .connect--address .connect__groups {
-    display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    column-gap: var(--gutter);
-    align-items: start;
-  }
-}
-
-/* ── Layout: ledger ──────────────────────────────────────────────────────── */
-
-@media (min-width: 900px) {
-  .connect--ledger .connect__inner {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    column-gap: calc(var(--gutter) * 1.5);
-    align-items: start;
-    align-content: start;
-  }
-  .connect--ledger .connect__lead {
-    position: sticky;
-    top: calc(var(--nav-h) + 2rem);
-  }
-  .connect--ledger .connect__head {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .connect--ledger .connect__email {
-    font-size: clamp(1.6rem, 2.9vw, 3.4rem);
-  }
-  .connect--ledger .connect__groups {
-    display: grid;
-    row-gap: clamp(2rem, 4vh, 3rem);
-  }
-}
-
 /* ── The profiles: two ruled registers ───────────────────────────────────── */
 
 .profiles {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   row-gap: clamp(2rem, 4vh, 3rem);
-}
-
-.profiles__label {
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-}
-
-.profiles__list {
-  list-style: none;
-  border-top: 1px solid var(--hair);
-}
-
-.profiles__list > li {
-  border-bottom: 1px solid var(--hair);
 }
 
 /* One row per profile at every size. Mobile stacks name over handle; from
@@ -2123,23 +1437,6 @@ button {
 .footer {
   border-top: 1px solid var(--hair);
   padding-block: 1.5rem;
-}
-
-.footer__top {
-  color: rgba(var(--ink-rgb), 0.62);
-  transition: color var(--dur-fast) linear;
-}
-
-.footer__top:hover,
-.footer__top:active {
-  color: var(--ink);
-}
-
-.footer__inner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -3173,26 +2470,9 @@ html.is-stream .skip-link {
   .reveal > span {
     transform: none;
   }
-  .stagger.is-armed > * > *,
-  .stagger--always.is-armed .skill .chip {
+  .stagger.is-armed > * > * {
     opacity: 1;
     transform: none;
-    animation: none;
-  }
-  .stagger--always.is-armed .skill {
-    border-bottom-color: var(--hair);
-  }
-  .stagger--always.is-armed .skill::after {
-    display: none;
-  }
-  .about__portrait-wrap.is-armed .about__portrait {
-    clip-path: none;
-  }
-  .about__portrait-wrap.is-armed .about__portrait img {
-    transform: none;
-    filter: saturate(0.9);
-  }
-  .role-cycle.is-live > span::after {
     animation: none;
   }
   .hero__cue-line {
