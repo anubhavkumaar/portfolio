@@ -8,8 +8,9 @@ const FADE_MS = 400;
 /**
  * The intro loader (Loader.dc.html), 2.8 s with a Skip link.
  *
- * It shows at most once per session, never on a deep link (any path other than
- * /), never under reduced motion and never on Save-Data. The decision is made
+ * It plays on every load of the home page (a reload or a fresh visit), never on a
+ * deep link (any path other than /), never under reduced motion and never on
+ * Save-Data. Navigating within the site does not replay it. The decision is made
  * by a script in <head> (see layout.tsx) that sets data-intro on <html> before
  * first paint, so there is no flash of the page underneath. This component
  * only runs the timer and removes the attribute. The top bar sits above the
@@ -21,11 +22,6 @@ export function Loader() {
   useEffect(() => {
     const html = document.documentElement;
     if (html.getAttribute('data-intro') !== '1') return;
-    try {
-      sessionStorage.setItem('akIntro', '1');
-    } catch {
-      /* private mode: the loader may show again, which is acceptable */
-    }
     const el = root.current;
     let done = false;
     const end = () => {

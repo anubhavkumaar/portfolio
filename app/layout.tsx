@@ -64,8 +64,8 @@ if(/^\\/stream(\\/|$)/.test(p)){
 // Light is the default. A saved choice wins; the system preference does not.
 var s=localStorage.getItem('theme');
 d.setAttribute('data-theme', s==='dark'?'dark':'light');
-// The intro loader: once per session, never on a deep link, never under reduced motion or Save-Data.
-if(p==='/'&&!sessionStorage.getItem('akIntro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!(navigator.connection&&navigator.connection.saveData))d.setAttribute('data-intro','1');
+// The intro loader: on every load of the home page, never on a deep link, never under reduced motion or Save-Data.
+if(p==='/'&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!(navigator.connection&&navigator.connection.saveData))d.setAttribute('data-intro','1');
 }catch(e){document.documentElement.setAttribute('data-theme','light');}})();
 `;
 
