@@ -2,8 +2,9 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { goSection } from './SmoothScroll';
+import { SmokeBackdrop } from './SmokeBackdrop';
 
 // The console and the SmoothUI primitives it pulls in are the heaviest script
 // above the fold. They arrive after the page is interactive, behind a shell of
@@ -40,68 +41,6 @@ function Letters({ text, start }: { text: string; start: number }) {
   );
 }
 
-/**
- * The smoke loop behind the hero. The poster is a CSS background chosen by
- * theme and screen, so only the matching still is ever fetched, and it is what
- * shows when the video cannot play (iOS Low Power Mode blocks autoplay), when
- * the visitor presses Pause (WCAG 2.2.2), under reduced motion, and on Save-Data.
- */
-function Backdrop({ still }: { still: boolean }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [phone, setPhone] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const read = () => setTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
-    read();
-    const mo = new MutationObserver(read);
-    mo.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    const mq = window.matchMedia('(max-width: 767px)');
-    const onMq = () => setPhone(mq.matches);
-    onMq();
-    mq.addEventListener('change', onMq);
-    return () => {
-      mo.disconnect();
-      mq.removeEventListener('change', onMq);
-    };
-  }, []);
-
-  const src = `/redesign/media/smoke-${theme}${phone ? '-phone' : ''}.mp4`;
-
-  useEffect(() => {
-    const v = ref.current;
-    if (!v || still) return;
-    setFailed(false);
-    // Autoplay can be refused (iOS Low Power Mode): the poster stays. An abort
-    // only means the source changed under us, which is not a refusal.
-    v.play().catch((err: unknown) => {
-      if ((err as { name?: string } | null)?.name !== 'AbortError') setFailed(true);
-    });
-  }, [src, still]);
-
-  return (
-    <div className="hx__bg" aria-hidden="true">
-      <div className="hx__poster" />
-      {!still && !failed && (
-        <video
-          ref={ref}
-          className="hx__video"
-          src={src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          onError={() => setFailed(true)}
-        />
-      )}
-      <div className="hx__scrim" />
-    </div>
-  );
-}
-
 export function Hero() {
   const [still, setStill] = useState(false);
   const [phone, setPhone] = useState(false);
@@ -119,7 +58,7 @@ export function Hero() {
 
   return (
     <div className="hx">
-      <Backdrop still={still} />
+      <SmokeBackdrop still={still} />
 
       <div className="hx__copy">
         <p className="hx__eyebrow">

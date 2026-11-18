@@ -4,6 +4,7 @@ import './globals.css';
 import './redesign.css';
 import './work.css';
 import './case.css';
+import './pages.css';
 import { SiteChrome } from '@/components/site/SiteChrome';
 
 // Self-hosted through next/font: preloaded, subset, no render-blocking CSS
@@ -60,6 +61,8 @@ if(/^\\/stream(\\/|$)/.test(p)){
 // Light is the default. A saved choice wins; the system preference does not.
 var s=localStorage.getItem('theme');
 d.setAttribute('data-theme', s==='dark'?'dark':'light');
+// The intro loader: once per session, never on a deep link, never under reduced motion or Save-Data.
+if(p==='/'&&!sessionStorage.getItem('akIntro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!(navigator.connection&&navigator.connection.saveData))d.setAttribute('data-intro','1');
 }catch(e){document.documentElement.setAttribute('data-theme','light');}})();
 `;
 

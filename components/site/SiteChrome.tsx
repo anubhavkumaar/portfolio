@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { Loader } from './Loader';
 import { Nav } from './Nav';
 import { SmoothScroll } from './SmoothScroll';
 
@@ -19,6 +20,7 @@ export function SiteChrome() {
     <>
       <SmoothScroll />
       <Nav />
+      <Loader />
     </>
   );
 }

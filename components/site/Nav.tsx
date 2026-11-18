@@ -86,6 +86,8 @@ export function Nav() {
   // True when this page carries the sections (the one-page site and its section routes).
   const [hasSections, setHasSections] = useState(false);
   const [open, setOpen] = useState(false);
+  // The 404 page marks itself, so the breadcrumb can name it.
+  const [is404, setIs404] = useState(false);
   // A case study returns to where it was opened from: the drawer, freestyle or the index.
   const [from, setFrom] = useState({ href: '/work/', label: 'Work' });
   const menuBtn = useRef<HTMLButtonElement>(null);
@@ -101,6 +103,7 @@ export function Nav() {
     setHasSections(!!document.getElementById('work'));
     setOpen(false);
     setFrom(readFrom());
+    setIs404(!!document.querySelector('[data-not-found]'));
   }, [pathname]);
 
   // Which section owns the middle of the viewport. Nothing is current while
@@ -179,7 +182,7 @@ export function Nav() {
   };
 
   const sub = subCrumb(path);
-  const hereText = sub ? sub.here : active ? NAME[active] : '';
+  const hereText = sub ? sub.here : is404 ? '404' : active ? NAME[active] : '';
 
   return (
     <header className="dock">
