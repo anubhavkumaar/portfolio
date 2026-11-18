@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { PROJECTS } from '@/content/portfolio';
-import { GROUPS, KIND_LABEL, caseHref, coverOf, groupSlug, markFrom, projectNumber, projectsIn } from '@/content/work-layout';
+import { GROUPS, KIND_LABEL, caseHref, coverOf, groupSlug, markFrom, projectNumber, projectsIn, takeReturn, clearReturn } from '@/content/work-layout';
 
 /**
  * Index: every project in its group, with sticky group pills (Index.dc.html on
@@ -12,6 +13,23 @@ import { GROUPS, KIND_LABEL, caseHref, coverOf, groupSlug, markFrom, projectNumb
  */
 export function WorkIndex() {
   let k = 0;
+
+  // Coming back from a case study: land where the visitor left the list.
+  useEffect(() => {
+    const y = takeReturn();
+    if (y === null) return;
+    const go = () => window.scrollTo(0, y);
+    const t = window.setTimeout(go, 60);
+    const t2 = window.setTimeout(() => {
+      go();
+      clearReturn();
+    }, 400);
+    go();
+    return () => {
+      window.clearTimeout(t);
+      window.clearTimeout(t2);
+    };
+  }, []);
   return (
     <div className="wi">
       <div className="wi__band-top" aria-hidden="true" />

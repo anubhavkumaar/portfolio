@@ -1,7 +1,9 @@
 'use client';
 
 import { createContext, Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { scrollToId } from './SmoothScroll';
+import { usePathname } from 'next/navigation';
+import { scrollToId, scrollToY } from './SmoothScroll';
+import { clearReturn, takeReturn } from '@/content/work-layout';
 
 /**
  * One connected page: Home, Work, About and Connect flow into each other with
@@ -41,6 +43,9 @@ function indexForPath(pathname: string) {
 }
 
 export function ConnectedScroll({ children }: { children: React.ReactNode }) {
+  // The route Next rendered. The address bar can still show the previous page while this
+  // mounts (Next updates it after effects run), so it is not used to pick the start section.
+  const routePath = usePathname() || '/';
   const [state, setState] = useState<State>({ vis: [true, false, false, false], cycle: [0, 0, 0, 0] });
   const current = useRef(0);
   const sync = useRef(false);
@@ -91,7 +96,7 @@ export function ConnectedScroll({ children }: { children: React.ReactNode }) {
     // A direct hit on /work/ lands on its section first (JumpTo does it); the
     // address is only rewritten once that jump has settled, so it is not
     // overwritten with / on the way.
-    const start = indexForPath(window.location.pathname);
+    const start = indexForPath(routePath);
     current.current = start;
     const settle = window.setTimeout(
       () => {
@@ -102,11 +107,40 @@ export function ConnectedScroll({ children }: { children: React.ReactNode }) {
     );
     if (start !== 0) requestAnimationFrame(() => scrollToId(SECTIONS[start].id, true));
 
+    // Coming back from a case study: the section is in place, then return to the exact
+    // position (a freestyle view is taller than the drawer, so wait for it to lay out).
+    // Arriving by a client navigation, Next scrolls to the top after the page renders and can
+    // undo the jump above. So the jump is re-applied for a moment while the page is still at
+    // its top, and stops the instant the visitor scrolls or presses a key themselves.
+    let rejump = 0;
+    let touched = false;
+    const touch = () => {
+      touched = true;
+    };
+    if (start !== 0) {
+      for (const ev of ['wheel', 'touchstart', 'keydown', 'pointerdown']) window.addEventListener(ev, touch, { passive: true, once: true });
+      let tries = 0;
+      const again = () => {
+        if (touched || ++tries > 16) return;
+        if (window.scrollY < 100) scrollToId(SECTIONS[start].id, true);
+        rejump = window.setTimeout(again, 100);
+      };
+      rejump = window.setTimeout(again, 100);
+    }
+    const back = start !== 0 ? takeReturn() : null;
+    const restore = back === null ? 0 : window.setTimeout(() => {
+            scrollToY(back);
+            clearReturn();
+          }, 420);
+
     compute();
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     return () => {
       window.clearTimeout(settle);
+      if (restore) window.clearTimeout(restore);
+      if (rejump) window.clearTimeout(rejump);
+      for (const ev of ['wheel', 'touchstart', 'keydown', 'pointerdown']) window.removeEventListener(ev, touch);
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);

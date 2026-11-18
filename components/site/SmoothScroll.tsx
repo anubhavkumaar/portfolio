@@ -57,3 +57,9 @@ export function goSection(e: React.MouseEvent, id: string) {
     scrollToId(id);
   }
 }
+
+/** Scroll to an absolute position, through Lenis when it is running. */
+export function scrollToY(y: number) {
+  if (instance) instance.scrollTo(y, { immediate: true });
+  else window.scrollTo(0, y);
+}

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ACC, MINI, PROJECTS, STATUS, isWorkProject, type Project, type ProjectId } from '@/content/portfolio';
-import { caseHref, neighbours, projectNumber, readFrom } from '@/content/work-layout';
+import { armReturn, caseHref, neighbours, projectNumber, readFrom } from '@/content/work-layout';
 
 /**
  * One template for all 20 case studies (CaseStudy.dc.html, MCase.dc.html):
@@ -478,7 +478,7 @@ export function CaseStudy({ id }: { id: ProjectId }) {
           <Link className="cs-btn" href={caseHref(next.id)} aria-label={`Next project: ${next.title}`}>
             Next: {next.title} <span aria-hidden="true">→</span>
           </Link>
-          <Link className="cs-btn cs-btn--icon" href={back.href} aria-label="Close case study">
+          <Link className="cs-btn cs-btn--icon" href={back.href} aria-label="Close case study" onClick={armReturn}>
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
@@ -510,7 +510,7 @@ export function CaseStudy({ id }: { id: ProjectId }) {
               <strong>{next.title}</strong>
             </Link>
           </div>
-          <Link href={back.href} className="cs-pf__back">
+          <Link href={back.href} className="cs-pf__back" onClick={armReturn}>
             ← Back to {back.label}
           </Link>
         </div>

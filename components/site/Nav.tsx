@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PROJECTS } from '@/content/portfolio';
-import { readFrom } from '@/content/work-layout';
+import { armReturn, readFrom } from '@/content/work-layout';
 import { scrollToId } from './SmoothScroll';
 
 type Active = 'home' | 'work' | 'about' | 'connect' | '';
@@ -202,7 +202,7 @@ export function Nav() {
               <span className="dock__path-sep">/</span>
               {sub && (
                 <>
-                  <Link href={sub.isCase ? from.href : '/work/'} onClick={(e) => go(e, 'work')}>
+                  <Link href={sub.isCase ? from.href : '/work/'} onClick={(e) => { if (sub.isCase) armReturn(); go(e, 'work'); }}>
                     {sub.isCase ? from.label : sub.parent}
                   </Link>
                   <span className="dock__path-sep">/</span>

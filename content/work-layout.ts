@@ -73,6 +73,7 @@ export type From = 'drawer' | 'freestyle' | 'index';
 export function markFrom(from: From) {
   try {
     sessionStorage.setItem('akFrom', from);
+    sessionStorage.setItem('akFromY', String(Math.round(window.scrollY)));
   } catch {
     /* private mode: the close button falls back to Work */
   }
@@ -102,4 +103,38 @@ export function neighbours(id: ProjectId): { prev: Project; next: Project } {
     prev: PROJECTS[ORDER[(k + ORDER.length - 1) % ORDER.length]],
     next: PROJECTS[ORDER[(k + 1) % ORDER.length]],
   };
+}
+
+/**
+ * Closing a case study returns to where it was opened from, at the same scroll
+ * position. markFrom() remembers the position; the close button and the
+ * breadcrumb call armReturn(), and the page they land on calls takeReturn()
+ * once, after it has laid out.
+ */
+export function armReturn() {
+  try {
+    const y = sessionStorage.getItem('akFromY');
+    if (y !== null) sessionStorage.setItem('akReturnY', y);
+  } catch {
+    /* private mode: the page opens at its top */
+  }
+}
+
+export function takeReturn(): number | null {
+  try {
+    const y = sessionStorage.getItem('akReturnY');
+    const n = y === null ? NaN : Number(y);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Called once the position has been applied, so a later visit does not jump. */
+export function clearReturn() {
+  try {
+    sessionStorage.removeItem('akReturnY');
+  } catch {
+    /* nothing to clear */
+  }
 }
