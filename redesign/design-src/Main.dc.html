@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="/redesign/brand/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Manrope:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+@keyframes akRoles{0.00%,14.33%{transform:translateY(-0.00em)}16.67%,31.00%{transform:translateY(-1.30em)}33.33%,47.67%{transform:translateY(-2.60em)}50.00%,64.33%{transform:translateY(-3.90em)}66.67%,81.00%{transform:translateY(-5.20em)}83.33%,97.67%{transform:translateY(-6.50em)}100%{transform:translateY(-7.80em)}}
+@keyframes akCaret{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes akSmokeD{0%,100%{filter:hue-rotate(0deg) saturate(1.3)}50%{filter:hue-rotate(14deg) saturate(1.3)}}
+@keyframes akSmokeL{0%,100%{filter:invert(1) hue-rotate(196deg) saturate(1.8) blur(10px)}50%{filter:invert(1) hue-rotate(207deg) saturate(1.7) blur(10px)}}
+@keyframes akCloudA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6%,5%) scale(1.12)}}
+@keyframes akCloudB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(7%,-4%) scale(.92)}}
+body{margin:0}
+a{color:inherit}a:hover{opacity:.85}
+@keyframes akDriftA{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-60px,40px) scale(1.08)}100%{transform:translate(0,0) scale(1)}}
+@keyframes akDriftB{0%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-30px) scale(.94)}100%{transform:translate(0,0) scale(1)}}
+@keyframes akRise{from{opacity:0;transform:translateY(60%)}to{opacity:1;transform:none}}
+@keyframes akChatIn{from{opacity:0;transform:translateY(34px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes akFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes akSheenC{0%{transform:translateX(-120%) skewX(-20deg)}100%{transform:translateX(320%) skewX(-20deg)}}
+@keyframes akPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.8);opacity:0}}
+@keyframes akBubble{from{opacity:0;transform:translateY(8px) scale(.85)}to{opacity:1;transform:none}}
+@keyframes akTyping{0%,100%{opacity:0}4%,90%{opacity:1}}
+@keyframes akDot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-4px);opacity:1}}
+@keyframes akWrite{from{clip-path:inset(0 0 100% 0);opacity:.4}to{clip-path:inset(0 0 0 0);opacity:1}}
+@keyframes akUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes akNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.ak-chat{animation:akChatIn 1.1s .55s cubic-bezier(.16,1,.3,1) both}
+.ak-float{animation:akFloat 7s 2s ease-in-out infinite}
+.ak-chip{animation:akUp .6s cubic-bezier(.16,1,.3,1) both;transition:transform .3s cubic-bezier(.16,1,.3,1),background .25s,border-color .25s}
+.ak-chip:hover{transform:translateY(-3px)}
+.ak-go:hover .ak-arrow{animation:akNudge .7s ease-in-out infinite}
+.ak-send{transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.ak-send:hover{transform:scale(1.07)}
+@keyframes akPingC{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
+.ak-ctl{transition:background .25s,transform .25s cubic-bezier(.16,1,.3,1)}
+.ak-ctl:hover{transform:translateY(-1px)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+.ak-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</helmet>
+<main style="position: relative; width: 100%; height: 900px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: Manrope, system-ui, sans-serif;">
+  <sc-if value="{{playing}}" hint-placeholder-val="{{true}}">
+
+  <div aria-hidden="true" style="position: absolute; inset: 0; overflow: hidden;">
+    <sc-if value="{{moving}}" hint-placeholder-val="{{true}}"><video src="{{t.fieldSrc}}" poster="{{t.fieldPoster}}" autoplay muted loop playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{t.fieldPos}};"></video></sc-if>
+    <sc-if value="{{still}}" hint-placeholder-val="{{false}}"><img src="{{t.fieldPoster}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{t.fieldPos}};"></sc-if>
+    <div style="position: absolute; inset: 0; background: {{t.scrim}};"></div>
+  </div>
+
+
+  <section style="position: absolute; left: 7%; top: 19%; width: 48%; display: flex; flex-direction: column; gap: 24px;">
+    <p style="margin: 0; display: inline-flex; align-items: center; gap: 9px; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: .16em; color: {{t.mute}}; animation: akUp .7s .2s cubic-bezier(.16,1,.3,1) both;"><span style="position: relative; width: 7px; height: 7px;"><span style="position: absolute; inset: 0; border-radius: 50%; background: #3ccf7a;"></span><span style="position: absolute; inset: 0; border-radius: 50%; background: #3ccf7a; animation: akPingC 1.8s ease-out infinite;"></span></span>OPEN TO GENAI ENGINEERING ROLES</p>
+    <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 148px; line-height: .88; letter-spacing: -0.045em;" aria-label="Anubhav Kumar"><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.300s;">A</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.335s;">n</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.370s;">u</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.405s;">b</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.440s;">h</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.475s;">a</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.510s;">v</span><br><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.545s;">K</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.580s;">u</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.615s;">m</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.650s;">a</span><span style="display: inline-block; animation: akRise 1s cubic-bezier(.16,1,.3,1) both; animation-delay: 0.685s;">r</span></h1>
+    <p style="margin: 6px 0 0; font-size: 22px; font-weight: 500; line-height: 1.3; height: 1.3em;">I am a <span aria-label="Full Stack Developer and GenAI Engineer" style="display: inline-flex; align-items: flex-start; vertical-align: top; height: 1.3em; overflow: hidden; color: {{t.accent}};"><span aria-hidden="true" style="display: block; animation: akRoles 18s cubic-bezier(.76,0,.24,1) infinite;"><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap;">Full Stack Developer and GenAI Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap;">Data Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap;">Backend Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap;">Agentic AI Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap;">LLM and RAG Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap;">Gamer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap;">Full Stack Developer and GenAI Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span></span></span></p>
+    <p style="margin: 0; max-width: 430px; font-size: 16px; line-height: 1.55; color: {{t.mute}};">I build AI agents, retrieval and the screens around them for a GenAI product platform at Deloitte: Python and FastAPI services, MCP tools on AWS Bedrock, and React front ends.</p>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <a href="{{toWork}}" onClick="{{jump}}" style="display: inline-flex; align-items: center; height: 48px; padding: 0 22px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; text-decoration: none; font-weight: 600; font-size: 15px;">View work</a>
+      <a href="{{toAbout}}" onClick="{{jump}}" style="display: inline-flex; align-items: center; height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none; font-weight: 600; font-size: 15px;">About me</a>
+      <a class="ak-ctl" href="{{resumeHref}}" download="Anubhav_Kumar_Resume.pdf" style="display: inline-flex; align-items: center; gap: 7px; height: 48px; padding: 0 18px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; color: {{t.ink}};"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"></path><path d="M7 10l5 5 5-5"></path><path d="M5 20h14"></path></svg>Resume</a>
+    </div>
+  </section>
+
+  <div class="ak-chat" style="position: absolute; right: 7%; top: 25%; width: 400px;">
+  <aside class="ak-float" aria-label="Ask anubhav chat" style="position: relative; overflow: hidden; padding: 18px; border-radius: 18px; background: {{t.glass}}; border: 1px solid {{t.glassLine}}; box-shadow: {{t.shadow}}; backdrop-filter: blur(18px); display: flex; flex-direction: column; gap: 14px;">
+    <span aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 0; width: 34%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent); pointer-events: none; animation: akSheenC 1.6s 1.2s cubic-bezier(.4,0,.2,1) both;"></span>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <img src="{{logoSrc}}" alt="" height="23" style="display: block; height: 23px; width: auto;">
+      <span style="font-size: 14px; font-weight: 600;">ask anubhav</span>
+      <span aria-hidden="true" style="position: relative; width: 7px; height: 7px;"><span style="position: absolute; inset: 0; border-radius: 50%; background: #4be08a;"></span><span style="position: absolute; inset: 0; border-radius: 50%; background: #4be08a; animation: akPing 2s 1.6s ease-out infinite;"></span></span>
+      <span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 11px; color: {{t.mute}};">remembers this chat</span>
+    </div>
+    <p style="margin: 0; align-self: flex-end; max-width: 80%; padding: 8px 12px; border-radius: 12px 12px 4px 12px; background: {{t.ink}}; color: {{t.bg}}; font-size: 13px; transform-origin: right bottom; animation: akBubble .55s 1.5s cubic-bezier(.34,1.56,.64,1) both;">What do you build?</p>
+    <div style="position: relative;">
+      <span aria-hidden="true" style="position: absolute; left: 0; top: 2px; display: inline-flex; gap: 4px; padding: 9px 12px; border-radius: 12px 12px 12px 4px; background: {{t.pill}}; border: 1px solid {{t.line}}; animation: akTyping 1.3s 2.05s linear both;">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: {{t.mute}}; animation: akDot 1s 2.05s ease-in-out infinite;"></span>
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: {{t.mute}}; animation: akDot 1s 2.2s ease-in-out infinite;"></span>
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: {{t.mute}}; animation: akDot 1s 2.35s ease-in-out infinite;"></span>
+      </span>
+      <p style="margin: 0; font-size: 13px; line-height: 1.6; animation: akWrite 1.4s 3.3s cubic-bezier(.45,0,.25,1) both;">AI agents and retrieval for a GenAI product platform at Deloitte: the agent backend, the tools agents call, search across documents and video, and the chat that sits on top.</p>
+    </div>
+    <a class="ak-go" href="{{toWork}}" onClick="{{jump}}" style="font-size: 13px; font-weight: 600; color: {{t.accent}}; text-decoration: none; animation: akUp .6s 4.8s cubic-bezier(.16,1,.3,1) both;">Open the work <span class="ak-arrow" style="display: inline-block;">→</span></a>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+      <sc-for list="{{chips}}" as="c" hint-placeholder-count="5">
+        <button class="ak-chip" type="button" style="height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; color: {{t.ink}}; font: 500 12px Manrope, sans-serif; cursor: pointer; animation-delay: {{c.d}};">{{c.label}}</button>
+      </sc-for>
+    </div>
+    <form style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 14px; border-radius: 12px; background: {{t.field}}; border: 1px solid {{t.line}}; animation: akUp .7s 1.1s cubic-bezier(.16,1,.3,1) both;">
+      <label for="ask" class="ak-sr">Ask anything about me or the work</label>
+      <input id="ask" type="text" placeholder="Ask anything about me or the work" style="flex: 1; min-width: 0; height: 36px; border: 0; background: transparent; color: {{t.ink}}; font: 400 14px Manrope, sans-serif; outline: none;">
+      <span style="position: relative; display: inline-flex; border-radius: 10px;">
+        <span aria-hidden="true" style="position: absolute; inset: 0; border-radius: 10px; border: 2px solid {{t.ink}}; animation: akPing 2.4s 5.4s ease-out infinite;"></span>
+        <button class="ak-send" type="button" aria-label="Send" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 10px; border: 0; background: {{t.ink}}; color: {{t.bg}}; cursor: pointer;">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg>
+        </button>
+      </span>
+    </form>
+  </aside>
+  </div>
+
+
+  <button class="ak-ctl" type="button" onClick="{{toggleMotion}}" aria-pressed="{{stillPressed}}" style="position: absolute; z-index: 6; left: 2.6%; bottom: 22px; display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; backdrop-filter: blur(12px); color: {{t.ink}}; font: 600 12px Manrope, sans-serif; cursor: pointer;">
+    <sc-if value="{{moving}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>Pause background</sc-if>
+    <sc-if value="{{still}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7z"></path></svg>Play background</sc-if>
+  </button>
+
+  </sc-if>
+  <sc-if value="{{standalone}}" hint-placeholder-val="{{true}}">
+  <div style="position: absolute; z-index: 20; left: 0; right: 0; top: 0;">
+    <dc-import name="Dock" dark="{{dark}}" active="home" hint-size="100%,112px"></dc-import>
+  </div>
+  </sc-if>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"embedded":{"editor":"boolean","default":false},"play":{"editor":"boolean","default":true},"hero":{"editor":"enum","options":["smoke","sphere"],"default":"smoke"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = !!this.props.dark;
+    const t = dark ? {
+      bg: '#070b16', ink: '#e9eefb', mute: '#8e98b3', line: '#1b2238', pill: 'rgba(17,24,44,.72)', accent: '#8ea2ff',
+      glass: 'rgba(14,20,38,.62)', glassLine: 'rgba(255,255,255,.08)', field: 'rgba(255,255,255,.04)',
+      shadow: '0 30px 80px rgba(0,0,0,.5)',
+      smokeA: 'rgba(80,120,235,.18)', smokeB: 'rgba(100,130,240,.14)', smokeC: 'rgba(110,130,240,.12)',
+      fieldSrc: '/redesign/media/smoke-dark.mp4', fieldPoster: '/redesign/media/smoke-dark.jpg', vidOp: '.9', vidFilter: 'hue-rotate(0deg) saturate(1.3)', vidAnim: 'akSmokeD 18s ease-in-out infinite', cloudBlue: 'rgba(70,120,240,.38)', cloudLav: 'rgba(110,125,240,.24)', vidBlend: 'screen', scrim: 'none'
+    } : {
+      bg: '#f4f6fa', ink: '#0e1116', mute: '#59606b', line: '#dfe4ec', pill: 'rgba(255,255,255,.7)', accent: '#2f55e8',
+      glass: 'rgba(255,255,255,.58)', glassLine: 'rgba(255,255,255,.9)', field: 'rgba(255,255,255,.8)',
+      shadow: '0 30px 80px rgba(40,70,160,.16)',
+      smokeA: 'rgba(132,168,240,.3)', smokeB: 'rgba(160,185,245,.28)', smokeC: 'rgba(150,180,240,.26)',
+      fieldSrc: '/redesign/media/smoke-light.mp4', fieldPoster: '/redesign/media/smoke-light.jpg', vidOp: '.6', vidFilter: 'invert(1) hue-rotate(196deg) saturate(1.8) blur(10px)', vidAnim: 'akSmokeL 18s ease-in-out infinite', cloudBlue: 'rgba(118,160,242,.62)', cloudLav: 'rgba(176,186,246,.42)', vidBlend: 'multiply', scrim: 'none'
+    };
+    t.fieldPos = 'center';
+    if (this.props.dark && this.props.hero === 'sphere') {
+      t.fieldSrc = '/redesign/media/sphere-hero.mp4'; t.fieldPoster = '/redesign/media/sphere-hero.jpg';
+      t.scrim = 'linear-gradient(90deg, rgba(7,11,22,.6) 0%, rgba(7,11,22,.2) 50%, rgba(7,11,22,0) 100%)';
+    }
+    const still = !!(this.state && this.state.still);
+    return { moving: !still, still, stillPressed: still ? 'true' : 'false', toggleMotion: () => this.setState({ still: !still }), resumeHref: '/resume.pdf', standalone: !this.props.embedded, playing: this.props.play !== false, jump: this.props.embedded ? (e) => {
+        if (!e || !e.currentTarget) return;
+        const h = e.currentTarget.getAttribute('href') || '';
+        if (h.charAt(0) !== '#') return;
+        const doc = e.currentTarget.ownerDocument;
+        const el = doc && doc.getElementById(h.slice(1));
+        if (!el) return;
+        e.preventDefault();
+        const sc = el.closest ? el.closest('.ak-site') : null; if (sc) sc.scrollTo({ top: el.offsetTop, behavior: 'smooth' }); else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } : undefined, toWork: this.props.embedded ? '#work' : 'Orbit.dc.html', toAbout: this.props.embedded ? '#about' : 'About.dc.html', logoSrc: (this.props.dark ? '/redesign/brand/logo-on-dark.png' : '/redesign/brand/logo-on-light.png'), dark, t, chips: ['What do you build?', 'Experience', 'Tech stack', 'Side builds', 'How do I reach you?'].map((label, i) => ({ label, d: (5 + i * 0.08).toFixed(2) + 's' })) };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Case study: one template, four structures</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="/redesign/brand/favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Manrope:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}
+@keyframes akFlow{to{stroke-dashoffset:-24}}
+@keyframes akPulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.9;transform:scale(1.18)}}
+@keyframes akIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes akUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes akRise{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
+@keyframes akKB{0%{transform:scale(1.06)}50%{transform:scale(1.16) translate(-2%,-1.5%)}100%{transform:scale(1.06)}}
+@keyframes akSweep{0%{transform:translateX(-120%) skewX(-18deg)}60%,100%{transform:translateX(320%) skewX(-18deg)}}
+@keyframes akTravel{0%{left:0;opacity:0}8%{opacity:1}92%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes akDash{to{background-position:40px 0}}
+@keyframes akPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes akPan{0%,12%{transform:translateY(0) scale(1.02)}50%,62%{transform:translateY(-6%) scale(1.06)}100%{transform:translateY(0) scale(1.02)}}
+@keyframes akPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
+@keyframes akReveal{from{clip-path:inset(14% 20% 14% 20% round 22px);transform:scale(.96);opacity:.4}to{clip-path:inset(0 0 0 0 round 0);transform:none;opacity:1}}
+@keyframes akPage{from{opacity:0}to{opacity:1}}
+.ak-flow{stroke-dasharray:4 8;animation:akFlow 1.2s linear infinite}
+.ak-back{stroke-dasharray:2 10;animation:akFlow 1.8s linear infinite reverse}
+.ak-pulse{transform-box:fill-box;transform-origin:center;animation:akPulse 2.6s ease-in-out infinite}
+.ak-in{animation:akIn .8s cubic-bezier(.16,1,.3,1) both}
+.ak-up{animation:akUp .9s cubic-bezier(.16,1,.3,1) both}
+.ak-btn{transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.ak-btn:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<main style="position: relative; width: 100%; height: 900px; overflow: hidden; animation: akPage .35s ease-out both; background: {{t.bg}}; color: {{t.ink}}; font-family: Manrope, system-ui, sans-serif;">
+
+  <sc-if value="{{L.backdrop}}" hint-placeholder-val="{{true}}">
+    <div aria-hidden="true" style="position: absolute; inset: 0; overflow: hidden;">
+      <img src="{{p.cover}}" alt="" style="position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); object-fit: cover; filter: blur(40px) saturate(1.2); opacity: {{t.backdropOp}};">
+      <div style="position: absolute; inset: 0; background: {{t.scrim}};"></div>
+    </div>
+  </sc-if>
+
+
+  <div aria-hidden="true" style="position: absolute; left: {{L.hl}}; top: {{L.ht}}; width: {{L.hw}}; height: {{L.hh}}; border-radius: {{L.hr}}; overflow: hidden; background: {{t.plate}}; box-shadow: {{L.hs}}; animation: akReveal .9s cubic-bezier(.16,1,.3,1) both;">
+
+    <sc-if value="{{K.agent}}" hint-placeholder-val="{{false}}">
+      <video src="/redesign/media/agent-diagram.mp4" poster="/redesign/media/agent-diagram.jpg" autoplay muted loop playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: {{t.diagImg}};"></video>
+      <div style="position: absolute; inset: 0; background: {{t.diagBg}}; opacity: .55;"></div>
+      <svg viewBox="0 0 960 290" role="img" aria-label="Architecture: chat sends a request to a supervisor, which routes it to specialist agents; they call tools through MCP servers that reach data and systems, and the answer streams back to chat." style="position: absolute; inset: 0; width: 100%; height: 100%; font-family: 'Geist Mono', monospace;">
+              <g fill="none" stroke="{{t.diagLine}}" stroke-width="1.4">
+                <path class="ak-flow" d="M138 150 H206"></path>
+                <path class="ak-flow" d="M318 150 C370 150 370 80 420 80"></path>
+                <path class="ak-flow" d="M318 150 H420"></path>
+                <path class="ak-flow" d="M318 150 C370 150 370 220 420 220"></path>
+                <path class="ak-flow" d="M560 80 C600 80 600 150 640 150"></path>
+                <path class="ak-flow" d="M560 150 H640"></path>
+                <path class="ak-flow" d="M560 220 C600 220 600 150 640 150"></path>
+                <path class="ak-flow" d="M772 150 H822"></path>
+              </g>
+              <path class="ak-back" d="M262 196 C262 262 80 262 80 186" fill="none" stroke="{{t.accent}}" stroke-width="1.4"></path>
+              <text x="171" y="276" text-anchor="middle" font-size="10" fill="{{t.diagMute}}">answer streams back</text>
+      
+              <g class="ak-in" style="animation-delay:.05s">
+                <rect x="22" y="114" width="116" height="72" rx="14" fill="{{t.diagNode}}" stroke="{{t.diagLine}}"></rect>
+                <rect x="40" y="134" width="60" height="8" rx="4" fill="{{t.diagMute}}" opacity=".5"></rect>
+                <rect x="40" y="150" width="78" height="8" rx="4" fill="{{t.diagMute}}" opacity=".35"></rect>
+                <text x="80" y="208" text-anchor="middle" font-size="11" fill="{{t.diagInk}}">chat</text>
+              </g>
+      
+              <g class="ak-in" style="animation-delay:.15s">
+                <circle class="ak-pulse" cx="262" cy="150" r="58" fill="{{t.accent}}" opacity=".35"></circle>
+                <circle cx="262" cy="150" r="46" fill="{{t.accent}}"></circle>
+                <text x="262" y="147" text-anchor="middle" font-size="12" font-weight="500" fill="{{t.onAccent}}">supervisor</text>
+                <text x="262" y="163" text-anchor="middle" font-size="9.5" fill="{{t.onAccent}}" opacity=".8">plan and route</text>
+              </g>
+      
+              <g class="ak-in" style="animation-delay:.3s">
+                <text x="490" y="40" text-anchor="middle" font-size="10" letter-spacing="1.5" fill="{{t.diagMute}}">SPECIALIST AGENTS</text>
+                <rect x="420" y="58" width="140" height="44" rx="10" fill="{{t.diagNode}}" stroke="{{t.diagLine}}"></rect>
+                <text x="490" y="84" text-anchor="middle" font-size="11" fill="{{t.diagInk}}">knowledge</text>
+                <rect x="420" y="128" width="140" height="44" rx="10" fill="{{t.diagNode}}" stroke="{{t.diagLine}}"></rect>
+                <text x="490" y="154" text-anchor="middle" font-size="11" fill="{{t.diagInk}}">operations</text>
+                <rect x="420" y="198" width="140" height="44" rx="10" fill="{{t.diagNode}}" stroke="{{t.diagLine}}"></rect>
+                <text x="490" y="224" text-anchor="middle" font-size="11" fill="{{t.diagInk}}">service</text>
+              </g>
+      
+              <g class="ak-in" style="animation-delay:.45s">
+                <text x="706" y="40" text-anchor="middle" font-size="10" letter-spacing="1.5" fill="{{t.diagMute}}">MCP SERVERS</text>
+                <rect x="640" y="58" width="132" height="184" rx="14" fill="{{t.diagNode}}" stroke="{{t.accent}}"></rect>
+                <rect x="660" y="78" width="92" height="22" rx="6" fill="{{t.diagChip}}"></rect>
+                <rect x="660" y="108" width="92" height="22" rx="6" fill="{{t.diagChip}}"></rect>
+                <rect x="660" y="138" width="92" height="22" rx="6" fill="{{t.accent}}" opacity=".85"></rect>
+                <rect x="660" y="168" width="92" height="22" rx="6" fill="{{t.diagChip}}"></rect>
+                <rect x="660" y="198" width="92" height="22" rx="6" fill="{{t.diagChip}}"></rect>
+                <text x="706" y="153" text-anchor="middle" font-size="10" fill="{{t.onAccent}}">tool</text>
+              </g>
+      
+              <g class="ak-in" style="animation-delay:.6s">
+                <text x="880" y="40" text-anchor="middle" font-size="10" letter-spacing="1.5" fill="{{t.diagMute}}">DATA AND SYSTEMS</text>
+                <ellipse cx="880" cy="96" rx="52" ry="12" fill="{{t.diagNode}}" stroke="{{t.diagLine}}"></ellipse>
+                <path d="M828 96 V128 A52 12 0 0 0 932 128 V96" fill="{{t.diagNode}}" stroke="{{t.diagLine}}"></path>
+                <rect x="828" y="150" width="104" height="34" rx="8" fill="{{t.diagNode}}" stroke="{{t.diagLine}}"></rect>
+                <rect x="828" y="196" width="104" height="34" rx="8" fill="{{t.diagNode}}" stroke="{{t.diagLine}}"></rect>
+                <text x="880" y="171" text-anchor="middle" font-size="10" fill="{{t.diagMute}}">documents</text>
+                <text x="880" y="217" text-anchor="middle" font-size="10" fill="{{t.diagMute}}">services</text>
+              </g>
+      
+              <g fill="{{t.accent}}">
+                <circle r="3.5"><animateMotion dur="3.2s" repeatCount="indefinite" path="M138 150 H206"></animateMotion></circle>
+                <circle r="3.5"><animateMotion dur="2.6s" begin=".8s" repeatCount="indefinite" path="M318 150 H420"></animateMotion></circle>
+                <circle r="3.5"><animateMotion dur="2.8s" begin=".4s" repeatCount="indefinite" path="M560 220 C600 220 600 150 640 150"></animateMotion></circle>
+                <circle r="3.5"><animateMotion dur="2.2s" begin="1.2s" repeatCount="indefinite" path="M772 150 H822"></animateMotion></circle>
+                <circle r="3"><animateMotion dur="3.6s" begin=".2s" repeatCount="indefinite" path="M262 196 C262 262 80 262 80 186"></animateMotion></circle>
+              </g>
+            </svg>
+    </sc-if>
+
+    <sc-if value="{{K.flow}}" hint-placeholder-val="{{false}}">
+      <img src="{{p.cover}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: {{t.flowImg}}; animation: akKB 18s ease-in-out infinite;">
+      <div style="position: absolute; inset: 0; background: {{t.flowVeil}};"></div>
+      <div style="position: absolute; left: 6%; right: 6%; top: 50%; transform: translateY(-50%); display: flex; align-items: center;">
+        <sc-for list="{{p.steps}}" as="st" hint-placeholder-count="4">
+          <span style="display: flex; align-items: center; flex: {{st.flex}};">
+            <span style="flex: 1; height: 2px; margin: 0 6px; border-radius: 2px; background-image: {{st.line}}; background-size: 40px 2px; animation: akDash .9s linear infinite;"></span>
+            <span style="display: inline-flex; flex-direction: column; align-items: center; gap: 6px; animation: akPop .6s cubic-bezier(.34,1.56,.64,1) both; animation-delay: {{st.d}};">
+              <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 46px; height: 46px; padding: 0 16px; border-radius: 14px; background: {{st.bg}}; color: {{st.fg}}; border: 1px solid {{st.border}}; box-shadow: {{st.glow}}; backdrop-filter: blur(12px); font-family: 'Geist Mono', monospace; font-size: 12.5px; white-space: nowrap;">{{st.label}}</span>
+              <span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: .14em; color: {{t.flowMute}};">{{st.n}}</span>
+            </span>
+          </span>
+        </sc-for>
+        <span style="position: absolute; top: 22px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: {{t.accent}}; box-shadow: 0 0 18px {{t.accent}}; animation: akTravel 3.4s cubic-bezier(.45,0,.2,1) infinite;"></span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{K.cinema}}" hint-placeholder-val="{{false}}">
+      <img src="{{p.cover}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: akKB 20s ease-in-out infinite;">
+      <div style="position: absolute; top: 0; bottom: 0; left: 0; width: 28%; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.16), rgba(255,255,255,0)); mix-blend-mode: screen; animation: akSweep 6s ease-in-out infinite;"></div>
+      <div style="position: absolute; inset: 0; background: {{L.veil}};"></div>
+      <span style="position: absolute; left: {{L.numL}}; right: {{L.numR}}; bottom: 8%; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 220px; line-height: .8; letter-spacing: -0.06em; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.35);">{{p.idx}}</span>
+    </sc-if>
+
+    <sc-if value="{{K.browser}}" hint-placeholder-val="{{false}}">
+      <img src="{{p.cover}}" alt="" style="position: absolute; inset: -30px; width: calc(100% + 60px); height: calc(100% + 60px); object-fit: cover; filter: blur(36px) saturate(1.3); opacity: .55;">
+      <div style="position: absolute; left: 7%; right: 7%; top: 11%; bottom: 11%; border-radius: 14px; overflow: hidden; background: #0b1020; box-shadow: 0 40px 100px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.12); animation: akUp 1s .4s cubic-bezier(.16,1,.3,1) both;">
+        <div style="display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; background: rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.08);">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f57;"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #febc2e;"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #28c840;"></span>
+          <span style="flex: 1; display: flex; justify-content: center;"><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 14px; border-radius: 7px; background: rgba(255,255,255,.08); color: #c9d2ea; font-family: 'Geist Mono', monospace; font-size: 11px;">{{p.host}}</span></span>
+        </div>
+        <div style="position: absolute; left: 0; right: 0; top: 38px; bottom: 0; overflow: hidden;">
+          <img src="{{p.cover}}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: top; animation: akPan 12s ease-in-out infinite;">
+        </div>
+      </div>
+      <span style="position: absolute; right: 9%; bottom: 7%; display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; background: rgba(8,12,24,.7); border: 1px solid rgba(255,255,255,.18); color: #eef2fb; backdrop-filter: blur(10px); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: .08em;"><span style="position: relative; width: 8px; height: 8px;"><span style="position: absolute; inset: 0; border-radius: 50%; background: #3ccf7a;"></span><span style="position: absolute; inset: 0; border-radius: 50%; background: #3ccf7a; animation: akPing 1.8s ease-out infinite;"></span></span>LIVE</span>
+    </sc-if>
+  </div>
+
+  <article aria-labelledby="cs-title" style="position: absolute; left: {{L.tl}}; top: {{L.tt}}; width: {{L.tw}}; box-sizing: border-box; padding: {{L.tp}}; border-radius: 18px; background: {{L.tbg}}; border: {{L.tborder}}; box-shadow: {{L.tshadow}}; backdrop-filter: blur(22px); display: flex; flex-direction: column; gap: 16px;">
+    <p class="ak-up" style="margin: 0; display: flex; align-items: center; gap: 10px; font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: .14em; color: {{t.mute}}; animation-delay: .3s;"><span>{{p.idx}}</span><span style="width: 24px; height: 1px; background: {{t.mute}};"></span><span>{{p.groupU}}, {{p.year}}</span></p>
+    <h1 id="cs-title" style="margin: 0; overflow: hidden; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: {{L.titleSize}}; line-height: 1; letter-spacing: -0.035em;"><span style="display: inline-block; animation: akRise .9s .35s cubic-bezier(.16,1,.3,1) both;">{{p.title}}</span></h1>
+    <p class="ak-up" style="margin: 0; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 21px; line-height: 1.35; color: {{t.lede}}; animation-delay: .5s;">{{p.lede}}</p>
+    <div class="ak-up" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; animation-delay: .58s;">
+      <sc-if value="{{tl.conf}}" hint-placeholder-val="{{true}}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 11px; border-radius: 999px; background: {{t.tag}}; border: 1px solid {{t.line}}; font-size: 12px; font-weight: 600;"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Work project, details generalized</span></sc-if>
+      <sc-if value="{{tl.personal}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 28px; padding: 0 11px; border-radius: 999px; background: {{t.tag}}; border: 1px solid {{t.line}}; font-size: 12px; font-weight: 600;">Personal build</span></sc-if>
+      <sc-if value="{{tl.hasStatus}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px; border-radius: 999px; background: {{t.tag}}; border: 1px solid {{t.line}}; font-size: 12px; font-weight: 600;"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #3ccf7a; box-shadow: 0 0 8px #3ccf7a;"></span>{{tl.status}}</span></sc-if>
+      <sc-if value="{{tl.conf}}" hint-placeholder-val="{{true}}"><a href="{{tl.talk}}" style="display: inline-flex; align-items: center; min-height: 28px; padding: 0 4px; color: {{t.accent}}; text-decoration: none; font-size: 12.5px; font-weight: 700;">Deeper walkthrough on request <span aria-hidden="true" style="margin-left: 4px;">→</span></a></sc-if>
+    </div>
+    <div style="display: grid; grid-template-columns: {{L.cols}}; gap: 14px 28px;">
+      <sc-for list="{{p.blocks}}" as="b" hint-placeholder-count="3">
+        <section class="ak-up" style="display: flex; flex-direction: column; gap: 5px; animation-delay: {{b.d}};">
+          <h2 style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: .14em; color: {{t.accent}};">{{b.label}}</h2>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: {{t.body}};">{{b.text}}</p>
+        </section>
+      </sc-for>
+    </div>
+    <sc-if value="{{tl.hasMini}}" hint-placeholder-val="{{false}}">
+      <div class="ak-up" style="display: flex; flex-direction: column; gap: 10px; animation-delay: .9s;">
+        <h2 style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: .14em; color: {{t.accent}};">HOW IT FLOWS</h2>
+        <div role="img" aria-label="{{tl.miniLabel}}" style="display: flex; flex-wrap: nowrap; align-items: center; row-gap: 8px;">
+          <sc-for list="{{tl.mini}}" as="m" hint-placeholder-count="4">
+            <sc-if value="{{m.link}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="flex: 1 1 0; min-width: 14px; height: 2px; margin: 0 5px; border-radius: 2px; background-image: linear-gradient(90deg, {{t.mute}} 50%, transparent 50%); background-size: 8px 2px; opacity: .7; animation: akDash .9s linear infinite;"></span></sc-if>
+            <span aria-hidden="true" style="flex: 0 0 auto; display: inline-flex; align-items: center; height: 30px; padding: 0 10px; border-radius: 9px; background: {{m.bg}}; color: {{m.fg}}; border: 1px solid {{m.bd}}; box-shadow: {{m.glow}}; font: 500 11px 'Geist Mono', monospace; white-space: nowrap; animation: akPop .5s cubic-bezier(.34,1.56,.64,1) both; animation-delay: {{m.d}};">{{m.label}}</span>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+    <div class="ak-up" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 14px; border-top: 1px solid {{t.line}}; animation-delay: .95s;">
+      <sc-for list="{{p.stack}}" as="s" hint-placeholder-count="5">
+        <span style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 7px; background: {{t.tag}}; font-size: 12px; font-weight: 500;">{{s}}</span>
+      </sc-for>
+      <span style="flex: 1;"></span>
+      <sc-if value="{{p.hasLive}}" hint-placeholder-val="{{false}}">
+        <a class="ak-btn" href="{{p.live}}" style="display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none; font-size: 13px; font-weight: 600;">Open live site ↗</a>
+      </sc-if>
+      <a class="ak-btn" href="Main.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; text-decoration: none; font-size: 13px; font-weight: 600;">Ask anubhav about this</a>
+      <a class="ak-btn" href="{{nav.prevHref}}" aria-label="Previous project: {{nav.prevTitle}}" title="{{nav.prevTitle}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg></a>
+      <a class="ak-btn" href="{{nav.nextHref}}" aria-label="Next project: {{nav.nextTitle}}" style="display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap;">Next: {{nav.nextTitle}} <span aria-hidden="true">→</span></a>
+      <a href="{{back}}" aria-label="Close case study" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none;">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </a>
+    </div>
+  </article>
+
+  <div style="position: absolute; z-index: 20; left: 0; right: 0; top: 0;">
+    <dc-import name="Dock" dark="{{dark}}" active="orbit" crumb="{{crumb}}" back="{{back}}" backLabel="{{backLabel}}" hint-size="100%,112px"></dc-import>
+  </div>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"p":{"editor":"enum","options":["agent","mcp","logs","tickets","retrieval","multimodal","stream","portal","harness","releases","obs","rpa","academy","jobradar","shorts","site","pitstop","heat","sapr","valo"],"default":"agent"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = !!this.props.dark;
+    const id = this.props.p || 'agent';
+    const t = dark ? {
+      bg: '#070b16', ink: '#e9eefb', mute: '#8e98b3', body: '#c3cbe0', lede: '#d5dcef', line: 'rgba(255,255,255,.1)', accent: '#8ea2ff',
+      plate: '#0d1324', tag: 'rgba(255,255,255,.07)', pill: 'rgba(17,24,44,.66)', sheet: 'rgba(11,17,32,.9)', glass: 'rgba(11,17,32,.62)',
+      scrim: 'rgba(7,11,22,.72)', backdropOp: '.55', shadow: '0 40px 120px rgba(0,0,0,.6)',
+      diagBg: '#0a0f1e', diagImg: '.5', diagNode: 'rgba(14,20,38,.82)', diagLine: 'rgba(255,255,255,.22)', diagInk: '#e9eefb', diagMute: '#8e98b3', diagChip: 'rgba(255,255,255,.1)', onAccent: '#070b16',
+      flowImg: '.75', flowVeil: 'linear-gradient(180deg, rgba(7,11,22,.35), rgba(7,11,22,.55))', flowMute: '#b6bfd6', nodeBg: 'rgba(11,17,32,.7)', nodeFg: '#e9eefb', nodeLine: 'rgba(255,255,255,.2)',
+      cineVeil: 'linear-gradient(90deg, rgba(7,11,22,0) 30%, rgba(7,11,22,.75) 70%, rgba(7,11,22,.92) 100%)'
+    } : {
+      bg: '#f4f6fa', ink: '#0e1116', mute: '#59606b', body: '#2c323c', lede: '#1f2430', line: 'rgba(14,17,22,.1)', accent: '#2f55e8',
+      plate: '#e9eef8', tag: 'rgba(14,17,22,.06)', pill: 'rgba(255,255,255,.75)', sheet: '#ffffff', glass: 'rgba(255,255,255,.72)',
+      scrim: 'rgba(244,246,250,.78)', backdropOp: '.5', shadow: '0 40px 120px rgba(40,70,160,.2)',
+      diagBg: '#eef2fb', diagImg: '.0', diagNode: 'rgba(255,255,255,.92)', diagLine: 'rgba(14,17,22,.2)', diagInk: '#0e1116', diagMute: '#59606b', diagChip: 'rgba(14,17,22,.07)', onAccent: '#ffffff',
+      flowImg: '.9', flowVeil: 'linear-gradient(180deg, rgba(5,8,18,.2), rgba(5,8,18,.45))', flowMute: '#d5dcef', nodeBg: 'rgba(11,17,32,.62)', nodeFg: '#eef2fb', nodeLine: 'rgba(255,255,255,.28)',
+      cineVeil: 'linear-gradient(90deg, rgba(244,246,250,0) 35%, rgba(244,246,250,.7) 70%, rgba(244,246,250,.92) 100%)'
+    };
+    const B = (x) => x;
+    const D = {
+      agent: { title: 'Agent backend, v2', group: 'Agents', year: '2026', kind: 'agent', layout: 'stacked', cover: B('/redesign/covers/agent.jpg'),
+        lede: 'A supervisor plans each request and hands it to the right specialist.',
+        blocks: [['PROBLEM', 'One chat had to answer very different questions: knowledge lookups, operational checks and service requests, each needing different tools.'], ['APPROACH', 'A supervisor reads each request, plans the steps and routes them to the right specialist agent instead of one prompt doing everything.'], ['TOOLS', 'Specialists never touch systems directly. They call tools exposed through MCP servers, so each integration is added, tested and permissioned once.'], ['OUTCOME', 'New capabilities plug in as a specialist or a tool without reworking the rest, and answers stream back as they form.']],
+        stack: ['Python', 'FastAPI', 'LangGraph', 'MCP', 'AWS Bedrock'] },
+      mcp: { title: 'MCP tool layer', group: 'Agents', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/mcp.jpg'), steps: ['agent', 'MCP client', 'tool server', 'business system'], hot: 2,
+        lede: 'One protocol, many tools, every agent.',
+        blocks: [['WHAT', 'A shared tool layer built on the Model Context Protocol.'], ['HOW', 'Each integration is its own MCP server, so any agent can discover and call it through the same contract.'], ['OUTCOME', 'New agents get existing tools for free, and access rules live in one place.']],
+        stack: ['Python', 'FastMCP', 'LangChain', 'MCP'] },
+      logs: { title: 'Network log agent', group: 'Agents', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/logs.jpg'), steps: ['question', 'draft search', 'guard', 'log platform', 'answer'], hot: 2,
+        lede: 'Plain-English questions over network logs, with a guard on every search.',
+        blocks: [['WHAT', 'Operations teams ask about network traffic in plain language.'], ['HOW', 'The agent drafts the search, and a deterministic guard checks it before anything runs.'], ['OUTCOME', 'Every answer shows how it was found and says plainly when results are partial.']],
+        stack: ['Python', 'LangGraph', 'MCP'] },
+      tickets: { title: 'Tickets in chat', group: 'Agents', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/tickets.jpg'), steps: ['chat', 'access check', 'ticket', 'queue'], hot: 1,
+        lede: 'See and raise IT tickets without leaving the conversation.',
+        blocks: [['WHAT', 'Approvers check their tickets and raise new ones from the chat.'], ['HOW', 'An agent reaches the ticketing system through tools, and role-based access decides what each person sees.'], ['OUTCOME', 'Live on several customer portals, saving approvers real time every day (a team estimate).']],
+        stack: ['Python', 'FastAPI', 'MCP', 'React'] },
+      retrieval: { title: 'Retrieval layer', group: 'Retrieval and Search', year: '2025', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/retrieval.jpg'), steps: ['documents', 'chunks', 'vectors', 'top matches', 'cited answer'], hot: 4,
+        lede: 'The search layer behind every answer, built to cite or stay quiet.',
+        blocks: [['WHAT', 'Retrieval that grounds the chat in real documents.'], ['HOW', 'Prototyped from scratch first to learn where retrieval breaks, then moved to managed knowledge bases with query routing and citations.'], ['OUTCOME', 'Answers may only cite evidence the search actually returned.']],
+        stack: ['Python', 'FAISS', 'AWS Bedrock', 'S3'] },
+      multimodal: { title: 'Multimodal search', group: 'Retrieval and Search', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/multimodal.jpg'), steps: ['PDF', 'slides', 'video', 'one index', 'search'], hot: 3,
+        lede: 'One search across documents, slides and video.',
+        blocks: [['WHAT', 'A single search over every kind of file people actually share.'], ['HOW', 'Video is split by scene, with speech and on-screen text indexed beside pages and slides, then exposed as a tool agents can call.'], ['OUTCOME', 'A smaller, faster model matched the larger one in testing, so the fast one ships.']],
+        stack: ['Python', 'Docling', 'AWS Bedrock', 'MCP'] },
+      stream: { title: 'Chat backend', group: 'Backend and Data', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/stream.jpg'),
+        lede: 'Answers that start arriving the moment they exist.',
+        blocks: [['WHAT', 'The services that stream chat answers and keep history.'], ['HOW', 'FastAPI with server-sent events, PostgreSQL for history and per-user semantic caching.'], ['OUTCOME', 'Fast first tokens, and repeat questions come straight from cache.']],
+        stack: ['Python', 'FastAPI', 'PostgreSQL', 'Redis'] },
+      portal: { title: 'Portal and chat UI', group: 'Frontend', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/portal.jpg'),
+        lede: 'The chat people use, with sources they can check.',
+        blocks: [['WHAT', 'Chat, dashboards and document views for the platform.'], ['HOW', 'React, Next.js and TypeScript, with a backend-for-frontend so no service address or key reaches the browser.'], ['OUTCOME', 'Streamed answers with source cards beside them.']],
+        stack: ['React', 'Next.js', 'TypeScript'] },
+      harness: { title: 'Test harness', group: 'Quality and Delivery', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/harness.jpg'), steps: ['merge request', 'end-to-end checks', 'answer match', 'gate'], hot: 3,
+        lede: 'Nothing merges until the chat still works end to end.',
+        blocks: [['WHAT', 'An end-to-end suite that gates every merge.'], ['HOW', 'Playwright scenarios across the chat portals: sign-in, streaming and semantic matching of answers, run in CI.'], ['OUTCOME', 'Part of a rewrite that multiplied automated test coverage.']],
+        stack: ['Playwright', 'TypeScript', 'GitLab CI'] },
+      releases: { title: 'Releases', group: 'Quality and Delivery', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/releases.jpg'),
+        lede: 'Parallel release lines, shipped on a steady beat.',
+        blocks: [['WHAT', 'Release management across many repositories and parallel release lines.'], ['HOW', 'CI/CD pipelines, first-line review on merge requests and checks built into every release.'], ['OUTCOME', 'Predictable releases instead of release-day surprises.']],
+        stack: ['GitLab CI', 'Docker'] },
+      obs: { title: 'Observability', group: 'Backend and Data', year: '2025', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/obs.jpg'),
+        lede: 'Every model call traced, timed and costed.',
+        blocks: [['WHAT', 'Visibility into what each model call does.'], ['HOW', 'Tracing, metrics and cost tracking on every call.'], ['OUTCOME', 'Slow or expensive calls are easy to find and fix.']],
+        stack: ['OpenTelemetry', 'Prometheus', 'Langfuse'] },
+      rpa: { title: 'RPA validation', group: 'Automation', year: '2024', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/rpa.jpg'),
+        lede: 'Checking the bots before their numbers reach anyone.',
+        blocks: [['WHAT', 'Validation for a large automation programme.'], ['HOW', 'Monitored the bots and wrote the SQL and test plans that checked each workflow against source data.'], ['OUTCOME', 'Bad runs caught before they reached reports.']],
+        stack: ['UiPath', 'SQL'] },
+      academy: { title: 'AI Academy capstone', group: 'Automation', year: '2023', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/academy.jpg'),
+        lede: 'Where the machine learning started.',
+        blocks: [['WHAT', 'Capstone for an internal AI academy.'], ['HOW', 'Trained and compared predictive models on a vehicle insurance dataset in the cloud.'], ['OUTCOME', 'A solid grounding in ML before moving to GenAI.']],
+        stack: ['Python', 'SQL', 'AWS SageMaker'] },
+      jobradar: { title: 'Job radar', group: 'Automation', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/jobradar.jpg'),
+        lede: 'My own morning scout for roles worth applying to.',
+        blocks: [['WHAT', 'A personal job search pipeline.'], ['HOW', 'Every morning it checks company career sites and job boards across my target regions, scores each role against my resume and posts good fits to Discord.'], ['OUTCOME', 'A short ranked list instead of endless scrolling.']],
+        stack: ['Python', 'Scheduled agents', 'Discord'] },
+      shorts: { title: 'Shorts producer', group: 'Automation', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/shorts.jpg'),
+        lede: 'Long footage in, vertical Shorts out.',
+        blocks: [['WHAT', 'Turns long gameplay recordings into vertical Shorts.'], ['HOW', 'Audio peaks find the moments, contact sheets help pick them, and ffmpeg reframes them to vertical.'], ['OUTCOME', 'Daily Shorts from footage I already have.']],
+        stack: ['Python', 'ffmpeg'] },
+      site: { title: 'This site', group: 'Side Builds', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/site.jpg'),
+        lede: 'A portfolio you can ask questions.',
+        blocks: [['WHAT', 'This portfolio and its "ask anubhav" chat.'], ['HOW', 'A chatbot that answers from my own content and remembers the conversation.'], ['OUTCOME', 'Visitors ask instead of hunting through pages.']],
+        stack: ['React', 'Next.js'] },
+      pitstop: { title: 'PitStop', group: 'Side Builds', year: '2025', kind: 'browser', layout: 'split', cover: B('/redesign/covers/pitstop.jpg'), live: 'https://pitstop-services.web.app',
+        lede: 'An auto shop, run properly, for a GTA roleplay crew.',
+        blocks: [['WHAT', 'An auto services site for a GTA V roleplay community.'], ['HOW', 'Bookings, job logs and crew management.'], ['OUTCOME', 'Live and used by the crew.']],
+        stack: ['React', 'Firebase'] },
+      heat: { title: 'HEAT', group: 'Side Builds', year: '2025', kind: 'browser', layout: 'split', cover: B('/redesign/covers/heat.jpg'), live: 'https://sasp-heat.web.app',
+        lede: 'A handbook for a roleplay highway unit.',
+        blocks: [['WHAT', 'A site for a highway enforcement unit in roleplay.'], ['HOW', 'Procedures, roles and vehicle specs in one place.'], ['OUTCOME', 'New members get up to speed without asking around.']],
+        stack: ['Firebase'] },
+      sapr: { title: 'SAPR', group: 'Side Builds', year: '2025', kind: 'browser', layout: 'split', cover: B('/redesign/covers/sapr.jpg'), live: 'https://saspsapr.web.app',
+        lede: 'The park rangers department, organised.',
+        blocks: [['WHAT', 'A department site for park rangers in roleplay.'], ['HOW', 'Hierarchy, procedures and officer profiles with role-based access.'], ['OUTCOME', 'One source of truth for the whole department.']],
+        stack: ['Firebase'] },
+      valo: { title: 'Valo Tourney', group: 'Side Builds', year: '2024', kind: 'browser', layout: 'split', cover: B('/redesign/covers/valo.jpg'), live: 'https://soulcityvalo.web.app',
+        lede: 'Brackets and match tracking for community Valorant.',
+        blocks: [['WHAT', 'A Valorant tournament site.'], ['HOW', 'Brackets, match tracking and registration.'], ['OUTCOME', 'Ran community tournaments end to end.']],
+        stack: ['Firebase'] }
+    };
+    const order = ['agent', 'mcp', 'logs', 'tickets', 'retrieval', 'multimodal', 'stream', 'portal', 'harness', 'releases', 'obs', 'rpa', 'academy', 'jobradar', 'shorts', 'site', 'pitstop', 'heat', 'sapr', 'valo'];
+    const r = D[id] || D.agent;
+    let back = 'Orbit.dc.html';
+    try { back = sessionStorage.getItem('akFrom') || back; } catch (e) {}
+    const backLabel = /Freestyle/.test(back) ? 'Freestyle' : /Index/.test(back) ? 'Index' : 'Work';
+    const ACC = {
+      'Agents': ['#2f55e8', '#8ea2ff'], 'Retrieval and Search': ['#0d8a82', '#5fe3d6'], 'Backend and Data': ['#6b38d4', '#b79bff'],
+      'Frontend': ['#1f74d6', '#86c3ff'], 'Quality and Delivery': ['#1f9a4a', '#7fe3a0'], 'Automation': ['#c26a0a', '#ffc56b'], 'Side Builds': ['#d6336c', '#ff8fb1']
+    };
+    t.accent = (ACC[r.group] || ACC.Agents)[dark ? 1 : 0];
+    const idx = String(order.indexOf(id) + 1).padStart(2, '0');
+    const n = r.steps ? r.steps.length : 0;
+    const steps = (r.steps || []).map((label, i) => {
+      const on = i === r.hot;
+      return { label, n: String(i + 1).padStart(2, '0'), flex: i === 0 ? '0 0 auto' : '1 1 0', d: (0.6 + i * 0.18).toFixed(2) + 's',
+        line: i === 0 ? 'none' : 'linear-gradient(90deg, ' + t.nodeLine + ' 50%, transparent 50%)',
+        bg: on ? t.accent : t.nodeBg, fg: on ? t.onAccent : t.nodeFg, border: on ? t.accent : t.nodeLine, glow: on ? '0 0 30px ' + t.accent : 'none' };
+    });
+    const WORK = ['agent', 'mcp', 'logs', 'tickets', 'retrieval', 'multimodal', 'stream', 'portal', 'harness', 'releases', 'obs', 'rpa', 'academy'];
+    const STATUS = { tickets: 'In production', rpa: 'Completed', academy: 'Completed', jobradar: 'Runs daily', shorts: 'Runs daily', site: 'Live', pitstop: 'Live', heat: 'Live', sapr: 'Live', valo: 'Live' };
+    const MINI = {
+      stream: [['question', 'cache', 'model', 'SSE stream', 'history'], 1], portal: [['browser', 'React UI', 'BFF', 'services'], 2],
+      releases: [['code', 'review', 'pipeline', 'release'], 2], obs: [['model call', 'trace', 'cost', 'dashboard'], 1],
+      rpa: [['bot run', 'monitor', 'SQL check', 'report'], 2], academy: [['dataset', 'features', 'train', 'compare'], 2],
+      jobradar: [['job sites', 'score', 'shortlist', 'Discord'], 1], shorts: [['recording', 'audio peaks', 'moments', 'vertical'], 1],
+      site: [['question', 'my content', 'model', 'answer'], 1]
+    };
+    const conf = WORK.indexOf(id) >= 0;
+    const mk = MINI[id];
+    const tl = { conf, personal: !conf, status: STATUS[id] || '', hasStatus: !!STATUS[id], talk: 'Connect' + (dark ? 'Dark' : '') + '.dc.html', hasMini: !!mk,
+      miniLabel: mk ? 'How it flows: ' + mk[0].join(', then ') : '',
+      mini: mk ? mk[0].map((label, i) => { const on = i === mk[1]; return { label, link: i > 0, d: (1.0 + i * 0.12).toFixed(2) + 's',
+        bg: on ? t.accent : t.tag, fg: on ? t.onAccent : t.ink, bd: on ? t.accent : t.line, glow: on ? '0 0 22px ' + t.accent : 'none' }; }) : [] };
+    const p = { ...r, idx, groupU: r.group.toUpperCase(), steps, hasLive: !!r.live, live: r.live || '', host: (r.live || '').replace('https://', ''),
+      blocks: r.blocks.map(([label, text], i) => ({ label, text, d: (0.6 + i * 0.1).toFixed(2) + 's' })) };
+    const LAY = {
+      stacked: { hl: '12%', ht: '124px', hw: '76%', hh: '300px', hr: '18px', hs: t.shadow,
+        tl: '12%', tt: '444px', tw: '76%', tp: '0', tbg: 'transparent', tborder: '0', tshadow: 'none', cols: 'repeat(' + Math.min(r.blocks.length, 4) + ', minmax(0, 1fr))', titleSize: '44px', backdrop: true },
+      split: { hl: '4.5%', ht: '124px', hw: '55%', hh: '700px', hr: '22px', hs: t.shadow,
+        tl: '63%', tt: '140px', tw: '32.5%', tp: '0', tbg: 'transparent', tborder: '0', tshadow: 'none', cols: '1fr', titleSize: '64px', backdrop: true },
+      full: { hl: '0', ht: '0', hw: '100%', hh: '100%', hr: '0', hs: 'none',
+        tl: '60%', tt: '140px', tw: '35%', tp: '28px', tbg: t.glass, tborder: '1px solid ' + t.line, tshadow: t.shadow, cols: '1fr', titleSize: '52px', backdrop: false }
+    };
+    const L = { ...LAY[r.layout], numL: '6%', numR: 'auto', veil: t.cineVeil };
+    const flip = r.layout === 'full' && parseInt(idx, 10) % 2 === 1;
+    if (flip) {
+      L.tl = '5%'; L.numL = 'auto'; L.numR = '6%';
+      L.veil = t.cineVeil.replace('90deg', '270deg');
+    }
+    if (r.layout === 'split' && parseInt(idx, 10) % 2 === 0) { L.hl = '40.5%'; L.tl = '4.5%'; }
+    const K = { agent: r.kind === 'agent', flow: r.kind === 'flow', cinema: r.kind === 'cinema', browser: r.kind === 'browser' };
+    return { logoSrc: (this.props.dark ? '/redesign/brand/logo-on-dark.png' : '/redesign/brand/logo-on-light.png'), dark, t, p, L, K, tl, crumb: r.title, back, backLabel, nav: (() => { const F = {"agent": "CaseStudy", "mcp": "CaseMcp", "logs": "CaseLogs", "tickets": "CaseTickets", "retrieval": "CaseRetrieval", "multimodal": "CaseMultimodal", "stream": "CaseStreaming", "portal": "CasePortal", "harness": "CaseHarness", "releases": "CaseReleases", "obs": "CaseObservability", "rpa": "CaseRpa", "academy": "CaseAcademy", "jobradar": "CaseJobRadar", "shorts": "CaseShorts", "site": "CaseSite", "pitstop": "CasePitStop", "heat": "CaseHeat", "sapr": "CaseSapr", "valo": "CaseValo"}; const k = order.indexOf(id) < 0 ? 0 : order.indexOf(id); const pv = order[(k + order.length - 1) % order.length], nx = order[(k + 1) % order.length]; return { prevHref: F[pv] + '.dc.html', prevTitle: (D[pv] || {}).title || '', nextHref: F[nx] + '.dc.html', nextTitle: (D[nx] || {}).title || '' }; })() };
+  }
+}
+</script>
+</body>
+</html>

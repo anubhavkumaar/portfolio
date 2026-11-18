@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site, one connected scroll</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="/redesign/brand/favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}
+.ak-site{scrollbar-width:none}.ak-site::-webkit-scrollbar{display:none}
+@keyframes akSecOut{to{transform:translateY(22%) scale(.93);opacity:.25;filter:blur(3px)}}
+@keyframes akSecIn{from{transform:translateY(-6%);opacity:.6}to{transform:none;opacity:1}}
+@supports (animation-timeline: view()) {
+  .ak-sec{animation:akSecOut linear both;animation-timeline:view();animation-range:exit 0% exit 100%;transform-origin:50% 0}
+  .ak-sec-in{animation:akSecIn linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+}
+@media (prefers-reduced-motion: reduce){.ak-sec,.ak-sec-in{animation:none!important}.ak-site{scroll-behavior:auto!important}}
+</style>
+</helmet>
+<main class="ak-root" style="position: relative; width: 100%; height: 100vh; min-height: 640px; overflow: hidden; background: {{bg}}; font-family: Manrope, system-ui, sans-serif;">
+  <div class="ak-site" onScroll="{{onScroll}}" style="position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;">
+    <section id="home" class="ak-sec" aria-label="Home" style="position: relative; height: 900px;">
+      <dc-import name="Main" dark="{{dark}}" embedded="{{yes}}" play="{{p0}}" hint-size="100%,900px"></dc-import>
+    </section>
+    <section id="work" class="ak-sec" aria-label="Work" style="position: relative; height: 900px;">
+      <div class="ak-sec-in"><dc-import name="Orbit" dark="{{dark}}" embedded="{{yes}}" play="{{p1}}" hint-size="100%,900px"></dc-import></div>
+    </section>
+    <section id="about" class="ak-sec" aria-label="About" style="position: relative; height: 900px;">
+      <div class="ak-sec-in"><dc-import name="About" dark="{{dark}}" embedded="{{yes}}" play="{{p2}}" hint-size="100%,900px"></dc-import></div>
+    </section>
+    <section id="connect" aria-label="Connect" style="position: relative; height: 900px;">
+      <div class="ak-sec-in"><dc-import name="Connect" dark="{{dark}}" embedded="{{yes}}" play="{{p3}}" hint-size="100%,900px"></dc-import></div>
+    </section>
+  </div>
+
+  <div style="position: absolute; z-index: 20; left: 0; right: 0; top: 0;">
+    <dc-import name="Dock" dark="{{dark}}" active="{{active}}" anchors="{{yes}}" hint-size="100%,112px"></dc-import>
+  </div>
+
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sec: 0, vis: [true, false, false, false] };
+  }
+  renderVals() {
+    const dark = !!this.props.dark;
+    const S = [['home', 'HOME', '/'], ['work', 'WORK', '/work'], ['about', 'ABOUT', '/about'], ['connect', 'CONNECT', '/connect']];
+    const sec = this.state.sec || 0;
+    const vis = this.state.vis || [true, false, false, false];
+    const ink = dark ? '#e9eefb' : '#0e1116', mute = dark ? '#7f89a3' : '#8a919c';
+    return {
+      dark, yes: true, ink, mute, p0: !!vis[0], p1: !!vis[1], p2: !!vis[2], p3: !!vis[3],
+      bg: dark ? '#070b16' : '#f4f6fa',
+      accent: dark ? '#8ea2ff' : '#2f55e8',
+      pill: dark ? 'rgba(17,24,44,.6)' : 'rgba(255,255,255,.7)',
+      line: dark ? 'rgba(255,255,255,.1)' : 'rgba(14,17,22,.08)',
+      active: ['home', 'orbit', 'about', 'connect'][sec],
+      onScroll: (e) => {
+        const el = e && e.currentTarget;
+        if (!el) return;
+        const i = Math.max(0, Math.min(3, Math.floor((el.scrollTop + el.clientHeight * 0.45) / 900)));
+        const st = el.scrollTop, ch = el.clientHeight;
+        const old = this.state.vis || [true, false, false, false];
+        const nv = old.map((was, k) => {
+          const o = Math.max(0, Math.min(st + ch, (k + 1) * 900) - Math.max(st, k * 900)) / ch;
+          if (k > i) return was ? o > 0.2 : o > 0.3;
+          return was ? o > 0.05 : o > 0.3;
+        });
+        if (nv.some((v, k) => v !== old[k])) this.setState({ vis: nv });
+        if (i !== this.state.sec) {
+          this.setState({ sec: i });
+          try { if (window.history && window.history.replaceState) window.history.replaceState(null, '', '#' + S[i][0]); } catch (err) {}
+        }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

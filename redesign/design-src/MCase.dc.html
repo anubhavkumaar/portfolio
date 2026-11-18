@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone: case study</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="/redesign/brand/favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Manrope:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}
+.ak-noscroll{scrollbar-width:none}.ak-noscroll::-webkit-scrollbar{display:none}
+@keyframes akRise{from{opacity:0;transform:translateY(70%)}to{opacity:1;transform:none}}
+@keyframes akUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes akKB{0%{transform:scale(1.05)}50%{transform:scale(1.14) translate(-2%,-1.5%)}100%{transform:scale(1.05)}}
+@keyframes akPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
+.ak-up{animation:akUp .8s cubic-bezier(.16,1,.3,1) both}
+.ak-l{display:inline-block;animation:akRise .9s cubic-bezier(.16,1,.3,1) both}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@keyframes akTravelY{0%{top:0;opacity:0}8%,92%{opacity:1}100%{top:100%;opacity:0}}
+@keyframes akSweep{0%{transform:translateX(-120%) skewX(-18deg)}60%,100%{transform:translateX(320%) skewX(-18deg)}}
+@keyframes akPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes akPan{0%,12%{transform:translateY(0)}50%,62%{transform:translateY(-8%)}100%{transform:translateY(0)}}
+@keyframes akReveal{from{clip-path:inset(12% 10% 12% 10% round 20px);transform:scale(.96);opacity:.4}to{clip-path:inset(0 0 0 0 round 0);transform:none;opacity:1}}
+@keyframes akDash{to{background-position:40px 0}}
+@keyframes akPage{from{opacity:0}to{opacity:1}}
+@keyframes akPulse{0%,100%{box-shadow:0 0 0 0 var(--acc)}50%{box-shadow:0 0 0 10px transparent}}
+</style>
+</helmet>
+<main style="--acc: {{t.accent}}; animation: akPage .35s ease-out both; position: relative; width: 100%; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: Manrope, system-ui, sans-serif;">
+
+  <div class="ak-noscroll" style="position: absolute; inset: 0; overflow-y: auto;">
+    <div aria-hidden="true" style="position: relative; height: {{H.h}}; overflow: hidden; background: {{t.plate}}; animation: akReveal .85s cubic-bezier(.16,1,.3,1) both;">
+      <sc-if value="{{K.agent}}" hint-placeholder-val="{{false}}">
+        <video src="/redesign/media/agent-diagram.mp4" poster="/redesign/media/agent-diagram.jpg" autoplay muted loop playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55;"></video>
+        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,11,22,.35), rgba(7,11,22,.75));"></div>
+        <div style="position: absolute; left: 0; right: 0; top: 84px; bottom: 24px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
+          <span style="padding: 8px 14px; border-radius: 12px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); color: #eef2fb; font: 500 12px 'Geist Mono', monospace; animation: akPop .5s .4s both;">chat</span>
+          <span style="width: 1px; flex: 1; background: rgba(255,255,255,.3);"></span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 96px; height: 96px; border-radius: 50%; background: {{t.accent}}; color: {{t.onAccent}}; font: 600 13px 'Geist Mono', monospace; animation: akPop .6s .6s both, akPulse 2.4s 1.4s ease-in-out infinite;">supervisor</span>
+          <span style="width: 1px; flex: 1; background: rgba(255,255,255,.3);"></span>
+          <span style="display: flex; gap: 8px; animation: akPop .6s .8s both;"><sc-for list="{{specs}}" as="sp" hint-placeholder-count="3"><span style="padding: 8px 10px; border-radius: 10px; background: rgba(14,20,38,.75); border: 1px solid rgba(255,255,255,.22); color: #eef2fb; font: 500 11.5px 'Geist Mono', monospace;">{{sp}}</span></sc-for></span>
+          <span style="width: 1px; flex: 1; background: rgba(255,255,255,.3);"></span>
+          <span style="padding: 8px 14px; border-radius: 12px; border: 1px solid {{t.accent}}; background: rgba(14,20,38,.75); color: #eef2fb; font: 500 12px 'Geist Mono', monospace; animation: akPop .5s 1s both;">MCP servers → data and systems</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{K.flow}}" hint-placeholder-val="{{false}}">
+        <img src="{{p.cover}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .85; animation: akKB 18s ease-in-out infinite;">
+        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,11,22,.4), rgba(7,11,22,.7));"></div>
+        <div style="position: absolute; left: 50%; top: 92px; bottom: 28px; width: 220px; margin-left: -110px; display: flex; flex-direction: column; justify-content: space-between;">
+          <span style="position: absolute; left: 21px; top: 20px; bottom: 20px; width: 2px; background: rgba(255,255,255,.22);"></span>
+          <span style="position: absolute; left: 22px; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: {{t.accent}}; box-shadow: 0 0 16px {{t.accent}}; animation: akTravelY 3.2s cubic-bezier(.45,0,.2,1) infinite;"></span>
+          <sc-for list="{{p.steps}}" as="st" hint-placeholder-count="4">
+            <span style="position: relative; display: flex; align-items: center; gap: 12px; animation: akPop .5s cubic-bezier(.34,1.56,.64,1) both; animation-delay: {{st.d}};">
+              <span style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: {{st.bg}}; color: {{st.fg}}; border: 1px solid {{st.border}}; box-shadow: {{st.glow}}; font: 500 11px 'Geist Mono', monospace;">{{st.n}}</span>
+              <span style="color: #eef2fb; font: 500 13.5px 'Geist Mono', monospace;">{{st.label}}</span>
+            </span>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{K.cinema}}" hint-placeholder-val="{{false}}">
+        <img src="{{p.cover}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: akKB 20s ease-in-out infinite;">
+        <div style="position: absolute; top: 0; bottom: 0; left: 0; width: 40%; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.18), rgba(255,255,255,0)); mix-blend-mode: screen; animation: akSweep 5s ease-in-out infinite;"></div>
+        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,11,22,0) 50%, {{t.fadeTo}} 100%);"></div>
+        <span style="position: absolute; right: 16px; bottom: 6px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 140px; line-height: .8; letter-spacing: -0.06em; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.45);">{{p.idx}}</span>
+      </sc-if>
+      <sc-if value="{{K.browser}}" hint-placeholder-val="{{false}}">
+        <img src="{{p.cover}}" alt="" style="position: absolute; inset: -30px; width: calc(100% + 60px); height: calc(100% + 60px); object-fit: cover; filter: blur(30px) saturate(1.3); opacity: .6;">
+        <div style="position: absolute; left: 16px; right: 16px; top: 84px; bottom: 22px; border-radius: 14px; overflow: hidden; background: #0b1020; box-shadow: 0 30px 70px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.12); animation: akUp .9s .3s both;">
+          <div style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; background: rgba(255,255,255,.06);"><span style="width: 8px; height: 8px; border-radius: 50%; background: #ff5f57;"></span><span style="width: 8px; height: 8px; border-radius: 50%; background: #febc2e;"></span><span style="width: 8px; height: 8px; border-radius: 50%; background: #28c840;"></span><span style="margin-left: 8px; color: #c9d2ea; font: 500 10.5px 'Geist Mono', monospace;">{{p.host}}</span></div>
+          <div style="position: absolute; left: 0; right: 0; top: 30px; bottom: 0; overflow: hidden;"><img src="{{p.cover}}" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: top; animation: akPan 10s ease-in-out infinite;"></div>
+        </div>
+      </sc-if>
+    </div>
+
+    <article style="padding: 22px 20px 130px; display: flex; flex-direction: column; gap: 14px;">
+      <p class="ak-up" style="margin: 0; display: flex; align-items: center; gap: 8px; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .14em; color: {{t.accent}}; animation-delay: .3s;"><span>{{p.idx}}</span><span style="width: 18px; height: 1px; background: {{t.accent}};"></span><span>{{p.groupU}}, {{p.year}}</span></p>
+      <h1 style="margin: 0; overflow: hidden; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 38px; line-height: 1; letter-spacing: -0.035em;"><span class="ak-l" style="animation-delay: .35s;">{{p.title}}</span></h1>
+      <p class="ak-up" style="margin: 0; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 20px; line-height: 1.35; animation-delay: .45s;">{{p.lede}}</p>
+      <div class="ak-up" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; animation-delay: .5s;">
+        <sc-if value="{{tl.conf}}" hint-placeholder-val="{{true}}"><span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 11px; border-radius: 999px; background: {{t.tag}}; border: 1px solid {{t.line}}; font-size: 12px; font-weight: 600;"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Work project, details generalized</span></sc-if>
+        <sc-if value="{{tl.personal}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 28px; padding: 0 11px; border-radius: 999px; background: {{t.tag}}; border: 1px solid {{t.line}}; font-size: 12px; font-weight: 600;">Personal build</span></sc-if>
+        <sc-if value="{{tl.hasStatus}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px; border-radius: 999px; background: {{t.tag}}; border: 1px solid {{t.line}}; font-size: 12px; font-weight: 600;"><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: #3ccf7a; box-shadow: 0 0 8px #3ccf7a;"></span>{{tl.status}}</span></sc-if>
+        <sc-if value="{{tl.conf}}" hint-placeholder-val="{{true}}"><a href="{{tl.talk}}" style="display: inline-flex; align-items: center; min-height: 28px; padding: 0 4px; color: {{t.accent}}; text-decoration: none; font-size: 12.5px; font-weight: 700;">Deeper walkthrough on request <span aria-hidden="true" style="margin-left: 4px;">→</span></a></sc-if>
+      </div>
+      <sc-for list="{{p.blocks}}" as="b" hint-placeholder-count="3">
+        <section class="ak-up" style="display: flex; flex-direction: column; gap: 5px; padding: 14px 16px; border-radius: 14px; background: {{t.card}}; border: 1px solid {{t.line}}; animation-delay: {{b.d}};">
+          <h2 style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: .14em; color: {{t.accent}};">{{b.label}}</h2>
+          <p style="margin: 0; font-size: 15px; line-height: 1.6; color: {{t.body}};">{{b.text}}</p>
+        </section>
+      </sc-for>
+      <sc-if value="{{tl.hasMini}}" hint-placeholder-val="{{false}}">
+        <div class="ak-up" style="display: flex; flex-direction: column; gap: 10px; animation-delay: .8s;">
+          <h2 style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: .14em; color: {{t.accent}};">HOW IT FLOWS</h2>
+          <div role="img" aria-label="{{tl.miniLabel}}" style="display: flex; flex-wrap: wrap; align-items: center; row-gap: 8px;">
+            <sc-for list="{{tl.mini}}" as="m" hint-placeholder-count="4">
+              <sc-if value="{{m.link}}" hint-placeholder-val="{{true}}"><span aria-hidden="true" style="flex: 0 0 14px; min-width: 14px; height: 2px; margin: 0 5px; border-radius: 2px; background-image: linear-gradient(90deg, {{t.mute}} 50%, transparent 50%); background-size: 8px 2px; opacity: .7; animation: akDash .9s linear infinite;"></span></sc-if>
+              <span aria-hidden="true" style="flex: 0 0 auto; display: inline-flex; align-items: center; height: 30px; padding: 0 10px; border-radius: 9px; background: {{m.bg}}; color: {{m.fg}}; border: 1px solid {{m.bd}}; box-shadow: {{m.glow}}; font: 500 11px 'Geist Mono', monospace; white-space: nowrap; animation: akPop .5s cubic-bezier(.34,1.56,.64,1) both; animation-delay: {{m.d}};">{{m.label}}</span>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px;"><sc-for list="{{p.stack}}" as="s" hint-placeholder-count="4"><span style="display: inline-flex; align-items: center; height: 30px; padding: 0 10px; border-radius: 8px; background: {{t.tag}}; font-size: 12.5px; font-weight: 500;">{{s}}</span></sc-for></div>
+      <sc-if value="{{p.hasLive}}" hint-placeholder-val="{{false}}"><a href="{{p.live}}" style="display: flex; align-items: center; justify-content: center; height: 50px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none; font-weight: 600; font-size: 14.5px;">Open live site ↗</a></sc-if>
+      <a href="MHome.dc.html" style="display: flex; align-items: center; justify-content: center; height: 50px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; text-decoration: none; font-weight: 600; font-size: 14.5px;">Ask anubhav about this</a>
+      <div style="display: flex; gap: 8px;">
+        <a href="{{nav.prevHref}}" style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 2px; min-height: 56px; padding: 8px 14px; border-radius: 14px; border: 1px solid {{t.line}}; background: {{t.card}}; text-decoration: none;"><span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: .14em; color: {{t.mute}};">← PREVIOUS</span><span style="font-size: 13.5px; font-weight: 600;">{{nav.prevTitle}}</span></a>
+        <a href="{{nav.nextHref}}" style="flex: 1; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 2px; min-height: 56px; padding: 8px 14px; border-radius: 14px; border: 1px solid {{t.line}}; background: {{t.card}}; text-decoration: none; text-align: right;"><span style="font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: .14em; color: {{t.mute}};">NEXT →</span><span style="font-size: 13.5px; font-weight: 600;">{{nav.nextTitle}}</span></a>
+      </div>
+      <a href="{{back}}" style="display: flex; align-items: center; justify-content: center; height: 44px; text-decoration: none; font-size: 14px; font-weight: 600; color: {{t.mute}};">{{backText}}</a>
+    </article>
+  </div>
+  <div style="position: absolute; z-index: 30; inset: 0; pointer-events: none;"><dc-import name="MDock" dark="{{dark}}" active="work" page="none" label="{{topLabel}}" hint-size="100%,100%"></dc-import></div>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"p":{"editor":"enum","options":["agent","mcp","logs","tickets","retrieval","multimodal","stream","portal","harness","releases","obs","rpa","academy","jobradar","shorts","site","pitstop","heat","sapr","valo"],"default":"agent"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = !!this.props.dark;
+    const t = dark ? {
+      bg: '#070b16', ink: '#e9eefb', mute: '#8e98b3', body: '#c3cbe0', line: 'rgba(255,255,255,.1)', accent: '#8ea2ff', onAccent: '#070b16',
+      pill: 'rgba(17,24,44,.66)', glass: 'rgba(14,20,38,.62)', card: 'rgba(255,255,255,.04)', plate: '#0d1324', chip: 'rgba(7,11,22,.6)', chipFg: '#e9eefb',
+      vidOp: '.9', vidFilter: 'none', vidBlend: 'screen', shadow: '0 24px 60px rgba(0,0,0,.5)', scrimV: 'linear-gradient(180deg, rgba(7,11,22,.2) 0%, rgba(7,11,22,.55) 45%, rgba(7,11,22,.95) 100%)'
+    } : {
+      bg: '#f4f6fa', ink: '#0e1116', mute: '#59606b', body: '#2c323c', line: 'rgba(14,17,22,.1)', accent: '#2f55e8', onAccent: '#ffffff',
+      pill: 'rgba(255,255,255,.75)', glass: 'rgba(255,255,255,.72)', card: 'rgba(255,255,255,.8)', plate: '#e9eef8', chip: 'rgba(14,17,22,.55)', chipFg: '#ffffff',
+      vidOp: '.55', vidFilter: 'invert(1) hue-rotate(180deg)', vidBlend: 'multiply', shadow: '0 24px 60px rgba(40,70,160,.18)', scrimV: 'linear-gradient(180deg, rgba(244,246,250,.15) 0%, rgba(244,246,250,.6) 45%, rgba(244,246,250,.96) 100%)'
+    };
+        t.topBg = dark ? 'linear-gradient(180deg, rgba(7,11,22,.9), rgba(7,11,22,0))' : 'linear-gradient(180deg, rgba(244,246,250,.92), rgba(244,246,250,0))';
+    t.topBg = 'linear-gradient(180deg, rgba(7,11,22,.55), rgba(7,11,22,0))'; t.tag = dark ? 'rgba(255,255,255,.07)' : 'rgba(14,17,22,.06)'; t.fadeTo = t.bg;
+    t.nodeBg = 'rgba(11,17,32,.72)'; t.nodeFg = '#eef2fb'; t.nodeLine = 'rgba(255,255,255,.24)';
+    const id = this.props.p || 'agent';
+    const B = (x) => x;
+    const D = {
+      agent: { title: 'Agent backend, v2', group: 'Agents', year: '2026', kind: 'agent', layout: 'stacked', cover: B('/redesign/covers/agent.jpg'),
+        lede: 'A supervisor plans each request and hands it to the right specialist.',
+        blocks: [['PROBLEM', 'One chat had to answer very different questions: knowledge lookups, operational checks and service requests, each needing different tools.'], ['APPROACH', 'A supervisor reads each request, plans the steps and routes them to the right specialist agent instead of one prompt doing everything.'], ['TOOLS', 'Specialists never touch systems directly. They call tools exposed through MCP servers, so each integration is added, tested and permissioned once.'], ['OUTCOME', 'New capabilities plug in as a specialist or a tool without reworking the rest, and answers stream back as they form.']],
+        stack: ['Python', 'FastAPI', 'LangGraph', 'MCP', 'AWS Bedrock'] },
+      mcp: { title: 'MCP tool layer', group: 'Agents', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/mcp.jpg'), steps: ['agent', 'MCP client', 'tool server', 'business system'], hot: 2,
+        lede: 'One protocol, many tools, every agent.',
+        blocks: [['WHAT', 'A shared tool layer built on the Model Context Protocol.'], ['HOW', 'Each integration is its own MCP server, so any agent can discover and call it through the same contract.'], ['OUTCOME', 'New agents get existing tools for free, and access rules live in one place.']],
+        stack: ['Python', 'FastMCP', 'LangChain', 'MCP'] },
+      logs: { title: 'Network log agent', group: 'Agents', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/logs.jpg'), steps: ['question', 'draft search', 'guard', 'log platform', 'answer'], hot: 2,
+        lede: 'Plain-English questions over network logs, with a guard on every search.',
+        blocks: [['WHAT', 'Operations teams ask about network traffic in plain language.'], ['HOW', 'The agent drafts the search, and a deterministic guard checks it before anything runs.'], ['OUTCOME', 'Every answer shows how it was found and says plainly when results are partial.']],
+        stack: ['Python', 'LangGraph', 'MCP'] },
+      tickets: { title: 'Tickets in chat', group: 'Agents', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/tickets.jpg'), steps: ['chat', 'access check', 'ticket', 'queue'], hot: 1,
+        lede: 'See and raise IT tickets without leaving the conversation.',
+        blocks: [['WHAT', 'Approvers check their tickets and raise new ones from the chat.'], ['HOW', 'An agent reaches the ticketing system through tools, and role-based access decides what each person sees.'], ['OUTCOME', 'Live on several customer portals, saving approvers real time every day (a team estimate).']],
+        stack: ['Python', 'FastAPI', 'MCP', 'React'] },
+      retrieval: { title: 'Retrieval layer', group: 'Retrieval and Search', year: '2025', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/retrieval.jpg'), steps: ['documents', 'chunks', 'vectors', 'top matches', 'cited answer'], hot: 4,
+        lede: 'The search layer behind every answer, built to cite or stay quiet.',
+        blocks: [['WHAT', 'Retrieval that grounds the chat in real documents.'], ['HOW', 'Prototyped from scratch first to learn where retrieval breaks, then moved to managed knowledge bases with query routing and citations.'], ['OUTCOME', 'Answers may only cite evidence the search actually returned.']],
+        stack: ['Python', 'FAISS', 'AWS Bedrock', 'S3'] },
+      multimodal: { title: 'Multimodal search', group: 'Retrieval and Search', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/multimodal.jpg'), steps: ['PDF', 'slides', 'video', 'one index', 'search'], hot: 3,
+        lede: 'One search across documents, slides and video.',
+        blocks: [['WHAT', 'A single search over every kind of file people actually share.'], ['HOW', 'Video is split by scene, with speech and on-screen text indexed beside pages and slides, then exposed as a tool agents can call.'], ['OUTCOME', 'A smaller, faster model matched the larger one in testing, so the fast one ships.']],
+        stack: ['Python', 'Docling', 'AWS Bedrock', 'MCP'] },
+      stream: { title: 'Chat backend', group: 'Backend and Data', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/stream.jpg'),
+        lede: 'Answers that start arriving the moment they exist.',
+        blocks: [['WHAT', 'The services that stream chat answers and keep history.'], ['HOW', 'FastAPI with server-sent events, PostgreSQL for history and per-user semantic caching.'], ['OUTCOME', 'Fast first tokens, and repeat questions come straight from cache.']],
+        stack: ['Python', 'FastAPI', 'PostgreSQL', 'Redis'] },
+      portal: { title: 'Portal and chat UI', group: 'Frontend', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/portal.jpg'),
+        lede: 'The chat people use, with sources they can check.',
+        blocks: [['WHAT', 'Chat, dashboards and document views for the platform.'], ['HOW', 'React, Next.js and TypeScript, with a backend-for-frontend so no service address or key reaches the browser.'], ['OUTCOME', 'Streamed answers with source cards beside them.']],
+        stack: ['React', 'Next.js', 'TypeScript'] },
+      harness: { title: 'Test harness', group: 'Quality and Delivery', year: '2026', kind: 'flow', layout: 'stacked', cover: B('/redesign/covers/harness.jpg'), steps: ['merge request', 'end-to-end checks', 'answer match', 'gate'], hot: 3,
+        lede: 'Nothing merges until the chat still works end to end.',
+        blocks: [['WHAT', 'An end-to-end suite that gates every merge.'], ['HOW', 'Playwright scenarios across the chat portals: sign-in, streaming and semantic matching of answers, run in CI.'], ['OUTCOME', 'Part of a rewrite that multiplied automated test coverage.']],
+        stack: ['Playwright', 'TypeScript', 'GitLab CI'] },
+      releases: { title: 'Releases', group: 'Quality and Delivery', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/releases.jpg'),
+        lede: 'Parallel release lines, shipped on a steady beat.',
+        blocks: [['WHAT', 'Release management across many repositories and parallel release lines.'], ['HOW', 'CI/CD pipelines, first-line review on merge requests and checks built into every release.'], ['OUTCOME', 'Predictable releases instead of release-day surprises.']],
+        stack: ['GitLab CI', 'Docker'] },
+      obs: { title: 'Observability', group: 'Backend and Data', year: '2025', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/obs.jpg'),
+        lede: 'Every model call traced, timed and costed.',
+        blocks: [['WHAT', 'Visibility into what each model call does.'], ['HOW', 'Tracing, metrics and cost tracking on every call.'], ['OUTCOME', 'Slow or expensive calls are easy to find and fix.']],
+        stack: ['OpenTelemetry', 'Prometheus', 'Langfuse'] },
+      rpa: { title: 'RPA validation', group: 'Automation', year: '2024', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/rpa.jpg'),
+        lede: 'Checking the bots before their numbers reach anyone.',
+        blocks: [['WHAT', 'Validation for a large automation programme.'], ['HOW', 'Monitored the bots and wrote the SQL and test plans that checked each workflow against source data.'], ['OUTCOME', 'Bad runs caught before they reached reports.']],
+        stack: ['UiPath', 'SQL'] },
+      academy: { title: 'AI Academy capstone', group: 'Automation', year: '2023', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/academy.jpg'),
+        lede: 'Where the machine learning started.',
+        blocks: [['WHAT', 'Capstone for an internal AI academy.'], ['HOW', 'Trained and compared predictive models on a vehicle insurance dataset in the cloud.'], ['OUTCOME', 'A solid grounding in ML before moving to GenAI.']],
+        stack: ['Python', 'SQL', 'AWS SageMaker'] },
+      jobradar: { title: 'Job radar', group: 'Automation', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/jobradar.jpg'),
+        lede: 'My own morning scout for roles worth applying to.',
+        blocks: [['WHAT', 'A personal job search pipeline.'], ['HOW', 'Every morning it checks company career sites and job boards across my target regions, scores each role against my resume and posts good fits to Discord.'], ['OUTCOME', 'A short ranked list instead of endless scrolling.']],
+        stack: ['Python', 'Scheduled agents', 'Discord'] },
+      shorts: { title: 'Shorts producer', group: 'Automation', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/shorts.jpg'),
+        lede: 'Long footage in, vertical Shorts out.',
+        blocks: [['WHAT', 'Turns long gameplay recordings into vertical Shorts.'], ['HOW', 'Audio peaks find the moments, contact sheets help pick them, and ffmpeg reframes them to vertical.'], ['OUTCOME', 'Daily Shorts from footage I already have.']],
+        stack: ['Python', 'ffmpeg'] },
+      site: { title: 'This site', group: 'Side Builds', year: '2026', kind: 'cinema', layout: 'full', cover: B('/redesign/covers/site.jpg'),
+        lede: 'A portfolio you can ask questions.',
+        blocks: [['WHAT', 'This portfolio and its "ask anubhav" chat.'], ['HOW', 'A chatbot that answers from my own content and remembers the conversation.'], ['OUTCOME', 'Visitors ask instead of hunting through pages.']],
+        stack: ['React', 'Next.js'] },
+      pitstop: { title: 'PitStop', group: 'Side Builds', year: '2025', kind: 'browser', layout: 'split', cover: B('/redesign/covers/pitstop.jpg'), live: 'https://pitstop-services.web.app',
+        lede: 'An auto shop, run properly, for a GTA roleplay crew.',
+        blocks: [['WHAT', 'An auto services site for a GTA V roleplay community.'], ['HOW', 'Bookings, job logs and crew management.'], ['OUTCOME', 'Live and used by the crew.']],
+        stack: ['React', 'Firebase'] },
+      heat: { title: 'HEAT', group: 'Side Builds', year: '2025', kind: 'browser', layout: 'split', cover: B('/redesign/covers/heat.jpg'), live: 'https://sasp-heat.web.app',
+        lede: 'A handbook for a roleplay highway unit.',
+        blocks: [['WHAT', 'A site for a highway enforcement unit in roleplay.'], ['HOW', 'Procedures, roles and vehicle specs in one place.'], ['OUTCOME', 'New members get up to speed without asking around.']],
+        stack: ['Firebase'] },
+      sapr: { title: 'SAPR', group: 'Side Builds', year: '2025', kind: 'browser', layout: 'split', cover: B('/redesign/covers/sapr.jpg'), live: 'https://saspsapr.web.app',
+        lede: 'The park rangers department, organised.',
+        blocks: [['WHAT', 'A department site for park rangers in roleplay.'], ['HOW', 'Hierarchy, procedures and officer profiles with role-based access.'], ['OUTCOME', 'One source of truth for the whole department.']],
+        stack: ['Firebase'] },
+      valo: { title: 'Valo Tourney', group: 'Side Builds', year: '2024', kind: 'browser', layout: 'split', cover: B('/redesign/covers/valo.jpg'), live: 'https://soulcityvalo.web.app',
+        lede: 'Brackets and match tracking for community Valorant.',
+        blocks: [['WHAT', 'A Valorant tournament site.'], ['HOW', 'Brackets, match tracking and registration.'], ['OUTCOME', 'Ran community tournaments end to end.']],
+        stack: ['Firebase'] }
+    };
+    const order = ['agent', 'mcp', 'logs', 'tickets', 'retrieval', 'multimodal', 'stream', 'portal', 'harness', 'releases', 'obs', 'rpa', 'academy', 'jobradar', 'shorts', 'site', 'pitstop', 'heat', 'sapr', 'valo'];
+    const r = D[id] || D.agent;
+    const ACC = { 'Agents': ['#2f55e8', '#8ea2ff'], 'Retrieval and Search': ['#0d8a82', '#5fe3d6'], 'Backend and Data': ['#6b38d4', '#b79bff'], 'Frontend': ['#1f74d6', '#86c3ff'], 'Quality and Delivery': ['#1f9a4a', '#7fe3a0'], 'Automation': ['#c26a0a', '#ffc56b'], 'Side Builds': ['#d6336c', '#ff8fb1'] };
+    t.accent = (ACC[r.group] || ACC.Agents)[dark ? 1 : 0];
+    const idx = String(order.indexOf(id) + 1).padStart(2, '0');
+    const steps = (r.steps || []).map((label, i) => { const on = i === r.hot; return { label, n: String(i + 1).padStart(2, '0'), d: (0.5 + i * 0.15).toFixed(2) + 's', bg: on ? t.accent : t.nodeBg, fg: on ? '#070b16' : t.nodeFg, border: on ? t.accent : t.nodeLine, glow: on ? '0 0 24px ' + t.accent : 'none' }; });
+    const WORK = ['agent', 'mcp', 'logs', 'tickets', 'retrieval', 'multimodal', 'stream', 'portal', 'harness', 'releases', 'obs', 'rpa', 'academy'];
+    const STATUS = { tickets: 'In production', rpa: 'Completed', academy: 'Completed', jobradar: 'Runs daily', shorts: 'Runs daily', site: 'Live', pitstop: 'Live', heat: 'Live', sapr: 'Live', valo: 'Live' };
+    const MINI = {
+      stream: [['question', 'cache', 'model', 'SSE stream', 'history'], 1], portal: [['browser', 'React UI', 'BFF', 'services'], 2],
+      releases: [['code', 'review', 'pipeline', 'release'], 2], obs: [['model call', 'trace', 'cost', 'dashboard'], 1],
+      rpa: [['bot run', 'monitor', 'SQL check', 'report'], 2], academy: [['dataset', 'features', 'train', 'compare'], 2],
+      jobradar: [['job sites', 'score', 'shortlist', 'Discord'], 1], shorts: [['recording', 'audio peaks', 'moments', 'vertical'], 1],
+      site: [['question', 'my content', 'model', 'answer'], 1]
+    };
+    const conf = WORK.indexOf(id) >= 0;
+    const mk = MINI[id];
+    const tl = { conf, personal: !conf, status: STATUS[id] || '', hasStatus: !!STATUS[id], talk: 'MConnect' + (dark ? 'Dark' : '') + '.dc.html', hasMini: !!mk,
+      miniLabel: mk ? 'How it flows: ' + mk[0].join(', then ') : '',
+      mini: mk ? mk[0].map((label, i) => { const on = i === mk[1]; return { label, link: i > 0, d: (0.9 + i * 0.12).toFixed(2) + 's',
+        bg: on ? t.accent : t.tag, fg: on ? t.onAccent : t.ink, bd: on ? t.accent : t.line, glow: on ? '0 0 22px ' + t.accent : 'none' }; }) : [] };
+    const p = { ...r, idx, groupU: r.group.toUpperCase(), steps, hasLive: !!r.live, live: r.live || '', host: (r.live || '').replace('https://', ''), blocks: r.blocks.map(([label, text], i) => ({ label, text, d: (0.5 + i * 0.1).toFixed(2) + 's' })) };
+    const K = { agent: r.kind === 'agent', flow: r.kind === 'flow', cinema: r.kind === 'cinema', browser: r.kind === 'browser' };
+    const H = { h: r.kind === 'cinema' ? '460px' : (r.kind === 'flow' ? (90 + steps.length * 70) + 'px' : (r.kind === 'agent' ? '480px' : '420px')) };
+    let back = 'MWork.dc.html';
+    try { back = sessionStorage.getItem('akFromM') || back; } catch (e) {}
+    const backLabel = /Index/.test(back) ? 'Index' : 'Work';
+    const MH = (k) => 'MCase' + k.charAt(0).toUpperCase() + k.slice(1) + '.dc.html';
+    const kk = order.indexOf(id) < 0 ? 0 : order.indexOf(id);
+    const pv = order[(kk + order.length - 1) % order.length], nx = order[(kk + 1) % order.length];
+    const nav = { prevHref: MH(pv), prevTitle: (D[pv] || {}).title || '', nextHref: MH(nx), nextTitle: (D[nx] || {}).title || '' };
+    return { nav, back, backLabel, backText: '← Back to ' + backLabel, logoSrc: (this.props.dark ? '/redesign/brand/logo-on-dark.png' : '/redesign/brand/logo-on-light.png'), dark, t, p, K, H, tl, specs: ['knowledge', 'operations', 'service'], topLabel: 'CASE STUDY' };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone top bar and menu</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="/redesign/brand/favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&amp;family=Manrope:wght@500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}
+@keyframes akBarIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@keyframes akShade{from{opacity:0}to{opacity:1}}
+@keyframes akSheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes akItem{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.ak-item{animation:akItem .5s cubic-bezier(.16,1,.3,1) both}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="position: relative; width: 100%; height: 100%; font-family: Manrope, system-ui, sans-serif; color: {{t.ink}};">
+  <header style="position: absolute; z-index: 2; top: 0; left: 0; right: 0; height: 64px; padding: 0 12px 0 16px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; background: {{t.bar}}; pointer-events: auto; animation: akBarIn .6s .1s cubic-bezier(.16,1,.3,1) both;">
+    <a href="MHome.dc.html" aria-label="Anubhav Kumar, home" style="display: inline-flex; align-items: center; min-width: 44px; min-height: 44px;"><img src="{{logoSrc}}" alt="" height="30" style="display: block; height: 30px; width: auto;"></a>
+    <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .16em; color: {{t.mute}};">{{label}}</span>
+    <button type="button" onClick="{{toggle}}" aria-expanded="{{expanded}}" aria-controls="ak-menu" aria-label="{{btnLabel}}" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.edge}}; background: {{t.pill}}; backdrop-filter: blur(14px); color: {{t.ink}}; font: 700 13px Manrope, sans-serif; cursor: pointer;">
+      <sc-if value="{{closed}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 8h16M4 16h10"></path></svg>Menu</sc-if>
+      <sc-if value="{{open}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>Close</sc-if>
+    </button>
+  </header>
+
+  <sc-if value="{{open}}" hint-placeholder-val="{{false}}">
+    <div aria-hidden="true" onClick="{{close}}" style="position: fixed; z-index: 1; inset: 0; background: {{t.shade}}; backdrop-filter: blur(6px); pointer-events: auto; animation: akShade .3s ease both;"></div>
+    <nav id="ak-menu" aria-label="Main" style="position: fixed; z-index: 3; left: 0; right: 0; bottom: 0; padding: 22px 20px calc(22px + env(safe-area-inset-bottom)); box-sizing: border-box; border-radius: 26px 26px 0 0; background: {{t.sheet}}; border-top: 1px solid {{t.edge}}; box-shadow: 0 -20px 60px rgba(0,0,0,.25); display: flex; flex-direction: column; gap: 4px; pointer-events: auto; animation: akSheet .45s cubic-bezier(.16,1,.3,1) both;">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; margin-bottom: 10px; border-radius: 4px; background: {{t.edge}};"></span>
+      <sc-for list="{{links}}" as="l" hint-placeholder-count="5">
+        <a class="ak-item" href="{{l.href}}" aria-current="{{l.cur}}" style="display: flex; align-items: baseline; justify-content: space-between; min-height: 52px; padding: 6px 4px; border-bottom: 1px solid {{t.edge}}; text-decoration: none; animation-delay: {{l.d}};">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 34px; letter-spacing: -0.03em; color: {{l.fg}};">{{l.label}}</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: {{t.mute}};">{{l.note}}</span>
+        </a>
+      </sc-for>
+      <div class="ak-item" style="display: flex; gap: 8px; margin-top: 14px; animation-delay: .32s;">
+        <a href="/resume.pdf" target="_blank" rel="noopener" download="Anubhav_Kumar_Resume.pdf" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 48px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; text-decoration: none; font-weight: 700; font-size: 14px;"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"></path><path d="M7 10l5 5 5-5"></path><path d="M5 20h14"></path></svg>Resume</a>
+        <sc-if value="{{hasTheme}}" hint-placeholder-val="{{true}}"><a href="{{themeHref}}" aria-label="Switch to {{themeLabel}}" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; border-radius: 999px; border: 1px solid {{t.edge}}; background: transparent; color: {{t.ink}}; text-decoration: none; font: 700 14px Manrope, sans-serif;"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.5A8 8 0 1 1 10.5 4a6.2 6.2 0 0 0 9.5 9.5z"></path></svg>{{themeLabel}}</a></sc-if>
+      </div>
+    </nav>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"active":{"editor":"enum","options":["home","work","index","about","connect"],"default":"home"},"label":{"editor":"text","default":"ANUBHAVKUMAAR.IN"},"startOpen":{"editor":"boolean","default":false},"page":{"editor":"text","default":""},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { open: !!props.startOpen };
+  }
+  renderVals() {
+    const dark = !!this.props.dark;
+    const active = this.props.active ?? 'home';
+    const open = !!this.state.open;
+    const sfx = dark ? 'Dark' : '';
+    const t = dark ? {
+      ink: '#e9eefb', mute: '#8e98b3', bg: '#070b16', edge: 'rgba(255,255,255,.12)', pill: 'rgba(17,24,44,.6)',
+      bar: 'linear-gradient(180deg, rgba(7,11,22,.92), rgba(7,11,22,0))', shade: 'rgba(4,7,15,.55)', sheet: 'rgba(12,17,30,.97)'
+    } : {
+      ink: '#0e1116', mute: '#59606b', bg: '#ffffff', edge: 'rgba(14,17,22,.1)', pill: 'rgba(255,255,255,.75)',
+      bar: 'linear-gradient(180deg, rgba(244,246,250,.94), rgba(244,246,250,0))', shade: 'rgba(14,17,22,.28)', sheet: 'rgba(255,255,255,.98)'
+    };
+    const defs = [['home', 'Home', '01', 'MHome'], ['work', 'Work', '02', 'MWork'], ['index', 'Index', '03', 'MIndex'], ['about', 'About', '04', 'MAbout'], ['connect', "Let's talk", '05', 'MConnect']];
+    const links = defs.map(([id, label, n, f], i) => {
+      const on = id === active;
+      return { label, href: f + sfx + '.dc.html', cur: on ? 'page' : 'false', fg: on ? t.ink : t.mute, note: on ? 'YOU ARE HERE' : n, d: (0.06 + i * 0.05).toFixed(2) + 's' };
+    });
+    return {
+      t, links, open, closed: !open, expanded: open ? 'true' : 'false', btnLabel: open ? 'Close menu' : 'Open menu',
+      label: this.props.label || 'ANUBHAVKUMAAR.IN', themeLabel: dark ? 'Light mode' : 'Dark mode',
+      hasTheme: this.props.page !== 'none',
+      themeHref: (this.props.page && this.props.page !== 'none' ? this.props.page : ({ home: 'MHome', work: 'MWork', index: 'MIndex', about: 'MAbout', connect: 'MConnect' }[active] || 'MHome')) + (dark ? '' : 'Dark') + '.dc.html',
+      logoSrc: dark ? '/redesign/brand/logo-on-dark.png' : '/redesign/brand/logo-on-light.png',
+      toggle: () => this.setState({ open: !open }),
+      close: () => this.setState({ open: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

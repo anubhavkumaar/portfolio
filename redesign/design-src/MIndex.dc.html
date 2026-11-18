@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone: Index</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="/redesign/brand/favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Manrope:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit}
+.ak-noscroll{scrollbar-width:none}.ak-noscroll::-webkit-scrollbar{display:none}
+@keyframes akRise{from{opacity:0;transform:translateY(70%)}to{opacity:1;transform:none}}
+@keyframes akUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes akKB{0%{transform:scale(1.05)}50%{transform:scale(1.14) translate(-2%,-1.5%)}100%{transform:scale(1.05)}}
+@keyframes akPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
+.ak-up{animation:akUp .8s cubic-bezier(.16,1,.3,1) both}
+.ak-l{display:inline-block;animation:akRise .9s cubic-bezier(.16,1,.3,1) both}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+.ak-tile{transition:transform .3s cubic-bezier(.16,1,.3,1)}.ak-tile:active{transform:scale(.98)}
+</style>
+</helmet>
+<main style="position: relative; width: 100%; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: Manrope, system-ui, sans-serif;">
+
+  <div class="ak-noscroll" style="position: absolute; inset: 0; overflow-y: auto;">
+    <div style="padding: 84px 16px 120px; display: flex; flex-direction: column; gap: 18px;">
+      <h1 class="ak-up" style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 34px; line-height: 1.05; letter-spacing: -0.03em;">Everything I have built, <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: {{t.mute}};">grouped by what it does.</span></h1>
+      <div class="ak-noscroll" role="group" aria-label="Jump to a group" style="position: sticky; top: 64px; z-index: 5; display: flex; gap: 6px; overflow-x: auto; margin: 0 -16px; padding: 8px 16px; background: {{t.stickyBg}}; backdrop-filter: blur(12px);">
+        <sc-for list="{{groups}}" as="g" hint-placeholder-count="7"><a href="{{g.anchor}}" style="flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none; font-size: 13px; font-weight: 600;">{{g.label}} <span style="color: {{t.mute}}; font-weight: 500;">{{g.n}}</span></a></sc-for>
+      </div>
+      <sc-for list="{{groups}}" as="g" hint-placeholder-count="7">
+        <section id="{{g.id}}" style="display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 130px;">
+          <div style="display: flex; align-items: baseline; gap: 8px; padding-top: 14px; border-top: 1px solid {{t.line}};">
+            <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .14em; color: {{t.mute}};">{{g.num}}</span>
+            <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 21px; letter-spacing: -0.02em;">{{g.label}}</h2>
+          </div>
+          <sc-for list="{{g.tiles}}" as="tile" hint-placeholder-count="3">
+            <a class="ak-tile ak-up" href="{{tile.href}}" onClick="{{mark}}" style="display: flex; flex-direction: column; gap: 10px; text-decoration: none; animation-delay: {{tile.delay}};">
+              <span style="position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: {{t.plate}};">
+                <sc-if value="{{tile.vid}}" hint-placeholder-val="{{false}}"><video src="{{tile.vid}}" poster="{{tile.img}}" autoplay muted loop playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"></video></sc-if>
+                <sc-if value="{{tile.noVid}}" hint-placeholder-val="{{true}}"><img src="{{tile.img}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: akKB 16s ease-in-out infinite;"></sc-if>
+                <span style="position: absolute; top: 10px; left: 10px; padding: 5px 8px 4px; border-radius: 6px; background: {{t.chip}}; backdrop-filter: blur(10px); color: {{t.chipFg}}; font-size: 11.5px; font-weight: 600;">{{tile.idx}}</span>
+              </span>
+              <span style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 0 2px;">
+                <span style="font-size: 15px; font-weight: 700;">{{tile.title}}</span>
+                <span style="font-family: 'Instrument Serif', serif; font-size: 15px; color: {{t.mute}};">{{tile.year}} →</span>
+              </span>
+            </a>
+          </sc-for>
+        </section>
+      </sc-for>
+      <a href="MAbout.dc.html" style="display: flex; flex-direction: column; gap: 6px; margin-top: 20px; padding-top: 28px; border-top: 1px solid {{t.line}}; text-decoration: none;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .16em; color: {{t.mute}};">KEEP SCROLLING</span>
+        <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 52px; line-height: .95; letter-spacing: -0.04em;">About me <span style="color: {{t.accent}};">→</span></span>
+      </a>
+    </div>
+  </div>
+  <div style="position: absolute; z-index: 30; inset: 0; pointer-events: none;"><dc-import name="MDock" dark="{{dark}}" active="index" label="{{topLabel}}" hint-size="100%,100%"></dc-import></div>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = !!this.props.dark;
+    const t = dark ? {
+      bg: '#070b16', ink: '#e9eefb', mute: '#8e98b3', body: '#c3cbe0', line: 'rgba(255,255,255,.1)', accent: '#8ea2ff', onAccent: '#070b16',
+      pill: 'rgba(17,24,44,.66)', glass: 'rgba(14,20,38,.62)', card: 'rgba(255,255,255,.04)', plate: '#0d1324', chip: 'rgba(7,11,22,.6)', chipFg: '#e9eefb',
+      vidOp: '.9', vidFilter: 'none', vidBlend: 'screen', shadow: '0 24px 60px rgba(0,0,0,.5)', scrimV: 'linear-gradient(180deg, rgba(7,11,22,.2) 0%, rgba(7,11,22,.55) 45%, rgba(7,11,22,.95) 100%)'
+    } : {
+      bg: '#f4f6fa', ink: '#0e1116', mute: '#59606b', body: '#2c323c', line: 'rgba(14,17,22,.1)', accent: '#2f55e8', onAccent: '#ffffff',
+      pill: 'rgba(255,255,255,.75)', glass: 'rgba(255,255,255,.72)', card: 'rgba(255,255,255,.8)', plate: '#e9eef8', chip: 'rgba(14,17,22,.55)', chipFg: '#ffffff',
+      vidOp: '.55', vidFilter: 'invert(1) hue-rotate(180deg)', vidBlend: 'multiply', shadow: '0 24px 60px rgba(40,70,160,.18)', scrimV: 'linear-gradient(180deg, rgba(244,246,250,.15) 0%, rgba(244,246,250,.6) 45%, rgba(244,246,250,.96) 100%)'
+    };
+    t.topBg = dark ? 'linear-gradient(180deg, rgba(7,11,22,.9), rgba(7,11,22,0))' : 'linear-gradient(180deg, rgba(244,246,250,.92), rgba(244,246,250,0))';
+    t.stickyBg = dark ? 'rgba(7,11,22,.82)' : 'rgba(244,246,250,.85)';
+    const B = (x) => x;
+    const W = [
+      ['agent', '01', 'Agent backend, v2', 'Agents', '2026', '/redesign/media/agent-diagram.jpg', '/redesign/media/agent-diagram.mp4'],
+      ['mcp', '02', 'MCP tool layer', 'Agents', '2026', '/redesign/covers/mcp.jpg'],
+      ['logs', '03', 'Network log agent', 'Agents', '2026', '/redesign/covers/logs.jpg'],
+      ['tickets', '04', 'Tickets in chat', 'Agents', '2026', '/redesign/covers/tickets.jpg'],
+      ['retrieval', '05', 'Retrieval layer', 'Retrieval and Search', '2025', '/redesign/covers/retrieval.jpg'],
+      ['multimodal', '06', 'Multimodal search', 'Retrieval and Search', '2026', '/redesign/covers/multimodal.jpg'],
+      ['stream', '07', 'Chat backend', 'Backend and Data', '2026', '/redesign/covers/stream.jpg'],
+      ['obs', '11', 'Observability', 'Backend and Data', '2025', '/redesign/covers/obs.jpg'],
+      ['portal', '08', 'Portal and chat UI', 'Frontend', '2026', '/redesign/covers/portal.jpg'],
+      ['harness', '09', 'Test harness', 'Quality and Delivery', '2026', '/redesign/covers/harness.jpg'],
+      ['releases', '10', 'Releases', 'Quality and Delivery', '2026', '/redesign/covers/releases.jpg'],
+      ['jobradar', '14', 'Job radar', 'Automation', '2026', '/redesign/covers/jobradar.jpg'],
+      ['shorts', '15', 'Shorts producer', 'Automation', '2026', '/redesign/covers/shorts.jpg'],
+      ['rpa', '12', 'RPA validation', 'Automation', '2024', '/redesign/covers/rpa.jpg'],
+      ['academy', '13', 'AI Academy capstone', 'Automation', '2023', '/redesign/covers/academy.jpg'],
+      ['pitstop', '17', 'PitStop', 'Side Builds', '2025', '/redesign/covers/pitstop.jpg'],
+      ['heat', '18', 'HEAT', 'Side Builds', '2025', '/redesign/covers/heat.jpg'],
+      ['sapr', '19', 'SAPR', 'Side Builds', '2025', '/redesign/covers/sapr.jpg'],
+      ['valo', '20', 'Valo Tourney', 'Side Builds', '2024', '/redesign/covers/valo.jpg'],
+      ['site', '16', 'This site', 'Side Builds', '2026', '/redesign/covers/site.jpg']
+    ];
+    const MH = (id) => 'MCase' + id.charAt(0).toUpperCase() + id.slice(1) + '.dc.html';
+    const ORDER = ['Agents', 'Retrieval and Search', 'Backend and Data', 'Frontend', 'Quality and Delivery', 'Automation', 'Side Builds'];
+    let k = 0;
+    const groups = ORDER.map((label, gi) => {
+      const tiles = W.filter((w) => w[3] === label).map(([id, idx, title, g, year, img, vid]) => ({ idx, title, year, href: MH(id), img: B(img), vid: vid ? B(vid) : '', noVid: !vid, delay: (Math.min(k++, 4) * 0.08).toFixed(2) + 's' }));
+      const gid = 'm-' + label.toLowerCase().replace(/[^a-z]+/g, '-');
+      return { label, id: gid, anchor: '#' + gid, num: String(gi + 1).padStart(2, '0'), n: String(tiles.length), tiles };
+    });
+    return { mark: () => { try { sessionStorage.setItem('akFromM', this.props.dark ? 'MIndexDark.dc.html' : 'MIndex.dc.html'); } catch (e) {} }, logoSrc: (this.props.dark ? '/redesign/brand/logo-on-dark.png' : '/redesign/brand/logo-on-light.png'), dark, t, groups, topLabel: 'INDEX' };
+  }
+}
+</script>
+</body>
+</html>

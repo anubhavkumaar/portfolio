@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phone: Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/png" href="/redesign/brand/favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Manrope:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+@keyframes akRoles{0.00%,14.33%{transform:translateY(-0.00em)}16.67%,31.00%{transform:translateY(-1.30em)}33.33%,47.67%{transform:translateY(-2.60em)}50.00%,64.33%{transform:translateY(-3.90em)}66.67%,81.00%{transform:translateY(-5.20em)}83.33%,97.67%{transform:translateY(-6.50em)}100%{transform:translateY(-7.80em)}}
+@keyframes akCaret{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes akSmokeD{0%,100%{filter:hue-rotate(0deg) saturate(1.3)}50%{filter:hue-rotate(14deg) saturate(1.3)}}
+@keyframes akSmokeL{0%,100%{filter:invert(1) hue-rotate(196deg) saturate(1.8) blur(10px)}50%{filter:invert(1) hue-rotate(207deg) saturate(1.7) blur(10px)}}
+@keyframes akCloudA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6%,5%) scale(1.12)}}
+@keyframes akCloudB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(7%,-4%) scale(.92)}}
+body{margin:0}
+a{color:inherit}
+.ak-noscroll{scrollbar-width:none}.ak-noscroll::-webkit-scrollbar{display:none}
+@keyframes akRise{from{opacity:0;transform:translateY(70%)}to{opacity:1;transform:none}}
+@keyframes akUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes akKB{0%{transform:scale(1.05)}50%{transform:scale(1.14) translate(-2%,-1.5%)}100%{transform:scale(1.05)}}
+@keyframes akPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
+.ak-up{animation:akUp .8s cubic-bezier(.16,1,.3,1) both}
+.ak-l{display:inline-block;animation:akRise .9s cubic-bezier(.16,1,.3,1) both}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+</style>
+</helmet>
+<main style="position: relative; width: 100%; height: 844px; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: Manrope, system-ui, sans-serif;">
+  <div aria-hidden="true" style="position: absolute; inset: 0; overflow: hidden;">
+    <video src="{{t.fieldSrc}}" poster="{{t.fieldPoster}}" autoplay muted loop playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{t.fieldPos}}; opacity: {{t.fieldOp}};"></video>
+    <div style="position: absolute; inset: 0; background: {{t.scrimV}};"></div>
+  </div>
+
+  <section style="position: absolute; left: 20px; right: 20px; top: 210px; display: flex; flex-direction: column; gap: 14px;">
+    <p class="ak-up" style="margin: 0; display: inline-flex; align-items: center; gap: 8px; font-family: 'Geist Mono', monospace; font-size: 10.5px; letter-spacing: .14em; color: {{t.mute}}; animation-delay: .1s;"><span style="position: relative; width: 7px; height: 7px;"><span style="position: absolute; inset: 0; border-radius: 50%; background: #3ccf7a;"></span><span style="position: absolute; inset: 0; border-radius: 50%; background: #3ccf7a; animation: akPing 1.8s ease-out infinite;"></span></span>OPEN TO GENAI ROLES</p>
+    <h1 aria-label="Anubhav Kumar" style="margin: 0; overflow: hidden; padding-top: 4px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 72px; line-height: .88; letter-spacing: -0.045em;"><span class="ak-l" style="animation-delay: 0.250s;">A</span><span class="ak-l" style="animation-delay: 0.285s;">n</span><span class="ak-l" style="animation-delay: 0.320s;">u</span><span class="ak-l" style="animation-delay: 0.355s;">b</span><span class="ak-l" style="animation-delay: 0.390s;">h</span><span class="ak-l" style="animation-delay: 0.425s;">a</span><span class="ak-l" style="animation-delay: 0.460s;">v</span><br><span class="ak-l" style="animation-delay: 0.495s;">K</span><span class="ak-l" style="animation-delay: 0.530s;">u</span><span class="ak-l" style="animation-delay: 0.565s;">m</span><span class="ak-l" style="animation-delay: 0.600s;">a</span><span class="ak-l" style="animation-delay: 0.635s;">r</span></h1>
+    <p class="ak-up" style="margin: 2px 0 0; font-size: 17px; font-weight: 600; line-height: 1.3; animation-delay: .6s;"><span style="display: block; color: {{t.mute}}; font-weight: 500;">I am a</span><span aria-label="Full Stack Developer and GenAI Engineer" style="display: inline-flex; align-items: flex-start; vertical-align: top; height: 1.3em; overflow: hidden; color: {{t.accent}};"><span aria-hidden="true" style="display: block; animation: akRoles 18s cubic-bezier(.76,0,.24,1) infinite;"><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; font-size: 16px;">Full Stack Developer and GenAI Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; font-size: 16px;">Data Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; font-size: 16px;">Backend Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; font-size: 16px;">Agentic AI Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; font-size: 16px;">LLM and RAG Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; font-size: 16px;">Gamer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span><span style="display: block; height: 1.3em; line-height: 1.3em; white-space: nowrap; font-size: 16px;">Full Stack Developer and GenAI Engineer<span aria-hidden="true" style="display: inline-block; width: 2px; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: {{t.accent}}; animation: akCaret 1s steps(1) infinite;"></span></span></span></span></p>
+    <p class="ak-up" style="margin: 0; font-size: 14.5px; line-height: 1.55; color: {{t.mute}}; animation-delay: .7s;">I build AI agents, retrieval and the screens around them for a GenAI product platform at Deloitte.</p>
+    <div class="ak-up" style="display: flex; gap: 8px; margin-top: 4px; animation-delay: .8s;">
+      <a href="MWork.dc.html" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; height: 48px; border-radius: 999px; background: {{t.ink}}; color: {{t.bg}}; text-decoration: none; font-weight: 600; font-size: 14.5px;">View work</a>
+      <a href="MAbout.dc.html" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; height: 48px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none; font-weight: 600; font-size: 14.5px;">About me</a>
+    </div>
+  </section>
+
+  <aside class="ak-up" aria-label="Ask anubhav chat" style="position: absolute; left: 12px; right: 12px; bottom: 24px; padding: 14px; border-radius: 20px; background: {{t.glass}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; backdrop-filter: blur(18px); display: flex; flex-direction: column; gap: 10px; animation-delay: 1s;">
+    <div style="display: flex; align-items: center; gap: 8px;"><img src="{{logoSrc}}" alt="" height="20" style="display: block; height: 20px; width: auto;"><span style="font-size: 13px; font-weight: 700;">ask anubhav</span><span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 10px; color: {{t.mute}};">remembers this chat</span></div>
+    <div class="ak-noscroll" style="display: flex; gap: 6px; overflow-x: auto; margin: 0 -14px; padding: 0 14px;">
+      <sc-for list="{{chips}}" as="c" hint-placeholder-count="5"><button type="button" style="flex: 0 0 auto; height: 34px; padding: 0 12px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.pill}}; color: {{t.ink}}; font: 600 12.5px Manrope, sans-serif;">{{c}}</button></sc-for>
+    </div>
+    <form style="display: flex; align-items: center; gap: 8px; padding: 4px 4px 4px 12px; border-radius: 14px; background: {{t.card}}; border: 1px solid {{t.line}};">
+      <label for="mask" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Ask anything</label>
+      <input id="mask" type="text" placeholder="Ask anything about me or the work" style="flex: 1; min-width: 0; height: 40px; border: 0; background: transparent; color: {{t.ink}}; font: 400 16px Manrope, sans-serif; outline: none;">
+      <button type="button" aria-label="Send" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 11px; border: 0; background: {{t.ink}}; color: {{t.bg}};"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg></button>
+    </form>
+  </aside>
+  <div style="position: absolute; z-index: 30; inset: 0; pointer-events: none;"><dc-import name="MDock" dark="{{dark}}" active="home" label="{{topLabel}}" hint-size="100%,100%"></dc-import></div>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"hero":{"editor":"enum","options":["smoke","sphere"],"default":"smoke"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = !!this.props.dark;
+    const t = dark ? {
+      bg: '#070b16', ink: '#e9eefb', mute: '#8e98b3', body: '#c3cbe0', line: 'rgba(255,255,255,.1)', accent: '#8ea2ff', onAccent: '#070b16',
+      pill: 'rgba(17,24,44,.66)', glass: 'rgba(14,20,38,.62)', card: 'rgba(255,255,255,.04)', plate: '#0d1324', chip: 'rgba(7,11,22,.6)', chipFg: '#e9eefb',
+      fieldSrc: '/redesign/media/smoke-dark-phone.mp4', fieldPoster: '/redesign/media/smoke-dark-phone.jpg', vidOp: '.9', vidFilter: 'hue-rotate(0deg) saturate(1.3)', vidAnim: 'akSmokeD 18s ease-in-out infinite', cloudBlue: 'rgba(70,120,240,.38)', cloudLav: 'rgba(110,125,240,.24)', vidBlend: 'screen', shadow: '0 24px 60px rgba(0,0,0,.5)', scrimV: 'linear-gradient(180deg, rgba(7,11,22,.2) 0%, rgba(7,11,22,.55) 45%, rgba(7,11,22,.95) 100%)'
+    } : {
+      bg: '#f4f6fa', ink: '#0e1116', mute: '#59606b', body: '#2c323c', line: 'rgba(14,17,22,.1)', accent: '#2f55e8', onAccent: '#ffffff',
+      pill: 'rgba(255,255,255,.75)', glass: 'rgba(255,255,255,.72)', card: 'rgba(255,255,255,.8)', plate: '#e9eef8', chip: 'rgba(14,17,22,.55)', chipFg: '#ffffff',
+      fieldSrc: '/redesign/media/smoke-light-phone.mp4', fieldPoster: '/redesign/media/smoke-light-phone.jpg', vidOp: '.6', vidFilter: 'invert(1) hue-rotate(196deg) saturate(1.8) blur(10px)', vidAnim: 'akSmokeL 18s ease-in-out infinite', cloudBlue: 'rgba(118,160,242,.62)', cloudLav: 'rgba(176,186,246,.42)', vidBlend: 'multiply', shadow: '0 24px 60px rgba(40,70,160,.18)', scrimV: 'linear-gradient(180deg, rgba(244,246,250,.15) 0%, rgba(244,246,250,.6) 45%, rgba(244,246,250,.96) 100%)'
+    };
+    t.fieldPos = 'center'; t.fieldOp = '1';
+    if (dark && this.props.hero === 'sphere') { t.fieldSrc = '/redesign/media/sphere-hero.mp4'; t.fieldPoster = '/redesign/media/sphere-hero.jpg'; t.fieldPos = '74% 30%'; t.fieldOp = '.6'; }
+    t.topBg = dark ? 'linear-gradient(180deg, rgba(7,11,22,.9), rgba(7,11,22,0))' : 'linear-gradient(180deg, rgba(244,246,250,.92), rgba(244,246,250,0))';
+    return { logoSrc: (this.props.dark ? '/redesign/brand/logo-on-dark.png' : '/redesign/brand/logo-on-light.png'), dark, t, topLabel: 'ANUBHAVKUMAAR.IN', chips: ['What do you build?', 'Experience', 'Tech stack', 'Side builds', 'How do I reach you?'] };
+  }
+}
+</script>
+</body>
+</html>

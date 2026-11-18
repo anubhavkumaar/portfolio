@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>View switch</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;display=swap">
+<style>
+body{margin:0}
+.ak-vs{transition:background .25s,color .25s}
+.ak-vs:hover{color:inherit!important}
+.ak-ix{transition:gap .3s cubic-bezier(.16,1,.3,1)}
+.ak-ix:hover{gap:10px!important}
+</style>
+</helmet>
+<div style="display: inline-flex; align-items: center; gap: 8px; color: {{t.ink}}; font-family: Manrope, system-ui, sans-serif;">
+  <div role="group" aria-label="View" style="display: inline-flex; align-items: center; gap: 2px; height: 40px; padding: 3px; box-sizing: border-box; border-radius: 12px; border: 1px solid {{t.line}}; background: {{t.pill}};">
+    <a class="ak-vs" href="Orbit.dc.html" aria-label="Drawer view" aria-current="{{drawerCur}}" title="Drawer" style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 32px; border-radius: 9px; background: {{drawerBg}}; color: {{drawerFg}};">
+      <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h7l2 2h3v6"></path><path d="M4 9h8l2 2h6"></path><rect x="3" y="13" width="18" height="7" rx="2"></rect><path d="M10 16.5h4"></path></svg>
+    </a>
+    <a class="ak-vs" href="Freestyle.dc.html" aria-label="Freestyle view" aria-current="{{freeCur}}" title="Freestyle" style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 32px; border-radius: 9px; background: {{freeBg}}; color: {{freeFg}};">
+      <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="3" width="8" height="10" rx="1.5"></rect><rect x="13" y="3" width="8" height="6" rx="1.5"></rect><rect x="13" y="11" width="8" height="10" rx="1.5"></rect><rect x="3" y="15" width="8" height="6" rx="1.5"></rect></svg>
+    </a>
+  </div>
+  <a class="ak-ix" href="Index.dc.html" style="display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px; box-sizing: border-box; border-radius: 12px; border: 1px solid {{t.line}}; background: {{t.pill}}; text-decoration: none; font-size: 13px; font-weight: 700;">Index <span aria-hidden="true" style="color: {{t.accent}};">↗</span></a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"view":{"editor":"enum","options":["drawer","freestyle"],"default":"drawer"},"$preview":{"width":240,"height":60}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = !!this.props.dark;
+    const view = this.props.view ?? 'drawer';
+    const t = dark
+      ? { ink: '#e9eefb', mute: '#7f89a3', line: 'rgba(255,255,255,.12)', pill: 'rgba(17,24,44,.6)', on: '#e9eefb', onFg: '#070b16', accent: '#8ea2ff' }
+      : { ink: '#0e1116', mute: '#8a919c', line: 'rgba(14,17,22,.1)', pill: 'rgba(255,255,255,.7)', on: '#0e1116', onFg: '#ffffff', accent: '#2f55e8' };
+    const d = view === 'drawer';
+    return {
+      t,
+      drawerCur: d ? 'page' : 'false', freeCur: d ? 'false' : 'page',
+      drawerBg: d ? t.on : 'transparent', drawerFg: d ? t.onFg : t.mute,
+      freeBg: d ? 'transparent' : t.on, freeFg: d ? t.mute : t.onFg
+    };
+  }
+}
+</script>
+</body>
+</html>
