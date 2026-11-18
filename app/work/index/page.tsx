@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { WorkIndex } from '@/components/site/WorkIndex';
 
 export const metadata: Metadata = {
-  title: 'Index, Anubhav Kumar',
+  title: 'Anubhav Kumar',
   description: 'Every project, grouped by what it does.',
 };
 

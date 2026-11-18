@@ -81,3 +81,25 @@ export function markFrom(from: From) {
 /** The cover the drawer, freestyle and index use for a project. */
 export const coverOf = (id: string, diagram = false) =>
   diagram && id === 'agent' ? '/redesign/media/agent-diagram.jpg' : PROJECTS[id as ProjectId].cover;
+
+/** Where the close button and breadcrumb of a case study return to. */
+export function readFrom(): { href: string; label: string } {
+  let v: string | null = null;
+  try {
+    v = sessionStorage.getItem('akFrom');
+  } catch {
+    /* private mode */
+  }
+  if (v === 'freestyle') return { href: '/work/?view=freestyle', label: 'Freestyle' };
+  if (v === 'index') return { href: '/work/index/', label: 'Index' };
+  return { href: '/work/', label: 'Work' };
+}
+
+/** The project before and after this one, cycling through all 20. */
+export function neighbours(id: ProjectId): { prev: Project; next: Project } {
+  const k = ORDER.indexOf(id);
+  return {
+    prev: PROJECTS[ORDER[(k + ORDER.length - 1) % ORDER.length]],
+    next: PROJECTS[ORDER[(k + 1) % ORDER.length]],
+  };
+}

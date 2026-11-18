@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PROJECTS } from '@/content/portfolio';
+import { readFrom } from '@/content/work-layout';
 import { scrollToId } from './SmoothScroll';
 
 type Active = 'home' | 'work' | 'about' | 'connect' | '';
@@ -45,12 +46,12 @@ function routeActive(path: string): Active {
 }
 
 /** Breadcrumb for work sub-pages: parent link and the current page's name. */
-function subCrumb(path: string): { parent: string; here: string } | null {
+function subCrumb(path: string): { parent: string; here: string; isCase: boolean } | null {
   const m = /^\/work\/([^/]+)$/.exec(path);
   if (!m) return null;
-  if (m[1] === 'index') return { parent: 'Work', here: 'Index' };
+  if (m[1] === 'index') return { parent: 'Work', here: 'Index', isCase: false };
   const p = (PROJECTS as Record<string, { title: string }>)[m[1]];
-  return p ? { parent: 'Work', here: p.title } : null;
+  return p ? { parent: 'Work', here: p.title, isCase: true } : null;
 }
 
 const SunIcon = ({ strokeWidth = 2.4 }: { strokeWidth?: number }) => (
@@ -85,6 +86,8 @@ export function Nav() {
   // True when this page carries the sections (the one-page site and its section routes).
   const [hasSections, setHasSections] = useState(false);
   const [open, setOpen] = useState(false);
+  // A case study returns to where it was opened from: the drawer, freestyle or the index.
+  const [from, setFrom] = useState({ href: '/work/', label: 'Work' });
   const menuBtn = useRef<HTMLButtonElement>(null);
   const firstItem = useRef<HTMLAnchorElement>(null);
 
@@ -97,6 +100,7 @@ export function Nav() {
   useEffect(() => {
     setHasSections(!!document.getElementById('work'));
     setOpen(false);
+    setFrom(readFrom());
   }, [pathname]);
 
   // Which section owns the middle of the viewport. Nothing is current while
@@ -195,8 +199,8 @@ export function Nav() {
               <span className="dock__path-sep">/</span>
               {sub && (
                 <>
-                  <Link href="/work/" onClick={(e) => go(e, 'work')}>
-                    {sub.parent}
+                  <Link href={sub.isCase ? from.href : '/work/'} onClick={(e) => go(e, 'work')}>
+                    {sub.isCase ? from.label : sub.parent}
                   </Link>
                   <span className="dock__path-sep">/</span>
                 </>

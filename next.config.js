@@ -10,12 +10,17 @@
  * Next writes the exported site into distDir, so the build has to keep the
  * default `.next` for the export to land in `out/`, which is what the deploy
  * workflow publishes.
+ *
+ * `output: 'export'` applies to the build only. The dev server cannot resolve
+ * generateStaticParams() for the case study route under export mode ("missing
+ * exported function"), though the build does and prerenders all 20. Dev has no
+ * use for export mode, so it runs without it; `npm run build` still enforces it.
  */
 module.exports = (phase) => {
   const isDev = phase === 'phase-development-server';
 
   return {
-    output: 'export',
+    ...(isDev ? {} : { output: 'export' }),
     basePath: '',
     trailingSlash: true,
     distDir: isDev ? '.next-dev' : '.next',

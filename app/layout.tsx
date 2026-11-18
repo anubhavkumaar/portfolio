@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Manrope, Azeret_Mono } from 'next/font/google';
 import './globals.css';
 import './redesign.css';
 import './work.css';
+import './case.css';
 import { SiteChrome } from '@/components/site/SiteChrome';
 
 // Self-hosted through next/font: preloaded, subset, no render-blocking CSS
@@ -29,7 +30,7 @@ const mono = Azeret_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Anubhav Kumar, Full Stack Developer and GenAI Engineer',
+  title: 'Anubhav Kumar',
   description:
     'Building production-grade GenAI platforms at Deloitte: LLMs, RAG, AWS Bedrock, from backend APIs to frontend dashboards.',
   metadataBase: new URL('https://anubhavkumaar.in'),
