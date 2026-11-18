@@ -43,15 +43,6 @@
 }
 
 /* Keyframes shared by the boards */
-@keyframes akRoles {
-  0%, 14.33% { transform: translateY(0); }
-  16.67%, 31% { transform: translateY(-1.3em); }
-  33.33%, 47.67% { transform: translateY(-2.6em); }
-  50%, 64.33% { transform: translateY(-3.9em); }
-  66.67%, 81% { transform: translateY(-5.2em); }
-  83.33%, 97.67% { transform: translateY(-6.5em); }
-  100% { transform: translateY(-7.8em); }
-}
 @keyframes akCaret {
   0%, 49% { opacity: 1; }
   50%, 100% { opacity: 0; }
@@ -198,39 +189,6 @@
   max-width: 640px;
 }
 
-.hx__eyebrow {
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-family: var(--font-mono), monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.15em;
-  color: var(--p-mute);
-  animation: akUp 0.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.hx__eyebrow-long {
-  display: none;
-}
-
-.hx__dot {
-  position: relative;
-  flex: 0 0 auto;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--p-live);
-}
-.hx__dot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--p-live);
-  animation: akPing 1.8s ease-out infinite;
-}
-
 .hx__name {
   margin: 0;
   padding-top: 4px;
@@ -267,11 +225,6 @@
   height: 1.3em;
   overflow: hidden;
   color: var(--p-accent);
-}
-
-.hx__roles-track {
-  display: block;
-  animation: akRoles 18s cubic-bezier(0.76, 0, 0.24, 1) infinite;
 }
 
 .hx__role-line {
@@ -458,14 +411,6 @@
   .hx__name {
     font-size: clamp(96px, 13vw, 130px);
   }
-  .hx__eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.16em;
-  }
-  .hx__eyebrow-long {
-    display: inline;
-  }
-  .hx__eyebrow-short,
   .hx__lede-short {
     display: none;
   }
@@ -556,4 +501,14 @@
   [data-theme='dark'] .hx__poster {
     background-image: url('/redesign/media/smoke-dark-phone.jpg');
   }
+}
+
+/* Hero name: each letter is a rising outer span (clipped by the heading while it rises) holding an
+   inner span that the cursor spring moves. Once the rise is done the clip is lifted, so a letter
+   pushed up or down by the pointer is not cut off. */
+.hx__c {
+  display: inline-block;
+}
+.hx__name.is-live {
+  overflow: visible;
 }

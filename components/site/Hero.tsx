@@ -2,7 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { SPRING, createSpring } from '@/lib/glyph-spring';
 import { goSection } from './SmoothScroll';
 import { SmokeBackdrop } from './SmokeBackdrop';
 
@@ -18,7 +19,7 @@ const HeroConsole = dynamic(() => import('@/app/hero-console').then((m) => m.Her
   ),
 });
 
-/** The role cycler: one line, rolled by CSS (akRoles in redesign.css). The first role repeats last so the loop is seamless. */
+/** The role line types through these. The first is in the static HTML, so the page reads correctly before any script runs. */
 const ROLES = [
   'Full Stack Developer and GenAI Engineer',
   'Data Engineer',
@@ -26,15 +27,156 @@ const ROLES = [
   'Agentic AI Engineer',
   'LLM and RAG Engineer',
   'Gamer',
-  'Full Stack Developer and GenAI Engineer',
 ];
+
+const TYPE_MS = 46;
+const DELETE_MS = 26;
+const HOLD_MS = 2200;
+const REST_MS = 420;
+
+/**
+ * The role line types a title, holds it, deletes it and types the next. The first
+ * title is what the server renders and what stays under reduced motion, where
+ * nothing types.
+ */
+function RoleTyper() {
+  const [text, setText] = useState(ROLES[0]);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let idx = 0;
+    let shown = ROLES[0].length;
+    let deleting = false;
+    let timer = 0;
+    const tick = () => {
+      const target = ROLES[idx];
+      if (!deleting) {
+        if (shown < target.length) {
+          shown += 1;
+          setText(target.slice(0, shown));
+          timer = window.setTimeout(tick, TYPE_MS);
+        } else {
+          deleting = true;
+          timer = window.setTimeout(tick, HOLD_MS);
+        }
+      } else if (shown > 0) {
+        shown -= 1;
+        setText(target.slice(0, shown));
+        timer = window.setTimeout(tick, DELETE_MS);
+      } else {
+        deleting = false;
+        idx = (idx + 1) % ROLES.length;
+        timer = window.setTimeout(tick, REST_MS);
+      }
+    };
+    timer = window.setTimeout(tick, HOLD_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  return (
+    <span className="hx__roles" aria-label={ROLES[0]}>
+      <span className="hx__role-line" aria-hidden="true">
+        {text}
+        <span className="hx__caret" aria-hidden="true" />
+      </span>
+    </span>
+  );
+}
+
+/**
+ * The name. Each letter rises in on load. After that, letters near the cursor ease away from it
+ * and settle back on the same spring the rest of the site uses (lib/glyph-spring.ts). Pointer
+ * devices only, and not under reduced motion; the loop runs only while something is moving.
+ */
+function HeroName() {
+  const root = useRef<HTMLHeadingElement>(null);
+  const [live, setLive] = useState(false);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const spring = createSpring();
+    const glyphs = spring.add(Array.from(el.querySelectorAll<HTMLElement>('.hx__c')));
+    let ready = false;
+    let near = false;
+    let measuredAt = 0;
+    // Wait for the rise to finish (it is held back while the intro loader plays), then lift the
+    // clip so pushed letters are not cut off.
+    const html = document.documentElement;
+    let t = 0;
+    let mo: MutationObserver | null = null;
+    const arm = () => {
+      t = window.setTimeout(() => {
+        ready = true;
+        setLive(true);
+      }, 1500);
+    };
+    if (html.hasAttribute('data-intro')) {
+      mo = new MutationObserver(() => {
+        if (html.hasAttribute('data-intro')) return;
+        mo?.disconnect();
+        arm();
+      });
+      mo.observe(html, { attributes: true, attributeFilter: ['data-intro'] });
+    } else {
+      arm();
+    }
+
+    const away = () => {
+      if (!near) return;
+      near = false;
+      spring.release(glyphs);
+    };
+    const onMove = (e: PointerEvent) => {
+      if (!ready) return;
+      const r = el.getBoundingClientRect();
+      const pad = SPRING.radius;
+      const inside = e.clientX > r.left - pad && e.clientX < r.right + pad && e.clientY > r.top - pad && e.clientY < r.bottom + pad;
+      if (!inside) {
+        away();
+        return;
+      }
+      const now = performance.now();
+      if (!near || now - measuredAt > 250) {
+        spring.measure(glyphs);
+        measuredAt = now;
+      }
+      near = true;
+      spring.push(glyphs, e.clientX + window.scrollX, e.clientY + window.scrollY);
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('blur', away);
+    document.documentElement.addEventListener('mouseleave', away);
+    return () => {
+      window.clearTimeout(t);
+      mo?.disconnect();
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('blur', away);
+      document.documentElement.removeEventListener('mouseleave', away);
+      spring.destroy();
+    };
+  }, []);
+
+  return (
+    <h1 ref={root} className={`hx__name${live ? ' is-live' : ''}`} aria-label="Anubhav Kumar">
+      <span aria-hidden="true">
+        <Letters text="Anubhav" start={0.3} />
+        <br />
+        <Letters text="Kumar" start={0.545} />
+      </span>
+    </h1>
+  );
+}
 
 function Letters({ text, start }: { text: string; start: number }) {
   return (
     <>
       {text.split('').map((ch, i) => (
         <span key={i} className="hx__l" style={{ animationDelay: `${(start + i * 0.035).toFixed(3)}s` }}>
-          {ch}
+          <span className="hx__c">{ch}</span>
         </span>
       ))}
     </>
@@ -61,30 +203,10 @@ export function Hero() {
       <SmokeBackdrop still={still} />
 
       <div className="hx__copy">
-        <p className="hx__eyebrow">
-          <span className="hx__dot" aria-hidden="true" />
-          <span className="hx__eyebrow-long">OPEN TO GENAI ENGINEERING ROLES</span>
-          <span className="hx__eyebrow-short">OPEN TO GENAI ROLES</span>
-        </p>
-        <h1 className="hx__name" aria-label="Anubhav Kumar">
-          <span aria-hidden="true">
-            <Letters text="Anubhav" start={0.3} />
-            <br />
-            <Letters text="Kumar" start={0.545} />
-          </span>
-        </h1>
+        <HeroName />
         <p className="hx__role">
           <span className="hx__pre">I am a </span>
-          <span className="hx__roles" aria-label="Full Stack Developer and GenAI Engineer">
-            <span className="hx__roles-track" aria-hidden="true">
-              {ROLES.map((r, i) => (
-                <span key={i} className="hx__role-line">
-                  {r}
-                  <span className="hx__caret" aria-hidden="true" />
-                </span>
-              ))}
-            </span>
-          </span>
+          <RoleTyper />
         </p>
         <p className="hx__lede">
           <span className="hx__lede-long">
