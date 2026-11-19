@@ -654,21 +654,20 @@ function inviteText(l){
   const mix = `🪔 सादर आमंत्रण · You're invited 🪔\n॥ श्री गणेशाय नमः ॥\n\nप्रभु की असीम कृपा से हम अपने नए घर में प्रवेश कर रहे हैं। इस शुभ अवसर पर आप सपरिवार सादर आमंत्रित हैं।\nPlease join us with your family for the Griha Pravesh of our new home.\n\n📅 सोमवार, 14 दिसम्बर 2026 · Monday, 14 December 2026\n🕉️ शुभ मुहूर्त अनुसार · at the auspicious muhurat\n📍 ${EVENT.venueEn}\n🗺️ ${MAPS}\n\n✉️ निमंत्रण पत्र · Invitation: ${url}\n\nनिवेदक: प्रभात केशव · अंजली पाण्डेय · अनुभव कुमार`;
   return l === 'hi' ? hi : l === 'en' ? en : mix;
 }
-/* the card photo for the current language, fetched ahead so sharing happens inside the tap */
+/* the invite banner (same image as the link preview), fetched ahead so sharing happens inside the tap */
 var shareFile = null, shareFileLang = '';
 async function prepShareFile(){
-  const l = body.dataset.lang; if (shareFileLang === l && shareFile) return;
-  shareFileLang = l;
+  if (shareFile) return;
   try{
-    const b = await fetch(`assets/card-${l}.jpg`).then(r => r.blob());
-    if (shareFileLang === l) shareFile = new File([b], `griha-pravesh-invite-${l}.jpg`, {type: 'image/jpeg'});
+    const b = await fetch('assets/og-share.jpg').then(r => r.blob());
+    shareFile = new File([b], 'griha-pravesh-invite.jpg', {type: 'image/jpeg'});
   }catch(e){ shareFile = null; }
 }
 function updateLinks(){
   const l = body.dataset.lang;
   const msg = inviteText(l);
   $('#aShare').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
-  shareFile = null; prepShareFile();
+  prepShareFile();
   const det = 'Griha Pravesh (गृह प्रवेश) of our new home. With love, Prabhat Keshav, Anjali Pandey and Anubhav Kumar.\nInvitation: ' + EVENT.siteUrl + '\nLocation: https://maps.app.goo.gl/qSmQBj2Aj27DMa5a8';
   $('#aCal').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('Griha Pravesh · गृह प्रवेश') +
     '&dates=20261214/20261215&details=' + encodeURIComponent(det) + '&location=' + encodeURIComponent(EVENT.venueEn);
@@ -916,7 +915,7 @@ document.addEventListener('keydown', e => {
 });
 $('#aShare').addEventListener('click', async e => {
   chime(.4);
-  // phones: native share sheet with the card photo + full text (pick WhatsApp)
+  // phones: native share sheet with the invite banner + full text (pick WhatsApp)
   // desktop / no file sharing: falls back to the WhatsApp link with text only
   if (shareFile && navigator.canShare && navigator.canShare({files: [shareFile]})){
     e.preventDefault();
