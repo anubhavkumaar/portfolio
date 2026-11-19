@@ -1,0 +1,5 @@
+{
+  "_how": "One entry per guest. The key is the code in the link: anubhavkumaar.in/i/anjali (or /grihpravesh/?g=anjali). en = name in English, hi = name in Hindi (optional), solo = true drops '& Family', lang = hi | en | mix (optional).",
+  "anjali": { "en": "Anjali Pandey", "hi": "अंजली पाण्डेय" },
+  "keshav": { "en": "Mr. Keshav", "hi": "श्री केशव" }
+}

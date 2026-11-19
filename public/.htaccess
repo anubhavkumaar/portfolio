@@ -35,6 +35,13 @@
   RewriteCond %{QUERY_STRING} (^|&)mode=stream(&|$)
   RewriteRule ^live/?$ /stream/ [R=302,L]
 
+  # ── Griha Pravesh invite ─────────────────────────────────────────────────
+  # /i/anjali opens that guest's personal invite (codes live in
+  # /grihpravesh/guests.json). /invite is the plain invite. 302 because a
+  # guest's entry can change before the day.
+  RewriteRule ^i/([a-z0-9_-]+)/?$ /grihpravesh/?g=$1 [R=302,NC,QSA,L]
+  RewriteRule ^invite/?$ /grihpravesh/ [R=302,NC,L]
+
   # ── SPA router ─────────────────────────────────────────────────────────────
   # Rewrite requests for files and directories that do not exist to index.html.
   # This allows clean URLs like /about to work with the SPA router.
