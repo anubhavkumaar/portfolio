@@ -645,12 +645,30 @@ function shareUrl(){
   if (body.dataset.lang !== 'mix') u.searchParams.set('lang', body.dataset.lang);
   return u.toString();
 }
+/* full invite text for WhatsApp; the shared link is the general invite, not the viewer's personal one */
+function generalUrl(l){ return 'https://anubhavkumaar.in/invite' + (l && l !== 'mix' ? '?lang=' + l : ''); }
+function inviteText(l){
+  const url = generalUrl(l), MAPS = 'https://maps.app.goo.gl/qSmQBj2Aj27DMa5a8';
+  const hi = `🪔 सादर आमंत्रण 🪔\n॥ श्री गणेशाय नमः ॥\n\nप्रभु की असीम कृपा से हम अपने नए घर में प्रवेश कर रहे हैं। इस शुभ अवसर पर आप सपरिवार सादर आमंत्रित हैं।\n\n📅 सोमवार, 14 दिसम्बर 2026\n🕉️ शुभ मुहूर्त अनुसार\n📍 ${EVENT.venueHi}\n🗺️ लोकेशन: ${MAPS}\n\n✉️ निमंत्रण पत्र खोलें: ${url}\n\nनिवेदक: प्रभात केशव · अंजली पाण्डेय · अनुभव कुमार`;
+  const en = `🪔 You're invited 🪔\n\nWith the blessings of the Almighty, we are stepping into our new home. Please join us with your family for the Griha Pravesh.\n\n📅 Monday, 14 December 2026\n🕉️ At the auspicious muhurat\n📍 ${EVENT.venueEn}\n🗺️ Location: ${MAPS}\n\n✉️ Open your invitation: ${url}\n\nWith love, Prabhat Keshav · Anjali Pandey · Anubhav Kumar`;
+  const mix = `🪔 सादर आमंत्रण · You're invited 🪔\n॥ श्री गणेशाय नमः ॥\n\nप्रभु की असीम कृपा से हम अपने नए घर में प्रवेश कर रहे हैं। इस शुभ अवसर पर आप सपरिवार सादर आमंत्रित हैं।\nPlease join us with your family for the Griha Pravesh of our new home.\n\n📅 सोमवार, 14 दिसम्बर 2026 · Monday, 14 December 2026\n🕉️ शुभ मुहूर्त अनुसार · at the auspicious muhurat\n📍 ${EVENT.venueEn}\n🗺️ ${MAPS}\n\n✉️ निमंत्रण पत्र · Invitation: ${url}\n\nनिवेदक: प्रभात केशव · अंजली पाण्डेय · अनुभव कुमार`;
+  return l === 'hi' ? hi : l === 'en' ? en : mix;
+}
+/* the card photo for the current language, fetched ahead so sharing happens inside the tap */
+var shareFile = null, shareFileLang = '';
+async function prepShareFile(){
+  const l = body.dataset.lang; if (shareFileLang === l && shareFile) return;
+  shareFileLang = l;
+  try{
+    const b = await fetch(`assets/card-${l}.jpg`).then(r => r.blob());
+    if (shareFileLang === l) shareFile = new File([b], `griha-pravesh-invite-${l}.jpg`, {type: 'image/jpeg'});
+  }catch(e){ shareFile = null; }
+}
 function updateLinks(){
   const l = body.dataset.lang;
-  const msg = l === 'hi'
-    ? `🪔 सादर आमंत्रण 🪔\nनव गृह प्रवेश, सोमवार 14 दिसम्बर 2026\n${EVENT.venueHi}\nआप सपरिवार सादर आमंत्रित हैं।\n\nनिमंत्रण पत्र खोलें: ${shareUrl()}\nलोकेशन: https://maps.app.goo.gl/qSmQBj2Aj27DMa5a8`
-    : `🪔 You're invited 🪔\nGriha Pravesh of our new home\nMonday, 14 December 2026\n${EVENT.venueEn}\n\nOpen your invitation: ${shareUrl()}\nLocation: https://maps.app.goo.gl/qSmQBj2Aj27DMa5a8`;
+  const msg = inviteText(l);
   $('#aShare').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+  shareFile = null; prepShareFile();
   const det = 'Griha Pravesh (गृह प्रवेश) of our new home. With love, Prabhat Keshav, Anjali Pandey and Anubhav Kumar.\nInvitation: ' + EVENT.siteUrl + '\nLocation: https://maps.app.goo.gl/qSmQBj2Aj27DMa5a8';
   $('#aCal').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('Griha Pravesh · गृह प्रवेश') +
     '&dates=20261214/20261215&details=' + encodeURIComponent(det) + '&location=' + encodeURIComponent(EVENT.venueEn);
@@ -896,7 +914,16 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
   if (stage === 'sealed') openEnvelope(); else if (stage === 'card') openDoors();
 });
-$('#aShare').addEventListener('click', () => chime(.4));
+$('#aShare').addEventListener('click', async e => {
+  chime(.4);
+  // phones: native share sheet with the card photo + full text (pick WhatsApp)
+  // desktop / no file sharing: falls back to the WhatsApp link with text only
+  if (shareFile && navigator.canShare && navigator.canShare({files: [shareFile]})){
+    e.preventDefault();
+    try{ await navigator.share({files: [shareFile], text: inviteText(body.dataset.lang), title: 'गृह प्रवेश · Griha Pravesh'}); }
+    catch(err){ if (err && err.name !== 'AbortError') window.open($('#aShare').href, '_blank'); }
+  }
+});
 
 /* ---- static render modes for share images: ?render=card|og ---- */
 const renderMode = params.get('render');

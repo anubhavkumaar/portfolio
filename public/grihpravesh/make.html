@@ -43,7 +43,8 @@ input.hi,textarea{font-family:"Tiro Devanagari Hindi","Cormorant Garamond",serif
 table{width:100%;border-collapse:collapse;font-size:15px}
 td{padding:8px 4px;border-top:1px solid rgba(236,210,139,.15);vertical-align:middle}
 td.n{font-weight:600}td.n span{display:block;font-family:"Tiro Devanagari Hindi",serif;font-weight:400;font-size:14px;color:#cdb68a}
-td.a{text-align:right;white-space:nowrap}
+td.a{text-align:right}
+td.a .btn{margin:2px 0}
 td.a .btn{min-height:38px;padding:0 12px;font-size:11px}
 .hint{font-size:14px;color:#b9a27a;line-height:1.45}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);padding:10px 16px;border-radius:99px;background:#2a1206;border:1px solid var(--gold-d);color:#f1dfae;opacity:0;transition:opacity .3s;pointer-events:none}
@@ -75,7 +76,8 @@ td.a .btn{min-height:38px;padding:0 12px;font-size:11px}
       <div class="preview" aria-label="Envelope preview"><div class="t1">सादर आमंत्रण</div><div class="to" id="pvHi">आप एवं आपका परिवार</div><div class="to2" id="pvEn">You &amp; Family</div></div>
       <div class="link" id="link"></div>
       <div class="btns">
-        <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>Send on WhatsApp</a>
+        <button class="btn primary" id="photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5-8 8"/></svg>Send card + message</button>
+        <a class="btn" id="wa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>Text only</a>
         <button class="btn" id="copy">Copy link</button>
         <a class="btn" id="open" href="#" target="_blank" rel="noopener">Preview</a>
       </div>
@@ -89,7 +91,7 @@ td.a .btn{min-height:38px;padding:0 12px;font-size:11px}
     </label>
     <table id="rows"><tbody></tbody></table>
     <div class="btns"><button class="btn" id="copyAll">Copy all links</button></div>
-    <p class="hint">Each WhatsApp button opens a chat with a ready message and that guest’s own link. Pick the contact in WhatsApp and send.</p>
+    <p class="hint"><b>Card + msg</b> opens your phone’s share sheet with the card photo and the full message (date, venue, location, their own link). Pick WhatsApp, then the contact. <b>Text</b> sends the message only. On a computer, photo sharing isn’t available, so it falls back to text.</p>
   </section>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -109,12 +111,21 @@ function buildUrl(en, hi, fam, l){
   return u.toString();
 }
 function message(en, hi, fam, l, url){
-  const nh = hi || en, ne = en || hi;
-  const h = `नमस्ते ${nh} 🙏\nहमारे नए घर के गृह प्रवेश (सोमवार, 14 दिसम्बर 2026, हाजीपुर) में आप${fam ? ' सपरिवार' : ''} सादर आमंत्रित हैं।`;
-  const e = `Namaste ${ne} 🙏\nYou${fam ? ' and your family are' : ' are'} warmly invited to the Griha Pravesh of our new home on Monday, 14 December 2026, in Hajipur.`;
-  const body = l === 'hi' ? h : l === 'en' ? e : h + '\n\n' + e;
-  const tail = l === 'hi' ? `\n\nआपका निमंत्रण पत्र: ${url}\nलोकेशन: https://maps.app.goo.gl/qSmQBj2Aj27DMa5a8\n\nप्रभात केशव · अंजली पाण्डेय · अनुभव कुमार` : `\n\nYour invitation: ${url}\nLocation: https://maps.app.goo.gl/qSmQBj2Aj27DMa5a8\n\nPrabhat Keshav · Anjali Pandey · Anubhav Kumar`;
-  return body + tail;
+  const nh = hi || en, ne = en || hi, M = 'https://maps.app.goo.gl/qSmQBj2Aj27DMa5a8';
+  const h = `नमस्ते ${nh} 🙏\n॥ श्री गणेशाय नमः ॥\n\nप्रभु की असीम कृपा से हम अपने नए घर में प्रवेश कर रहे हैं। इस शुभ अवसर पर आप${fam ? ' सपरिवार' : ''} सादर आमंत्रित हैं।\n\n📅 सोमवार, 14 दिसम्बर 2026\n🕉️ शुभ मुहूर्त अनुसार\n📍 इंडस्ट्रियल एरिया, सुभई, हाजीपुर (बिहार)\n🗺️ लोकेशन: ${M}\n\n✉️ आपका निमंत्रण पत्र: ${url}\n\nनिवेदक: प्रभात केशव · अंजली पाण्डेय · अनुभव कुमार`;
+  const e = `Namaste ${ne} 🙏\n\nWith the blessings of the Almighty, we are stepping into our new home. You${fam ? ' and your family are' : ' are'} warmly invited to the Griha Pravesh.\n\n📅 Monday, 14 December 2026\n🕉️ At the auspicious muhurat\n📍 Industrial Area, Subhai, Hajipur, Bihar\n🗺️ Location: ${M}\n\n✉️ Your invitation: ${url}\n\nWith love, Prabhat Keshav · Anjali Pandey · Anubhav Kumar`;
+  const m = `नमस्ते ${nh} 🙏\n॥ श्री गणेशाय नमः ॥\n\nप्रभु की असीम कृपा से हम अपने नए घर में प्रवेश कर रहे हैं। इस शुभ अवसर पर आप${fam ? ' सपरिवार' : ''} सादर आमंत्रित हैं।\nYou${fam ? ' and your family are' : ' are'} warmly invited to the Griha Pravesh of our new home.\n\n📅 सोमवार, 14 दिसम्बर 2026 · Monday, 14 December 2026\n🕉️ शुभ मुहूर्त अनुसार · at the auspicious muhurat\n📍 Industrial Area, Subhai, Hajipur, Bihar\n🗺️ ${M}\n\n✉️ निमंत्रण पत्र · Your invitation: ${url}\n\nनिवेदक: प्रभात केशव · अंजली पाण्डेय · अनुभव कुमार`;
+  return l === 'hi' ? h : l === 'en' ? e : m;
+}
+/* card photos, fetched ahead so the share sheet opens inside the tap */
+const CARD = {};
+['hi','mix','en'].forEach(k => fetch(`assets/card-${k}.jpg`).then(r => r.blob()).then(b => { CARD[k] = new File([b], `griha-pravesh-invite-${k}.jpg`, {type: 'image/jpeg'}) }).catch(() => {}));
+const canShareFiles = () => !!(navigator.canShare && CARD.mix && navigator.canShare({files: [CARD.mix]}));
+async function sharePhoto(text, fallbackHref){
+  const f = CARD[lang];
+  if (f && navigator.canShare && navigator.canShare({files: [f]})){
+    try{ await navigator.share({files: [f], text}); }catch(e){ if (e && e.name !== 'AbortError') window.open(fallbackHref, '_blank'); }
+  } else { window.open(fallbackHref, '_blank'); toast('Photo sharing works on phones. Sent text only.'); }
 }
 const wa = text => 'https://wa.me/?text=' + encodeURIComponent(text);
 
@@ -139,9 +150,11 @@ function updateMany(){
     const n = document.createElement('td'); n.className = 'n'; n.textContent = en + (solo ? ' (solo)' : '');
     if (hi){ const sp = document.createElement('span'); sp.textContent = hi; n.appendChild(sp); }
     const a = document.createElement('td'); a.className = 'a';
-    const w = document.createElement('a'); w.className = 'btn primary'; w.target = '_blank'; w.rel = 'noopener'; w.textContent = 'WhatsApp'; w.href = wa(message(en, hi, !solo, lang, url));
+    const msg = message(en, hi, !solo, lang, url);
+    const w = document.createElement('a'); w.className = 'btn'; w.target = '_blank'; w.rel = 'noopener'; w.textContent = 'Text'; w.href = wa(msg);
+    const ph = document.createElement('button'); ph.className = 'btn primary'; ph.textContent = 'Card + msg'; ph.onclick = () => sharePhoto(msg, w.href);
     const c = document.createElement('button'); c.className = 'btn'; c.textContent = 'Copy'; c.onclick = () => copy(url);
-    a.append(w, ' ', c); tr.append(n, a); tb.appendChild(tr);
+    a.append(ph, ' ', w, ' ', c); tr.append(n, a); tb.appendChild(tr);
   });
 }
 async function copy(t){
@@ -152,6 +165,10 @@ function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add(
 ['#en','#hi','#fam'].forEach(s => $(s).addEventListener('input', updateOne));
 $('#list').addEventListener('input', updateMany);
 $('#copy').addEventListener('click', () => copy($('#link').textContent));
+$('#photo').addEventListener('click', () => {
+  const en = $('#en').value.trim(), hi = $('#hi').value.trim(), fam = $('#fam').checked, url = buildUrl(en, hi, fam, lang);
+  sharePhoto(message(en, hi, fam, lang, url), $('#wa').href);
+});
 $('#copyAll').addEventListener('click', () => copy(all.join('\n')));
 document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
   lang = b.dataset.l; document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b)); updateOne(); updateMany();
